@@ -1,0 +1,70 @@
+{% comment %}
+  Finance section tab navigation.
+  Usage: {% include 'finance/partials/finance_nav.html' %}
+  Requires: active_tab context variable set by the view.
+  Values:  overview | services | expenses | funds | records | audit
+{% endcomment %}
+
+<div class="flex items-center gap-1 mb-6 bg-zinc-900/60 border border-zinc-800/60 rounded-2xl p-1.5 overflow-x-auto no-scrollbar">
+
+  <a href="{% url 'finance:dashboard' %}"
+    class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all whitespace-nowrap flex-shrink-0
+      {% if active_tab == 'overview' %}bg-zinc-700 text-zinc-100{% else %}text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60{% endif %}">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+    </svg>
+    Overview
+  </a>
+
+  <a href="{% url 'finance:list' %}"
+    class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all whitespace-nowrap flex-shrink-0
+      {% if active_tab == 'services' %}bg-zinc-700 text-zinc-100{% else %}text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60{% endif %}">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+    </svg>
+    Service Records
+  </a>
+
+  <a href="{% url 'finance:expense_list' %}"
+    class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all whitespace-nowrap flex-shrink-0
+      {% if active_tab == 'expenses' %}bg-zinc-700 text-zinc-100{% else %}text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60{% endif %}">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+    </svg>
+    Expenses
+    {# Pending badge - rendered via template tag when pending_count is in context #}
+    {% if pending_count and pending_count > 0 and active_tab != 'expenses' %}
+    <span class="ml-0.5 inline-flex items-center justify-center w-4 h-4 rounded-full bg-amber-500 text-zinc-900 text-xs font-bold leading-none">
+      {{ pending_count }}
+    </span>
+    {% endif %}
+  </a>
+
+  <a href="{% url 'finance:fund_list' %}"
+    class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all whitespace-nowrap flex-shrink-0
+      {% if active_tab == 'funds' %}bg-zinc-700 text-zinc-100{% else %}text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60{% endif %}">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+    </svg>
+    Funds
+  </a>
+
+  <a href="{% url 'finance:records' %}"
+    class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all whitespace-nowrap flex-shrink-0
+      {% if active_tab == 'records' %}bg-zinc-700 text-zinc-100{% else %}text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60{% endif %}">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+    </svg>
+    Records & Export
+  </a>
+
+  <a href="{% url 'finance:audit_log' %}"
+    class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all whitespace-nowrap flex-shrink-0
+      {% if active_tab == 'audit' %}bg-zinc-700 text-zinc-100{% else %}text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60{% endif %}">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+    </svg>
+    Audit Log
+  </a>
+
+</div>

@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} — Zova CMS{% endblock %}
+{% block breadcrumb %}Members / {{ title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+  <div class="mb-6">
+    <a href="{% url 'members:list' %}" class="text-sm text-zinc-500 hover:text-zinc-300 flex items-center gap-2 mb-3 w-fit">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg> Back to Members
+    </a>
+    <h1 class="text-xl font-semibold text-zinc-100">{{ title }}</h1>
+    {% if member %}<p class="text-sm text-zinc-500 mt-0.5">Editing {{ member.full_name }}</p>{% endif %}
+  </div>
+
+  <div class="glass-card rounded-2xl p-6">
+    <form method="post" novalidate>
+      {% csrf_token %}
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-medium text-zinc-400 mb-1.5">First Name *</label>
+          {{ form.first_name }}
+          {% if form.first_name.errors %}<p class="text-red-400 text-xs mt-1">{{ form.first_name.errors|join:", " }}</p>{% endif %}
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-zinc-400 mb-1.5">Last Name *</label>
+          {{ form.last_name }}
+          {% if form.last_name.errors %}<p class="text-red-400 text-xs mt-1">{{ form.last_name.errors|join:", " }}</p>{% endif %}
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-zinc-400 mb-1.5">Email</label>
+          {{ form.email }}
+          {% if form.email.errors %}<p class="text-red-400 text-xs mt-1">{{ form.email.errors|join:", " }}</p>{% endif %}
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-zinc-400 mb-1.5">Phone</label>
+          {{ form.phone }}
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-zinc-400 mb-1.5">Gender</label>
+          {{ form.gender }}
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-zinc-400 mb-1.5">Date of Birth</label>
+          {{ form.date_of_birth }}
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-zinc-400 mb-1.5">Date Joined *</label>
+          {{ form.date_joined }}
+          {% if form.date_joined.errors %}<p class="text-red-400 text-xs mt-1">{{ form.date_joined.errors|join:", " }}</p>{% endif %}
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-zinc-400 mb-1.5">Status</label>
+          {{ form.status }}
+        </div>
+        <div class="md:col-span-2">
+          <label class="block text-xs font-medium text-zinc-400 mb-1.5">Address</label>
+          {{ form.address }}
+        </div>
+        <div class="md:col-span-2">
+          <label class="block text-xs font-medium text-zinc-400 mb-1.5">Notes</label>
+          {{ form.notes }}
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 mt-6 pt-4 border-t border-zinc-800/60">
+        <button type="submit"
+          class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium px-6 py-2.5 rounded-xl transition-all">
+          Save Member
+        </button>
+        <a href="{% url 'members:list' %}"
+          class="text-sm text-zinc-500 hover:text-zinc-300 px-4 py-2.5 rounded-xl hover:bg-zinc-800 transition-all">
+          Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

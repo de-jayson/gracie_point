@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} — Zova CMS{% endblock %}
+{% block breadcrumb %}Events / {{ title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+  <div class="mb-6">
+    <a href="{% url 'events:list' %}" class="text-sm text-zinc-500 hover:text-zinc-300 flex items-center gap-2 mb-3 w-fit">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg> Back to Events
+    </a>
+    <h1 class="text-xl font-semibold text-zinc-100">{{ title }}</h1>
+    {% if event %}<p class="text-sm text-zinc-500 mt-0.5">Editing: {{ event.title }}</p>{% endif %}
+  </div>
+
+  <div class="glass-card rounded-2xl p-6">
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="md:col-span-2">
+          <label class="block text-xs font-medium text-zinc-400 mb-1.5">Event Title *</label>
+          {{ form.title }}
+          {% if form.title.errors %}<p class="text-red-400 text-xs mt-1">{{ form.title.errors|join:", " }}</p>{% endif %}
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-zinc-400 mb-1.5">Event Type</label>
+          {{ form.event_type }}
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-zinc-400 mb-1.5">Date *</label>
+          {{ form.date }}
+          {% if form.date.errors %}<p class="text-red-400 text-xs mt-1">{{ form.date.errors|join:", " }}</p>{% endif %}
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-zinc-400 mb-1.5">Start Time</label>
+          {{ form.start_time }}
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-zinc-400 mb-1.5">End Time</label>
+          {{ form.end_time }}
+        </div>
+        <div class="md:col-span-2">
+          <label class="block text-xs font-medium text-zinc-400 mb-1.5">Location / Venue</label>
+          {{ form.location }}
+        </div>
+        <div class="md:col-span-2">
+          <label class="block text-xs font-medium text-zinc-400 mb-1.5">Description</label>
+          {{ form.description }}
+        </div>
+      </div>
+
+      <div class="flex gap-3 mt-6 pt-4 border-t border-zinc-800/60">
+        <button type="submit"
+          class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium px-6 py-2.5 rounded-xl transition-all">
+          Save Event
+        </button>
+        <a href="{% url 'events:list' %}"
+          class="text-sm text-zinc-500 hover:text-zinc-300 px-4 py-2.5 rounded-xl hover:bg-zinc-800 transition-all">
+          Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

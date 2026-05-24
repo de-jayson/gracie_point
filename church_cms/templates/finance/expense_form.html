@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} — Zova CMS{% endblock %}
+{% block breadcrumb %}Finance / Expenses / {{ title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto">
+
+  <div class="mb-6">
+    <h1 class="text-xl font-semibold text-zinc-100">Finance</h1>
+    <p class="text-sm text-zinc-500 mt-0.5">Church financial command center</p>
+  </div>
+
+  {% include 'finance/partials/finance_nav.html' %}
+
+  <div class="max-w-2xl">
+    <div class="mb-6">
+      <a href="{% url 'finance:expense_list' %}" class="text-sm text-zinc-500 hover:text-zinc-300 flex items-center gap-2 mb-3 w-fit">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg> Back to Expenses
+      </a>
+      <h2 class="text-lg font-semibold text-zinc-100">{{ title }}</h2>
+      <p class="text-sm text-zinc-500 mt-0.5">Submitted expenses are held as pending until approved by a finance officer</p>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+
+      <div class="glass-card rounded-2xl p-6 mb-4">
+        <h3 class="text-sm font-semibold text-zinc-400 uppercase tracking-widest mb-4">Expense Details</h3>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-medium text-zinc-400 mb-1.5">Title *</label>
+            {{ form.title }}
+            {% if form.title.errors %}<p class="text-red-400 text-xs mt-1">{{ form.title.errors|join:", " }}</p>{% endif %}
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-medium text-zinc-400 mb-1.5">Amount (GHS) *</label>
+              {{ form.amount }}
+              {% if form.amount.errors %}<p class="text-red-400 text-xs mt-1">{{ form.amount.errors|join:", " }}</p>{% endif %}
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-zinc-400 mb-1.5">Date *</label>
+              {{ form.expense_date }}
+              {% if form.expense_date.errors %}<p class="text-red-400 text-xs mt-1">{{ form.expense_date.errors|join:", " }}</p>{% endif %}
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-zinc-400 mb-1.5">Description</label>
+            {{ form.description }}
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-6 mb-4">
+        <h3 class="text-sm font-semibold text-zinc-400 uppercase tracking-widest mb-4">Classification</h3>
+        <div class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-medium text-zinc-400 mb-1.5">Category</label>
+              {{ form.category }}
+              {% if form.category.errors %}<p class="text-red-400 text-xs mt-1">{{ form.category.errors|join:", " }}</p>{% endif %}
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-zinc-400 mb-1.5">Fund</label>
+              {{ form.fund }}
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-medium text-zinc-400 mb-1.5">Related Service</label>
+              {{ form.related_service }}
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-zinc-400 mb-1.5">Payment Method</label>
+              {{ form.payment_method }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-6 mb-4">
+        <h3 class="text-sm font-semibold text-zinc-400 uppercase tracking-widest mb-4">Receipt</h3>
+        <div>
+          <label class="block text-xs font-medium text-zinc-400 mb-1.5">Upload Receipt (optional)</label>
+          {{ form.receipt_url }}
+          <p class="text-xs text-zinc-600 mt-1">PDF, JPG, or PNG accepted</p>
+        </div>
+      </div>
+
+      <div class="flex gap-3">
+        <button type="submit"
+          class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium px-6 py-2.5 rounded-xl transition-all">
+          Submit Expense
+        </button>
+        <a href="{% url 'finance:expense_list' %}"
+          class="text-sm text-zinc-500 hover:text-zinc-300 px-4 py-2.5 rounded-xl hover:bg-zinc-800 transition-all">
+          Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
