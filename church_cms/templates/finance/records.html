@@ -9,7 +9,7 @@
   <div class="flex items-center justify-between mb-6">
     <div>
       <h1 class="text-xl font-semibold text-zinc-100">Financial Records</h1>
-      <p class="text-sm text-zinc-500 mt-0.5">Export, filter and back up your church's financial history</p>
+      <p class="text-sm text-zinc-500 mt-0.5">Export, filter and back up your {{ church.name }}'s financial history</p>
     </div>
     <a href="{% url 'finance:list' %}"
       class="text-sm text-zinc-400 hover:text-zinc-200 border border-zinc-700 px-4 py-2.5 rounded-xl hover:bg-zinc-800 transition-all">
@@ -161,7 +161,7 @@
         <span class="w-2 h-2 rounded-full bg-emerald-400" style="box-shadow:0 0 6px #22c55e;"></span>
         <div>
           <span class="text-sm text-emerald-300 font-medium">Connected to Google Drive</span>
-          <p class="text-xs text-zinc-500" id="drive-folder-display">Folder: church name...</p>
+          <p class="text-xs text-zinc-500" id="drive-folder-display">Folder: {{ church.name }}...</p>
         </div>
       </div>
       <a href="{% url 'finance:google_disconnect' %}"
@@ -185,7 +185,7 @@
         </div>
         <div>
           <label class="block text-xs font-medium text-zinc-400 mb-1.5">Drive Folder Name</label>
-          <input type="text" id="drive-folder" value="ZovaChurch Records"
+          <input type="text" id="drive-folder" value="{{ church.name }} Records"
             class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500">
         </div>
       </div>
@@ -205,7 +205,7 @@
             <input type="radio" name="save-mode" value="new" class="mt-0.5 accent-emerald-500">
             <div>
               <p class="text-sm text-zinc-300 group-hover:text-zinc-100">Save as a new file each time</p>
-              <p class="text-xs text-zinc-600">Keeps a full history — e.g. church_name_2025-05.pdf</p>
+              <p class="text-xs text-zinc-600">Keeps a full history — e.g. {{ church.name }}_2025-05.pdf</p>
             </div>
           </label>
         </div>
@@ -249,7 +249,7 @@ let driveState = {
   connected: false,
   frequency: 'monthly',
   override: true,
-  folder_name: 'Church name Records',
+  folder_name: '{{ church.name }} Records',
 };
 
 function applyState() {
@@ -296,7 +296,7 @@ document.getElementById('drive-frequency').addEventListener('change', updateNext
 
 function saveDriveSettings() {
   driveState.frequency   = document.getElementById('drive-frequency').value;
-  driveState.folder_name = document.getElementById('drive-folder').value.trim() || 'churchname... Records';
+  driveState.folder_name = document.getElementById('drive-folder').value.trim() || '{{ church.name }} Records';
   driveState.override    = document.querySelector('input[name="save-mode"]:checked').value === 'override';
   persistState();
   applyState();

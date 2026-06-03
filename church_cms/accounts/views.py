@@ -4,7 +4,7 @@ Handles login, logout, and user management
 """
 
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.decorators import method_decorator
@@ -15,27 +15,23 @@ from .decorators import admin_required
 
 
 class LoginView(View):
-    """Handles user login."""
+    """Handles user login via email + password."""
     template_name = 'accounts/login.html'
 
     def get(self, request):
-        # Redirect already logged-in users
         if request.user.is_authenticated:
             return redirect('dashboard:index')
         form = LoginForm()
         return render(request, self.template_name, {'form': form})
 
     def post(self, request):
-        form = LoginForm(data=request.POST)
+        form = LoginForm(request.POST, request=request)   # ← pass request for authenticate()
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            messages.success(request, f'Welcome back, {user.get_full_name() or user.username}!')
-            # Redirect to 'next' param if present, else dashboard
+            messages.success(request, f'Welcome back, {user.get_full_name() or user.email}!')
             next_url = request.GET.get('next', 'dashboard:index')
             return redirect(next_url)
-        else:
-            messages.error(request, 'Invalid username or password.')
         return render(request, self.template_name, {'form': form})
 
 
@@ -49,24 +45,23 @@ class LogoutView(View):
         return redirect('accounts:login')
 
     def get(self, request):
-        # Allow GET for simplicity
         logout(request)
         return redirect('accounts:login')
 
 
 @method_decorator([login_required, admin_required], name='dispatch')
 class UserListView(View):
-    """Lists all system users. Admin only."""
+    """Lists all users belonging to the same church. Admin only."""
     template_name = 'accounts/user_list.html'
 
     def get(self, request):
-        users = CustomUser.objects.all().order_by('username')
+        users = CustomUser.objects.filter(church=request.user.church).order_by('username')
         return render(request, self.template_name, {'users': users})
 
 
 @method_decorator([login_required, admin_required], name='dispatch')
 class UserCreateView(View):
-    """Creates a new system user. Admin only."""
+    """Creates a new user and auto-assigns them to the admin's church. Admin only."""
     template_name = 'accounts/user_form.html'
 
     def get(self, request):
@@ -76,7 +71,9 @@ class UserCreateView(View):
     def post(self, request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user        = form.save(commit=False)
+            user.church = request.user.church    # auto-assign church
+            user.save()
             messages.success(request, 'User created successfully.')
             return redirect('accounts:user_list')
         return render(request, self.template_name, {'form': form, 'title': 'Add User'})
@@ -84,16 +81,16 @@ class UserCreateView(View):
 
 @method_decorator([login_required, admin_required], name='dispatch')
 class UserEditView(View):
-    """Edits an existing user. Admin only."""
+    """Edits a user within the same church. Admin only."""
     template_name = 'accounts/user_form.html'
 
     def get(self, request, pk):
-        user = get_object_or_404(CustomUser, pk=pk)
+        user = get_object_or_404(CustomUser, pk=pk, church=request.user.church)
         form = CustomUserChangeForm(instance=user)
         return render(request, self.template_name, {'form': form, 'title': 'Edit User', 'edit_user': user})
 
     def post(self, request, pk):
-        user = get_object_or_404(CustomUser, pk=pk)
+        user = get_object_or_404(CustomUser, pk=pk, church=request.user.church)
         form = CustomUserChangeForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
@@ -104,10 +101,10 @@ class UserEditView(View):
 
 @method_decorator([login_required, admin_required], name='dispatch')
 class UserDeleteView(View):
-    """Deletes a user. Admin only. Cannot delete own account."""
+    """Deletes a user within the same church. Admin only. Cannot delete own account."""
 
     def post(self, request, pk):
-        user = get_object_or_404(CustomUser, pk=pk)
+        user = get_object_or_404(CustomUser, pk=pk, church=request.user.church)
         if user == request.user:
             messages.error(request, 'You cannot delete your own account.')
         else:

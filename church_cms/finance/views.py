@@ -62,7 +62,7 @@ REDIRECT_URI = 'http://127.0.0.1:8000/finance/google/callback/'
 # PDF BUILDER
 # ─────────────────────────────────────────────────────────────────────────────
 
-def _build_pdf(records, title="Financial Records"):
+def _build_pdf(records, title="Financial Records", church_name="Church"):
     from reportlab.lib import colors
     from reportlab.lib.pagesizes import A4
     from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -84,7 +84,7 @@ def _build_pdf(records, title="Financial Records"):
 
     grand_total = sum(r.total for r in records)
     story = [
-        Paragraph("GracePoint Church", title_style),
+        Paragraph(church_name, title_style),
         Paragraph(f"{title}  •  Generated {date.today().strftime('%d %B %Y')}", sub_style),
     ]
 
@@ -178,9 +178,9 @@ class FinanceDashboardView(View):
     template_name = 'finance/dashboard.html'
 
     def get(self, request):
-        offerings  = ServiceOffering.objects.all()
-        expenses   = ExpenseRecord.objects.all()
-        funds      = Fund.objects.filter(status=Fund.STATUS_ACTIVE)
+        offerings  = ServiceOffering.objects.filter(church=request.user.church)
+        expenses   = ExpenseRecord.objects.filter(church=request.user.church)
+        funds      = Fund.objects.filter(church=request.user.church, status=Fund.STATUS_ACTIVE)
 
         total_income   = sum(r.total for r in offerings)
         total_expenses = expenses.filter(status='approved').aggregate(s=Sum('amount'))['s'] or 0
@@ -195,6 +195,7 @@ class FinanceDashboardView(View):
         from django.db.models.functions import TruncMonth
         monthly_income = (
             ServiceOffering.objects
+            .filter(church=request.user.church)
             .annotate(month=TruncMonth('date'))
             .values('month')
             .annotate(total=Sum('first_offering') + Sum('second_offering') +
@@ -225,7 +226,7 @@ class OfferingListView(View):
     template_name = 'finance/offering_list.html'
 
     def get(self, request):
-        records     = ServiceOffering.objects.all()
+        records     = ServiceOffering.objects.filter(church=request.user.church)
         grand_total = sum(r.total for r in records)
         return render(request, self.template_name, {
             'records':    records,
@@ -246,8 +247,9 @@ class OfferingCreateView(View):
     def post(self, request):
         form = ServiceOfferingForm(request.POST)
         if form.is_valid():
-            record = form.save(commit=False)
+            record             = form.save(commit=False)
             record.recorded_by = request.user
+            record.church      = request.user.church    # auto-assign church
             record.save()
             try:
                 PostingService.post_service_income(record, request.user)
@@ -266,14 +268,14 @@ class OfferingEditView(View):
     template_name = 'finance/offering_form.html'
 
     def get(self, request, pk):
-        record = get_object_or_404(ServiceOffering, pk=pk)
+        record = get_object_or_404(ServiceOffering, pk=pk, church=request.user.church)
         return render(request, self.template_name, {
             'form': ServiceOfferingForm(instance=record), 'title': 'Edit Record',
             'record': record, 'active_tab': 'services',
         })
 
     def post(self, request, pk):
-        record = get_object_or_404(ServiceOffering, pk=pk)
+        record = get_object_or_404(ServiceOffering, pk=pk, church=request.user.church)
         form   = ServiceOfferingForm(request.POST, instance=record)
         if form.is_valid():
             record = form.save(commit=False)
@@ -292,7 +294,7 @@ class OfferingEditView(View):
 @method_decorator([login_required, finance_required], name='dispatch')
 class OfferingDeleteView(View):
     def post(self, request, pk):
-        record = get_object_or_404(ServiceOffering, pk=pk)
+        record = get_object_or_404(ServiceOffering, pk=pk, church=request.user.church)
         try:
             PostingService.reverse_service_income(record, request.user)
         except Exception:
@@ -307,7 +309,7 @@ class OfferingDetailView(View):
     template_name = 'finance/offering_detail.html'
 
     def get(self, request, pk):
-        record = get_object_or_404(ServiceOffering, pk=pk)
+        record = get_object_or_404(ServiceOffering, pk=pk, church=request.user.church)
         return render(request, self.template_name, {
             'record':        record,
             'journal_entry': getattr(record, 'journal_entry', None),
@@ -324,7 +326,7 @@ class RecordsPageView(View):
     template_name = 'finance/records.html'
 
     def get(self, request):
-        records   = ServiceOffering.objects.all()
+        records   = ServiceOffering.objects.filter(church=request.user.church)
         date_from = request.GET.get('date_from', '')
         date_to   = request.GET.get('date_to', '')
         if date_from: records = records.filter(date__gte=date_from)
@@ -341,7 +343,7 @@ class RecordsPageView(View):
 @method_decorator(login_required, name='dispatch')
 class DownloadPDFView(View):
     def get(self, request):
-        records   = ServiceOffering.objects.all()
+        records   = ServiceOffering.objects.filter(church=request.user.church)
         date_from = request.GET.get('date_from')
         date_to   = request.GET.get('date_to')
         if date_from: records = records.filter(date__gte=date_from)
@@ -349,9 +351,9 @@ class DownloadPDFView(View):
         title = "Financial Records"
         if date_from or date_to:
             title = f"Financial Records ({date_from or '...'} to {date_to or '...'})"
-        buf = _build_pdf(list(records), title=title)
+        buf = _build_pdf(list(records), title=title, church_name=request.user.church.name)
         response = HttpResponse(buf, content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename="gracepoint_finance_{date.today().isoformat()}.pdf"'
+        response['Content-Disposition'] = f'attachment; filename="{request.user.church.name.lower().replace(" ", "_")}_finance_{date.today().isoformat()}.pdf"'
         return response
 
 
@@ -414,18 +416,19 @@ def drive_save_now(request):
     creds = _credentials_from_session(request.session)
     if not creds:
         return JsonResponse({'status': 'error', 'error': 'Google Drive not connected.'}, status=400)
-    records   = ServiceOffering.objects.all()
+    records   = ServiceOffering.objects.filter(church=request.user.church)
     date_from = request.GET.get('date_from')
     date_to   = request.GET.get('date_to')
     if date_from: records = records.filter(date__gte=date_from)
     if date_to:   records = records.filter(date__lte=date_to)
     override    = request.GET.get('override', 'true').lower() not in ('false', '0', 'no')
-    filename    = 'gracepoint_finance_records.pdf' if override else f'gracepoint_finance_{date.today().isoformat()}.pdf'
-    folder_name = request.session.get('drive_settings', {}).get('folder_name', 'GracePoint Records')
+    church_name = request.user.church.name.lower().replace(' ', '_')
+    filename    = f'{church_name}_finance_records.pdf' if override else f'{church_name}_finance_{date.today().isoformat()}.pdf'
+    folder_name = request.session.get('drive_settings', {}).get('folder_name', request.user.church.name + ' Records')
     try:
         service   = build('drive', 'v3', credentials=creds)
         folder_id = _get_or_create_drive_folder(service, folder_name)
-        pdf_buf   = _build_pdf(list(records))
+        pdf_buf   = _build_pdf(list(records), church_name=request.user.church.name)
         existing  = service.files().list(
             q=f"name='{filename}' and '{folder_id}' in parents and trashed=false", fields='files(id)',
         ).execute().get('files', []) if override else []
@@ -449,7 +452,7 @@ class ExpenseListView(View):
     template_name = 'finance/expense_list.html'
 
     def get(self, request):
-        expenses = ExpenseRecord.objects.select_related('category', 'fund', 'created_by', 'related_service')
+        expenses = ExpenseRecord.objects.filter(church=request.user.church).select_related('category', 'fund', 'created_by', 'related_service')
 
         status_filter   = request.GET.get('status', '')
         category_filter = request.GET.get('category', '')
@@ -461,7 +464,7 @@ class ExpenseListView(View):
         if date_from:       expenses = expenses.filter(expense_date__gte=date_from)
         if date_to:         expenses = expenses.filter(expense_date__lte=date_to)
 
-        all_expenses   = ExpenseRecord.objects.all()
+        all_expenses   = ExpenseRecord.objects.filter(church=request.user.church)
         total_all      = all_expenses.aggregate(s=Sum('amount'))['s'] or 0
         total_approved = all_expenses.filter(status='approved').aggregate(s=Sum('amount'))['s'] or 0
         total_pending  = all_expenses.filter(status='pending').aggregate(s=Sum('amount'))['s'] or 0
@@ -469,7 +472,7 @@ class ExpenseListView(View):
 
         return render(request, self.template_name, {
             'expenses':        expenses,
-            'categories':      ExpenseCategory.objects.all(),
+            'categories':      ExpenseCategory.objects.filter(church=request.user.church),
             'status_choices':  ExpenseRecord.STATUS_CHOICES,
             'status_filter':   status_filter,
             'category_filter': category_filter,
@@ -497,6 +500,7 @@ class ExpenseCreateView(View):
         if form.is_valid():
             expense            = form.save(commit=False)
             expense.created_by = request.user
+            expense.church     = request.user.church    # auto-assign church
             expense.status     = ExpenseRecord.STATUS_PENDING
             expense.save()
             AuditService.log(
@@ -518,7 +522,7 @@ class ExpenseEditView(View):
     template_name = 'finance/expense_form.html'
 
     def get(self, request, pk):
-        expense = get_object_or_404(ExpenseRecord, pk=pk)
+        expense = get_object_or_404(ExpenseRecord, pk=pk, church=request.user.church)
         if not expense.is_pending:
             messages.warning(request, 'Only pending expenses can be edited.')
             return redirect('finance:expense_list')
@@ -528,7 +532,7 @@ class ExpenseEditView(View):
         })
 
     def post(self, request, pk):
-        expense = get_object_or_404(ExpenseRecord, pk=pk)
+        expense = get_object_or_404(ExpenseRecord, pk=pk, church=request.user.church)
         if not expense.is_pending:
             messages.warning(request, 'Only pending expenses can be edited.')
             return redirect('finance:expense_list')
@@ -545,7 +549,7 @@ class ExpenseEditView(View):
 @method_decorator([login_required, finance_required], name='dispatch')
 class ExpenseDeleteView(View):
     def post(self, request, pk):
-        expense = get_object_or_404(ExpenseRecord, pk=pk)
+        expense = get_object_or_404(ExpenseRecord, pk=pk, church=request.user.church)
         if expense.is_approved:
             messages.error(request, 'Approved expenses cannot be deleted.')
             return redirect('finance:expense_list')
@@ -564,14 +568,14 @@ class ExpenseApproveView(View):
     template_name = 'finance/expense_approve.html'
 
     def get(self, request, pk):
-        expense = get_object_or_404(ExpenseRecord, pk=pk, status=ExpenseRecord.STATUS_PENDING)
+        expense = get_object_or_404(ExpenseRecord, pk=pk, church=request.user.church, status=ExpenseRecord.STATUS_PENDING)
         return render(request, self.template_name, {
             'expense': expense, 'form': ExpenseApprovalForm(),
             'action': 'approve', 'active_tab': 'expenses',
         })
 
     def post(self, request, pk):
-        expense = get_object_or_404(ExpenseRecord, pk=pk, status=ExpenseRecord.STATUS_PENDING)
+        expense = get_object_or_404(ExpenseRecord, pk=pk, church=request.user.church, status=ExpenseRecord.STATUS_PENDING)
         form    = ExpenseApprovalForm(request.POST)
         if form.is_valid():
             try:
@@ -587,14 +591,14 @@ class ExpenseRejectView(View):
     template_name = 'finance/expense_approve.html'
 
     def get(self, request, pk):
-        expense = get_object_or_404(ExpenseRecord, pk=pk, status=ExpenseRecord.STATUS_PENDING)
+        expense = get_object_or_404(ExpenseRecord, pk=pk, church=request.user.church, status=ExpenseRecord.STATUS_PENDING)
         return render(request, self.template_name, {
             'expense': expense, 'form': ExpenseApprovalForm(),
             'action': 'reject', 'active_tab': 'expenses',
         })
 
     def post(self, request, pk):
-        expense = get_object_or_404(ExpenseRecord, pk=pk, status=ExpenseRecord.STATUS_PENDING)
+        expense = get_object_or_404(ExpenseRecord, pk=pk, church=request.user.church, status=ExpenseRecord.STATUS_PENDING)
         form    = ExpenseApprovalForm(request.POST)
         if form.is_valid():
             ExpenseService.reject_expense(expense, request.user, note=form.cleaned_data.get('note', ''))
@@ -612,7 +616,7 @@ class FundListView(View):
 
     def get(self, request):
         status_filter = request.GET.get('status', '')
-        funds = Fund.objects.all()
+        funds = Fund.objects.filter(church=request.user.church)
         if status_filter:
             funds = funds.filter(status=status_filter)
         else:
@@ -637,8 +641,9 @@ class FundCreateView(View):
     def post(self, request):
         form = FundForm(request.POST)
         if form.is_valid():
-            fund = form.save(commit=False)
+            fund            = form.save(commit=False)
             fund.created_by = request.user
+            fund.church     = request.user.church    # auto-assign church
             fund.save()
 
     # Seed opening balance as a credit transaction so it shows in history
@@ -662,7 +667,7 @@ class FundDetailView(View):
     template_name = 'finance/fund_detail.html'
 
     def get(self, request, pk):
-        fund         = get_object_or_404(Fund, pk=pk)
+        fund         = get_object_or_404(Fund, pk=pk, church=request.user.church)
         active_inner = request.GET.get('tab', 'transactions')  # inner tabs
         transactions = fund.transactions.order_by('-reference_date')
         expenses_all = fund.expenses.select_related('category', 'created_by').order_by('-expense_date')
@@ -691,5 +696,5 @@ class AuditLogView(View):
     template_name = 'finance/audit_log.html'
 
     def get(self, request):
-        logs = AuditLog.objects.select_related('user').order_by('-created_at')[:100]
+        logs = AuditLog.objects.filter(church=request.user.church).select_related('user').order_by('-created_at')[:100]
         return render(request, self.template_name, {'logs': logs, 'active_tab': 'records'})
