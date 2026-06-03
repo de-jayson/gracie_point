@@ -7,7 +7,7 @@
 
   <div class="mb-6">
     <h1 class="text-xl font-semibold text-zinc-100">Finance</h1>
-    <p class="text-sm text-zinc-500 mt-0.5">Church financial command center</p>
+    <p class="text-sm text-zinc-500 mt-0.5">{{ church.name }} financial command center</p>
   </div>
 
   {% include 'finance/partials/finance_nav.html' %}
@@ -106,15 +106,11 @@
       <div class="mt-4">
         {% widthratio fund.total_expenses fund.total_income 100 as utilisation %}
         <div class="flex justify-between text-xs text-zinc-600 mb-1">
-          <span>Utilisation</span><span>{{ utilisation }}%</span>
+          <span>Utilisation</span><span>{{ utilisation|default:'0' }}%</span>
         </div>
         <div class="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-          <div class="h-full rounded-full transition-all
-            {% if utilisation > 90 %}bg-red-500
-            {% elif utilisation > 70 %}bg-amber-500
-            {% else %}bg-emerald-500{% endif %}"
-            style="width: {{ utilisation }}%"></div>
-        </div>
+          <div class="h-full rounded-full transition-all {% if utilisation > 90 %}bg-red-500{% elif utilisation > 70 %}bg-amber-500{% else %}bg-emerald-500{% endif %}"style="width: {{ utilisation|default:'0' }}%;">  </div>
+          </div>
       </div>
       {% endif %}
 

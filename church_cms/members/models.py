@@ -8,6 +8,10 @@ from django.db import models
 
 class Member(models.Model):
     """Church member profile."""
+    
+    church = models.ForeignKey(
+        "organizations.Church", on_delete=models.CASCADE, related_name="members"
+    )
 
     class Status(models.TextChoices):
         ACTIVE = 'active', 'Active'
@@ -29,7 +33,7 @@ class Member(models.Model):
 
     # Church info
     address = models.TextField(blank=True, null=True)
-    date_joined = models.DateField()
+    date_joined = models.DateField(blank=True, null=True)
     status = models.CharField(max_length=10, choices=Status.choices, default=Status.ACTIVE)
     notes = models.TextField(blank=True, null=True, help_text='Additional notes about this member')
 

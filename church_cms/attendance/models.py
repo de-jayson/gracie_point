@@ -14,12 +14,18 @@ class ServiceAttendance(models.Model):
     """
 
     class ServiceType(models.TextChoices):
-        SUNDAY = 'sunday', 'Sunday Service'
-        MIDWEEK = 'midweek', 'Midweek Service'
-        SPECIAL = 'special', 'Special Service'
-        PRAYER = 'prayer', 'Prayer Meeting'
-        YOUTH = 'youth', 'Youth Service'
-        OTHER = 'other', 'Other'
+        SUNDAY   = 'sunday',   'Sunday Service'
+        MIDWEEK  = 'midweek',  'Midweek Service'
+        SPECIAL  = 'special',  'Special Service'
+        PRAYER   = 'prayer',   'Prayer Meeting'
+        YOUTH    = 'youth',    'Youth Service'
+        OTHER    = 'other',    'Other'
+
+    church = models.ForeignKey(
+        "organizations.Church",
+        on_delete=models.CASCADE,
+        related_name="service_attendances",
+    )
 
     # Service info
     event_name = models.CharField(
@@ -29,21 +35,21 @@ class ServiceAttendance(models.Model):
     service_type = models.CharField(
         max_length=20,
         choices=ServiceType.choices,
-        default=ServiceType.SUNDAY
+        default=ServiceType.SUNDAY,
     )
-    date = models.DateField()
+    date  = models.DateField()
     notes = models.TextField(blank=True, null=True)
 
     # Adults
-    adults_male = models.PositiveIntegerField(default=0, verbose_name='Adults Male')
+    adults_male   = models.PositiveIntegerField(default=0, verbose_name='Adults Male')
     adults_female = models.PositiveIntegerField(default=0, verbose_name='Adults Female')
 
     # Junior Youth
-    junior_youth_male = models.PositiveIntegerField(default=0, verbose_name='Junior Youth Male')
+    junior_youth_male   = models.PositiveIntegerField(default=0, verbose_name='Junior Youth Male')
     junior_youth_female = models.PositiveIntegerField(default=0, verbose_name='Junior Youth Female')
 
     # Children Service
-    children_male = models.PositiveIntegerField(default=0, verbose_name='Children Male')
+    children_male   = models.PositiveIntegerField(default=0, verbose_name='Children Male')
     children_female = models.PositiveIntegerField(default=0, verbose_name='Children Female')
 
     # Timestamps

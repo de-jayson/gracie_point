@@ -12,13 +12,13 @@ from .forms import EventForm
 
 @method_decorator(login_required, name='dispatch')
 class EventListView(View):
-    """Lists upcoming and past events."""
+    """Lists upcoming and past events for this church."""
     template_name = 'events/event_list.html'
 
     def get(self, request):
-        today = date.today()
-        upcoming = Event.objects.filter(date__gte=today).order_by('date')
-        past = Event.objects.filter(date__lt=today).order_by('-date')[:10]
+        today    = date.today()
+        upcoming = Event.objects.filter(church=request.user.church, date__gte=today).order_by('date')
+        past     = Event.objects.filter(church=request.user.church, date__lt=today).order_by('-date')[:10]
         return render(request, self.template_name, {
             'upcoming': upcoming,
             'past': past,
@@ -31,13 +31,13 @@ class EventDetailView(View):
     template_name = 'events/event_detail.html'
 
     def get(self, request, pk):
-        event = get_object_or_404(Event, pk=pk)
+        event = get_object_or_404(Event, pk=pk, church=request.user.church)
         return render(request, self.template_name, {'event': event})
 
 
 @method_decorator(login_required, name='dispatch')
 class EventCreateView(View):
-    """Creates a new event."""
+    """Creates a new event and assigns it to this church."""
     template_name = 'events/event_form.html'
 
     def get(self, request):
@@ -47,7 +47,8 @@ class EventCreateView(View):
     def post(self, request):
         form = EventForm(request.POST)
         if form.is_valid():
-            event = form.save(commit=False)
+            event            = form.save(commit=False)
+            event.church     = request.user.church   # auto-assign church
             event.created_by = request.user
             event.save()
             messages.success(request, f'Event "{event.title}" created successfully.')
@@ -57,17 +58,17 @@ class EventCreateView(View):
 
 @method_decorator(login_required, name='dispatch')
 class EventEditView(View):
-    """Edits an existing event."""
+    """Edits an existing event within this church."""
     template_name = 'events/event_form.html'
 
     def get(self, request, pk):
-        event = get_object_or_404(Event, pk=pk)
-        form = EventForm(instance=event)
+        event = get_object_or_404(Event, pk=pk, church=request.user.church)
+        form  = EventForm(instance=event)
         return render(request, self.template_name, {'form': form, 'title': 'Edit Event', 'event': event})
 
     def post(self, request, pk):
-        event = get_object_or_404(Event, pk=pk)
-        form = EventForm(request.POST, instance=event)
+        event = get_object_or_404(Event, pk=pk, church=request.user.church)
+        form  = EventForm(request.POST, instance=event)
         if form.is_valid():
             form.save()
             messages.success(request, 'Event updated.')
@@ -77,10 +78,10 @@ class EventEditView(View):
 
 @method_decorator(login_required, name='dispatch')
 class EventDeleteView(View):
-    """Deletes an event."""
+    """Deletes an event within this church."""
 
     def post(self, request, pk):
-        event = get_object_or_404(Event, pk=pk)
+        event = get_object_or_404(Event, pk=pk, church=request.user.church)
         event.delete()
         messages.success(request, 'Event deleted.')
         return redirect('events:list')

@@ -10,7 +10,7 @@
     <h1 class="text-xl font-semibold text-zinc-100">
       Good {{ greeting }}, {{ request.user.get_full_name|default:request.user.username }} 👋
     </h1>
-    <p class="text-sm text-zinc-500 mt-0.5">Here's what's happening at Church_name today.</p>
+    <p class="text-sm text-zinc-500 mt-0.5">Here's what's happening at {{ church.name }} today.</p>
   </div>
 
   <!-- Stats Grid -->

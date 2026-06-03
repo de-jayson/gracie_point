@@ -17,7 +17,7 @@ class AttendanceListView(View):
     template_name = 'attendance/attendance_list.html'
 
     def get(self, request):
-        records = ServiceAttendance.objects.all()
+        records = ServiceAttendance.objects.filter(church=request.user.church)
         return render(request, self.template_name, {'records': records})
 
 
@@ -32,7 +32,9 @@ class AttendanceCreateView(View):
     def post(self, request):
         form = ServiceAttendanceForm(request.POST)
         if form.is_valid():
-            record = form.save()
+            record = form.save(commit=False)       # hold before saving
+            record.church = request.user.church    # auto-assign church
+            record.save()                          # now write to DB
             messages.success(request, f'Attendance for "{record.event_name}" saved. Total: {record.grand_total}')
             return redirect('attendance:list')
         messages.error(request, 'Please correct the errors below.')
@@ -44,12 +46,12 @@ class AttendanceEditView(View):
     template_name = 'attendance/attendance_form.html'
 
     def get(self, request, pk):
-        record = get_object_or_404(ServiceAttendance, pk=pk)
+        record = get_object_or_404(ServiceAttendance, pk=pk, church=request.user.church)
         form = ServiceAttendanceForm(instance=record)
         return render(request, self.template_name, {'form': form, 'title': 'Edit Attendance', 'record': record})
 
     def post(self, request, pk):
-        record = get_object_or_404(ServiceAttendance, pk=pk)
+        record = get_object_or_404(ServiceAttendance, pk=pk, church=request.user.church)
         form = ServiceAttendanceForm(request.POST, instance=record)
         if form.is_valid():
             form.save()
@@ -63,14 +65,15 @@ class AttendanceDetailView(View):
     template_name = 'attendance/attendance_detail.html'
 
     def get(self, request, pk):
-        record = get_object_or_404(ServiceAttendance, pk=pk)
+        record = get_object_or_404(ServiceAttendance, pk=pk, church=request.user.church)
         return render(request, self.template_name, {'record': record})
 
 
 @method_decorator(login_required, name='dispatch')
 class AttendanceDeleteView(View):
+
     def post(self, request, pk):
-        record = get_object_or_404(ServiceAttendance, pk=pk)
+        record = get_object_or_404(ServiceAttendance, pk=pk, church=request.user.church)
         record.delete()
         messages.success(request, 'Attendance record deleted.')
         return redirect('attendance:list')
