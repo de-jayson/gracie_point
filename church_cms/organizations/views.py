@@ -35,6 +35,7 @@ def register_church(request):
                 is_church_admin=True,
             )
 
+            # Step 3: Auto-setup — seeds chart of accounts for this church
             _setup_church_defaults(church)
 
             messages.success(
@@ -50,4 +51,9 @@ def register_church(request):
 
 
 def _setup_church_defaults(church):
-    pass
+    """
+    Automatically runs when a new church registers.
+    Seeds the full chart of accounts so ledger posting works immediately.
+    """
+    from finance.posting_service import ChartOfAccountsSeeder
+    ChartOfAccountsSeeder.seed(church)

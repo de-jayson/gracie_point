@@ -3,20 +3,11 @@ Finance Services Layer
 
 All business logic lives here — never in views.
 
-PostingService   — income journal entries (existing)
+PostingService   — income journal entries
 ExpenseService   — expense creation, approval, rejection
 FundService      — fund credits and debits
 AuditService     — audit log creation
-ChartOfAccountsSeeder — initial account setup
-
-Approval flow:
-    ExpenseRecord created (pending)
-        ↓
-    ExpenseService.approve_expense()
-        ↓  (atomic transaction)
-        ├── post expense journal entry
-        ├── debit fund balance
-        └── create audit log
+ChartOfAccountsSeeder — initial account setup per church
 """
 
 from decimal import Decimal
@@ -31,12 +22,18 @@ from .models import (
 
 # ── Shared helper ─────────────────────────────────────────────────────────────
 
-def _get_account(code):
+def _get_account(code, church):
+    """
+    Look up an active account by code scoped to a specific church.
+    Raises a clear ValueError if the account doesn't exist so the
+    caller can surface a helpful message.
+    """
     try:
-        return Account.objects.get(code=code, is_active=True)
+        return Account.objects.get(code=code, church=church, is_active=True)
     except Account.DoesNotExist:
         raise ValueError(
-            f'Account "{code}" not found. Run the chart-of-accounts seed first.'
+            f'Account "{code}" not found for {church.name}. '
+            f'Chart of accounts may not have been seeded for this church.'
         )
 
 
@@ -78,16 +75,19 @@ class PostingService:
             CR  4020 Thanksgiving
             CR  4030 Other
         """
-        total = service_record.total
+        total  = service_record.total
+        church = service_record.church
+
         if total <= 0:
             return None
 
         if service_record.has_journal_entry:
             cls._void_existing_entry(service_record, user)
 
-        cash_account = _get_account(cls.CASH_ACCOUNT)
+        cash_account = _get_account(cls.CASH_ACCOUNT, church)
 
         entry = JournalEntry.objects.create(
+            church=church,
             description=f'Service Income — {service_record.event_name}',
             transaction_date=service_record.date,
             created_by=user,
@@ -104,18 +104,18 @@ class PostingService:
         )
 
         income_lines = [
-            (cls.FIRST_OFFERING_ACCOUNT,      service_record.first_offering,    '1st Offering'),
-            (cls.SECOND_OFFERING_ACCOUNT,     service_record.second_offering,   '2nd Offering'),
-            (cls.JY_OFFERING_ACCOUNT,         service_record.jy_offering,       'JY Offering'),
-            (cls.CHILDREN_OFFERING_ACCOUNT,   service_record.children_offering, "Children's Offering"),
-            (cls.TITHE_ACCOUNT,               service_record.tithe,             'Tithe'),
-            (cls.THANKSGIVING_ACCOUNT,        service_record.thanksgiving,      'Thanksgiving'),
-            (cls.OTHER_INCOME_ACCOUNT,        service_record.other_amount,
+            (cls.FIRST_OFFERING_ACCOUNT,    service_record.first_offering,    '1st Offering'),
+            (cls.SECOND_OFFERING_ACCOUNT,   service_record.second_offering,   '2nd Offering'),
+            (cls.JY_OFFERING_ACCOUNT,       service_record.jy_offering,       'JY Offering'),
+            (cls.CHILDREN_OFFERING_ACCOUNT, service_record.children_offering, "Children's Offering"),
+            (cls.TITHE_ACCOUNT,             service_record.tithe,             'Tithe'),
+            (cls.THANKSGIVING_ACCOUNT,      service_record.thanksgiving,      'Thanksgiving'),
+            (cls.OTHER_INCOME_ACCOUNT,      service_record.other_amount,
              service_record.other_description or 'Other Income'),
         ]
 
         for code, amount, memo in income_lines:
-            account = _get_account(code)
+            account = _get_account(code, church)
             cls._add_credit_line(entry, account, amount, memo)
 
         entry._validate_balance()
@@ -142,6 +142,7 @@ class PostingService:
             return None
 
         reversal = JournalEntry.objects.create(
+            church=service_record.church,
             description=f'REVERSAL — {original.description}',
             transaction_date=original.transaction_date,
             created_by=user,
@@ -158,7 +159,7 @@ class PostingService:
             )
 
         original.description = f'[VOIDED] {original.description}'
-        original.posted = False
+        original.posted      = False
         original.save(update_fields=['description', 'posted'])
 
         AuditService.log(
@@ -199,9 +200,10 @@ class ExpenseService:
     @db_transaction.atomic
     def create_expense(cls, *, title, amount, expense_date, category=None,
                        fund=None, related_service=None, description='',
-                       payment_method='cash', created_by=None):
+                       payment_method='cash', created_by=None, church=None):
         """Create a new expense in pending status."""
         expense = ExpenseRecord.objects.create(
+            church=church,
             title=title,
             amount=amount,
             expense_date=expense_date,
@@ -241,9 +243,9 @@ class ExpenseService:
 
         old_status = expense.status
 
-        expense.status      = ExpenseRecord.STATUS_APPROVED
-        expense.approved_by = approved_by
-        expense.approved_at = timezone.now()
+        expense.status        = ExpenseRecord.STATUS_APPROVED
+        expense.approved_by   = approved_by
+        expense.approved_at   = timezone.now()
         expense.approval_note = note
         expense.save(update_fields=['status', 'approved_by', 'approved_at', 'approval_note', 'updated_at'])
 
@@ -279,7 +281,7 @@ class ExpenseService:
         if expense.status != ExpenseRecord.STATUS_PENDING:
             raise ValueError(f'Cannot reject an expense with status "{expense.status}".')
 
-        old_status = expense.status
+        old_status            = expense.status
         expense.status        = ExpenseRecord.STATUS_REJECTED
         expense.approved_by   = rejected_by
         expense.approved_at   = timezone.now()
@@ -304,14 +306,17 @@ class ExpenseService:
         DR  Expense Account (category.account or generic 5000)
             CR  Cash 1000
         """
+        church = expense.church
+
         if expense.category and expense.category.account:
             expense_account = expense.category.account
         else:
-            expense_account = _get_account('5000')  # fallback: Utilities Expense
+            expense_account = _get_account('5000', church)  # fallback: General Expenses
 
-        cash_account = _get_account(cls.CASH_ACCOUNT)
+        cash_account = _get_account(cls.CASH_ACCOUNT, church)
 
         entry = JournalEntry.objects.create(
+            church=church,
             description=f'Expense — {expense.title}',
             transaction_date=expense.expense_date,
             created_by=user,
@@ -348,6 +353,7 @@ class FundService:
     def credit_fund(*, fund, amount, description, reference_date, user=None):
         """Add money to a fund (income allocation)."""
         FundTransaction.objects.create(
+            church=fund.church,
             fund=fund,
             transaction_type='credit',
             amount=amount,
@@ -373,6 +379,7 @@ class FundService:
                 f'"{fund.name}" has GHS {fund.balance:,.2f}, need GHS {amount:,.2f}.'
             )
         FundTransaction.objects.create(
+            church=fund.church,
             fund=fund,
             transaction_type='debit',
             amount=amount,
@@ -398,6 +405,7 @@ class AuditService:
     def log(*, user=None, action, entity_type, entity_id=None,
             description, old_values=None, new_values=None):
         AuditLog.objects.create(
+            church=user.church if user else None,
             user=user,
             action=action,
             entity_type=entity_type,
@@ -412,44 +420,69 @@ class AuditService:
 
 class ChartOfAccountsSeeder:
     """
-    Seed the initial chart of accounts once.
+    Seeds the chart of accounts for a specific church.
+    Called automatically when a new church registers.
+    Safe to call multiple times — uses get_or_create.
 
+    Usage:
         from finance.posting_service import ChartOfAccountsSeeder
-        ChartOfAccountsSeeder.seed()
+        ChartOfAccountsSeeder.seed(church)
     """
 
     ACCOUNTS = [
-        # Assets
-        ('1000', 'Cash',                       'asset'),
-        ('1010', 'Bank',                       'asset'),
-        ('1020', 'MoMo Wallet',                'asset'),
-        # Income
-        ('4001', '1st Offering Income',        'income'),
-        ('4002', '2nd Offering Income',        'income'),
-        ('4003', 'JY Offering Income',         'income'),
-        ('4004', "Children's Offering Income", 'income'),
-        ('4010', 'Tithe Income',               'income'),
-        ('4020', 'Thanksgiving Income',        'income'),
-        ('4030', 'Other Income',               'income'),
-        # Expenses
-        ('5000', 'Utilities Expense',          'expense'),
-        ('5010', 'Welfare Expense',            'expense'),
-        ('5020', 'Media Expense',              'expense'),
-        ('5030', 'Transport Expense',          'expense'),
-        ('5040', 'Feeding Expense',            'expense'),
-        ('5050', 'Accommodation Expense',      'expense'),
-        ('5060', 'Equipment Expense',          'expense'),
-        ('5070', 'Fuel Expense',               'expense'),
-        ('5080', 'Decorations Expense',        'expense'),
+        # (code, name, account_type)
+        # ── Assets ──────────────────────────────────────────────────────────
+        ('1000', 'Cash',                                    'asset'),
+        ('1010', 'Bank Account',                            'asset'),
+        ('1020', 'Mobile Money (MoMo)',                     'asset'),
+        # ── Income ──────────────────────────────────────────────────────────
+        ('4001', '1st Offering Income',                     'income'),
+        ('4002', '2nd Offering Income',                     'income'),
+        ('4003', 'Junior Youth Offering Income',            'income'),
+        ('4004', "Children's Offering Income",              'income'),
+        ('4010', 'Tithe Income',                            'income'),
+        ('4020', 'Thanksgiving Income',                     'income'),
+        ('4030', 'Other Income',                            'income'),
+        # ── Expenses ─────────────────────────────────────────────────────────
+        ('5000', 'General Expenses',                        'expense'),
+        ('5010', 'Contributions paid to District',          'expense'),
+        ('5020', 'Eucharist/Communion',                     'expense'),
+        ('5030', "Children's Service Expenses",             'expense'),
+        ('5040', 'Junior Youth Expenses',                   'expense'),
+        ('5050', 'Brigade Expenses',                        'expense'),
+        ('5060', 'Evangelism Expenses',                     'expense'),
+        ('5070', 'Salaries & Allowances',                   'expense'),
+        ('5080', 'Other Staff Related Expenses',            'expense'),
+        ('5090', 'Travelling & Transport',                  'expense'),
+        ('5100', 'Printing & Stationery',                   'expense'),
+        ('5110', 'Courier & Postage',                       'expense'),
+        ('5120', 'Rents',                                   'expense'),
+        ('5130', 'Property Rates',                          'expense'),
+        ('5140', 'Utilities',                               'expense'),
+        ('5150', 'Telephones & Internet',                   'expense'),
+        ('5160', 'Maintenance & Repairs',                   'expense'),
+        ('5170', 'Vehicle Running (Fuel and Lubricants)',    'expense'),
+        ('5180', 'Vehicle Maintenance',                     'expense'),
+        ('5190', 'Depreciation & Amortization Expenses',    'expense'),
+        ('5200', 'Levies',                                  'expense'),
+        ('5210', 'Donations',                               'expense'),
+        ('5220', 'Hospitality',                             'expense'),
+        ('5230', 'Welfare Expenses',                        'expense'),
     ]
 
     @classmethod
-    def seed(cls):
+    def seed(cls, church):
+        """
+        Create all accounts for the given church.
+        Skips accounts that already exist (safe to call multiple times).
+        Returns the number of accounts created.
+        """
         created = 0
         for code, name, account_type in cls.ACCOUNTS:
             _, was_created = Account.objects.get_or_create(
                 code=code,
-                defaults={'name': name, 'account_type': account_type},
+                church=church,
+                defaults={'name': name, 'account_type': account_type, 'is_active': True},
             )
             if was_created:
                 created += 1

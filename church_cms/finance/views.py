@@ -50,6 +50,8 @@ from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload
 from google.oauth2.credentials import Credentials
+from .drive import get_credentials, save_credentials, delete_credentials, is_connected
+from .models import DriveSettings
 
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
@@ -146,14 +148,9 @@ def _build_pdf(records, title="Financial Records", church_name="Church"):
 # ─────────────────────────────────────────────────────────────────────────────
 
 def _credentials_from_session(session):
-    data = session.get('google_credentials')
-    if not data:
-        return None
-    return Credentials(
-        token=data['token'], refresh_token=data.get('refresh_token'),
-        token_uri=data['token_uri'], client_id=data['client_id'],
-        client_secret=data['client_secret'], scopes=data['scopes'],
-    )
+    # DEPRECATED — kept for safety, no longer used.
+    # Credentials are now stored in DriveCredential (DB), not the session.
+    return None
 
 def _get_or_create_drive_folder(service, folder_name):
     results = service.files().list(
@@ -361,12 +358,15 @@ class DownloadPDFView(View):
 class SaveDriveSettingsView(View):
     def post(self, request):
         data = json.loads(request.body)
-        request.session['drive_settings'] = {
-            'connected':   data.get('connected', False),
-            'frequency':   data.get('frequency', 'monthly'),
-            'override':    data.get('override', True),
-            'folder_name': data.get('folder_name', 'GracePoint Records'),
-        }
+        # Save Drive settings to DB — survives logout and session clears
+        DriveSettings.objects.update_or_create(
+            church=request.user.church,
+            defaults={
+                'folder_name': data.get('folder_name', request.user.church.name + ' Records'),
+                'frequency':   data.get('frequency', 'monthly'),
+                'override':    data.get('override', True),
+            },
+        )
         return JsonResponse({'status': 'ok'})
 
 
@@ -376,30 +376,45 @@ class SaveDriveSettingsView(View):
 
 @login_required
 def google_connect(request):
+    # Guard: user must belong to a church to connect Drive
+    if not request.user.church:
+        messages.error(request, 'Your account is not linked to a church. Contact your administrator.')
+        return redirect('finance:records')
+
     flow = Flow.from_client_secrets_file(GOOGLE_CLIENT_SECRETS_FILE, scopes=SCOPES,
         redirect_uri=REDIRECT_URI, autogenerate_code_verifier=False)
     auth_url, state = flow.authorization_url(prompt='consent', access_type='offline', include_granted_scopes='true')
-    request.session['oauth_state'] = state
+    # Store state in session temporarily — only needed during the OAuth handshake
+    request.session['oauth_state']    = state
+    request.session['oauth_church_id'] = str(request.user.church.id)
     return redirect(auth_url)
 
 
 @login_required
 def google_callback(request):
+    # Guard: user must belong to a church
+    if not request.user.church:
+        messages.error(request, 'Your account is not linked to a church.')
+        return redirect('finance:records')
+
     flow = Flow.from_client_secrets_file(GOOGLE_CLIENT_SECRETS_FILE, scopes=SCOPES,
         state=request.session.get('oauth_state'), redirect_uri=REDIRECT_URI, autogenerate_code_verifier=False)
     flow.fetch_token(authorization_response=request.build_absolute_uri())
     creds = flow.credentials
-    request.session['google_credentials'] = {
-        'token': creds.token, 'refresh_token': creds.refresh_token,
-        'token_uri': creds.token_uri, 'client_id': creds.client_id,
-        'client_secret': creds.client_secret, 'scopes': list(creds.scopes),
-    }
+    # Save tokens to DB tied to this church — survives logout and session clears
+    save_credentials(request.user.church, creds)
+    # Clean up the temporary OAuth state from session
+    request.session.pop('oauth_state', None)
+    request.session.pop('oauth_church_id', None)
     messages.success(request, 'Google Drive connected successfully.')
     return redirect('finance:records')
 
 
 @login_required
 def google_disconnect(request):
+    if request.user.church:
+        delete_credentials(request.user.church)
+    # Also clean session just in case
     request.session.pop('google_credentials', None)
     request.session.pop('oauth_state', None)
     messages.info(request, 'Google Drive disconnected.')
@@ -408,12 +423,16 @@ def google_disconnect(request):
 
 @login_required
 def google_status(request):
-    return JsonResponse({'connected': bool(request.session.get('google_credentials'))})
+    if not request.user.church:
+        return JsonResponse({'connected': False})
+    return JsonResponse({'connected': is_connected(request.user.church)})
 
 
 @login_required
 def drive_save_now(request):
-    creds = _credentials_from_session(request.session)
+    if not request.user.church:
+        return JsonResponse({'status': 'error', 'error': 'Account not linked to a church.'}, status=400)
+    creds = get_credentials(request.user.church)
     if not creds:
         return JsonResponse({'status': 'error', 'error': 'Google Drive not connected.'}, status=400)
     records   = ServiceOffering.objects.filter(church=request.user.church)
@@ -421,10 +440,11 @@ def drive_save_now(request):
     date_to   = request.GET.get('date_to')
     if date_from: records = records.filter(date__gte=date_from)
     if date_to:   records = records.filter(date__lte=date_to)
-    override    = request.GET.get('override', 'true').lower() not in ('false', '0', 'no')
     church_name = request.user.church.name.lower().replace(' ', '_')
     filename    = f'{church_name}_finance_records.pdf' if override else f'{church_name}_finance_{date.today().isoformat()}.pdf'
-    folder_name = request.session.get('drive_settings', {}).get('folder_name', request.user.church.name + ' Records')
+    drive_cfg   = DriveSettings.objects.filter(church=request.user.church).first()
+    folder_name = drive_cfg.folder_name if drive_cfg else request.user.church.name + ' Records'
+    override    = drive_cfg.override if drive_cfg else True
     try:
         service   = build('drive', 'v3', credentials=creds)
         folder_id = _get_or_create_drive_folder(service, folder_name)
@@ -437,7 +457,7 @@ def drive_save_now(request):
             service.files().update(fileId=existing[0]['id'], media_body=media).execute()
         else:
             service.files().create(body={'name': filename, 'parents': [folder_id]}, media_body=media, fields='id').execute()
-        request.session['google_credentials']['token'] = creds.token
+        save_credentials(request.user.church, creds)  # persist refreshed token
         return JsonResponse({'status': 'ok', 'filename': filename, 'folder': folder_name})
     except Exception as e:
         return JsonResponse({'status': 'error', 'error': str(e)}, status=500)
@@ -472,7 +492,7 @@ class ExpenseListView(View):
 
         return render(request, self.template_name, {
             'expenses':        expenses,
-            'categories':      ExpenseCategory.objects.filter(church=request.user.church),
+            'categories':      ExpenseCategory.objects.all().order_by('name'),
             'status_choices':  ExpenseRecord.STATUS_CHOICES,
             'status_filter':   status_filter,
             'category_filter': category_filter,
@@ -492,11 +512,11 @@ class ExpenseCreateView(View):
 
     def get(self, request):
         return render(request, self.template_name, {
-            'form': ExpenseForm(), 'title': 'Record Expense', 'active_tab': 'expenses',
+            'form': ExpenseForm(church=request.user.church), 'title': 'Record Expense', 'active_tab': 'expenses',
         })
 
     def post(self, request):
-        form = ExpenseForm(request.POST, request.FILES)
+        form = ExpenseForm(request.POST, request.FILES, church=request.user.church)
         if form.is_valid():
             expense            = form.save(commit=False)
             expense.created_by = request.user
@@ -527,7 +547,7 @@ class ExpenseEditView(View):
             messages.warning(request, 'Only pending expenses can be edited.')
             return redirect('finance:expense_list')
         return render(request, self.template_name, {
-            'form': ExpenseForm(instance=expense), 'title': 'Edit Expense',
+            'form': ExpenseForm(instance=expense, church=request.user.church), 'title': 'Edit Expense',
             'expense': expense, 'active_tab': 'expenses',
         })
 
@@ -536,7 +556,7 @@ class ExpenseEditView(View):
         if not expense.is_pending:
             messages.warning(request, 'Only pending expenses can be edited.')
             return redirect('finance:expense_list')
-        form = ExpenseForm(request.POST, request.FILES, instance=expense)
+        form = ExpenseForm(request.POST, request.FILES, instance=expense, church=request.user.church)
         if form.is_valid():
             form.save()
             messages.success(request, 'Expense updated.')
