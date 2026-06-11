@@ -51,6 +51,7 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload
 from google.oauth2.credentials import Credentials
 from .drive import get_credentials, save_credentials, delete_credentials, is_connected
+from dashboard.cache_utils import bust_finance_cache
 from .models import DriveSettings
 
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
@@ -297,6 +298,7 @@ class OfferingDeleteView(View):
         except Exception:
             pass
         record.delete()
+        bust_finance_cache(request.user.church)       # offering removed
         messages.success(request, 'Record deleted.')
         return redirect('finance:list')
 
@@ -600,6 +602,7 @@ class ExpenseApproveView(View):
         if form.is_valid():
             try:
                 ExpenseService.approve_expense(expense, request.user, note=form.cleaned_data.get('note', ''))
+                bust_finance_cache(request.user.church)   # expense approved, fund balance changed
                 messages.success(request, f'"{expense.title}" approved and posted to ledger.')
             except ValueError as e:
                 messages.error(request, str(e))

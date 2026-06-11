@@ -11,6 +11,7 @@ from django.contrib import messages
 from django.db.models import Q
 from .models import Member
 from .forms import MemberForm
+from dashboard.cache_utils import bust_member_cache
 
 
 @method_decorator(login_required, name='dispatch')
@@ -86,9 +87,10 @@ class MemberCreateView(View):
     def post(self, request):
         form = MemberForm(request.POST)
         if form.is_valid():
-            member        = form.save(commit=False)       # hold before saving
-            member.church = request.user.church           # auto-assign church
-            member.save()                                 # now write to DB
+            member        = form.save(commit=False)
+            member.church = request.user.church
+            member.save()
+            bust_member_cache(request.user.church)   # ← new member added
             messages.success(request, f'{member.full_name} has been added successfully.')
             return redirect('members:detail', pk=member.pk)
         messages.error(request, 'Please correct the errors below.')
@@ -110,6 +112,7 @@ class MemberEditView(View):
         form   = MemberForm(request.POST, instance=member)
         if form.is_valid():
             form.save()
+            bust_member_cache(request.user.church)   # ← member status/details may have changed
             messages.success(request, f'{member.full_name} has been updated successfully.')
             return redirect('members:detail', pk=member.pk)
         messages.error(request, 'Please correct the errors below.')
@@ -124,5 +127,6 @@ class MemberDeleteView(View):
         member = get_object_or_404(Member, pk=pk, church=request.user.church)
         name   = member.full_name
         member.delete()
+        bust_member_cache(request.user.church)       # ← member removed
         messages.success(request, f'{name} has been removed from the system.')
         return redirect('members:list')

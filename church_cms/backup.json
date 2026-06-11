@@ -1,0 +1,2015 @@
+[
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "admin",
+    "model": "logentry"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "auth",
+    "model": "group"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "auth",
+    "model": "permission"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "contenttypes",
+    "model": "contenttype"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "sessions",
+    "model": "session"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "accounts",
+    "model": "customuser"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "members",
+    "model": "member"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "attendance",
+    "model": "serviceattendance"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "finance",
+    "model": "account"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "finance",
+    "model": "auditlog"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "finance",
+    "model": "drivecredential"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "finance",
+    "model": "drivesettings"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "finance",
+    "model": "expensecategory"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "finance",
+    "model": "expenserecord"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "finance",
+    "model": "fund"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "finance",
+    "model": "fundtransaction"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "finance",
+    "model": "journalentry"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "finance",
+    "model": "journalline"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "finance",
+    "model": "serviceoffering"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "events",
+    "model": "event"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "organizations",
+    "model": "church"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "7y2n3elndqu5x2np300c9qv1vm2mpy4b",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSHQ4gy4dN9vIDMMlaqBpI-V8d-1SRe6veec-1KRtrXEbclznERdlFWn340pPXLdgdyp3ppOra7zxHpX9EEXPTTJz-vh_h0UWsq3Hs-eEoYkznbgwaAjZnCmQ7AcEoPnni2wSf1oDfssYDEAyujRoJB6fwDYBjen:1wW1P1:AmQlqdq9KzfOgL0cCQtGIp4etLn6LOAbO7JfWmlGkyQ",
+    "expire_date": "2026-06-21T00:30:11.174Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "x3trwbt8r5wwwoh6yaufcqseei2442df",
+  "fields": {
+    "session_data": ".eJxVjDsOwyAQRO9CHSHWYD4p0_sMaGEhOIlAMnYV5e6xJRdJN5r3Zt7M47YWv_W0-JnYlQG7_HYB4zPVA9AD673x2Oq6zIEfCj9p51Oj9Lqd7t9BwV72tQpZUCAXSewxy0wyaAUglIkR0IFCoS2MKKLUzgxhAGOTQ6I0WmkS-3wB_Vk4JA:1wVfFB:TD4T2RIYWHBaEzckUTtCILk6hPJSl2xfcXyI0sFSIBU",
+    "expire_date": "2026-06-20T00:50:33.674Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 1,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Cash",
+    "code": "1000",
+    "account_type": "asset",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.078Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 2,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Bank Account",
+    "code": "1010",
+    "account_type": "asset",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.080Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 3,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Mobile Money (MoMo)",
+    "code": "1020",
+    "account_type": "asset",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.082Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 4,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "1st Offering Income",
+    "code": "4001",
+    "account_type": "income",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.084Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 5,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "2nd Offering Income",
+    "code": "4002",
+    "account_type": "income",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.085Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 6,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Junior Youth Offering Income",
+    "code": "4003",
+    "account_type": "income",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.086Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 7,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Children's Offering Income",
+    "code": "4004",
+    "account_type": "income",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.088Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 8,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Tithe Income",
+    "code": "4010",
+    "account_type": "income",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.089Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 9,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Thanksgiving Income",
+    "code": "4020",
+    "account_type": "income",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.090Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 10,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Other Income",
+    "code": "4030",
+    "account_type": "income",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.092Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 11,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "General Expenses",
+    "code": "5000",
+    "account_type": "expense",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.093Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 12,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Contributions paid to District",
+    "code": "5010",
+    "account_type": "expense",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.095Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 13,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Eucharist/Communion",
+    "code": "5020",
+    "account_type": "expense",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.096Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 14,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Children's Service Expenses",
+    "code": "5030",
+    "account_type": "expense",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.098Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 15,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Junior Youth Expenses",
+    "code": "5040",
+    "account_type": "expense",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.099Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 16,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Brigade Expenses",
+    "code": "5050",
+    "account_type": "expense",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.101Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 17,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Evangelism Expenses",
+    "code": "5060",
+    "account_type": "expense",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.102Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 18,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Salaries & Allowances",
+    "code": "5070",
+    "account_type": "expense",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.103Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 19,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Other Staff Related Expenses",
+    "code": "5080",
+    "account_type": "expense",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.105Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 20,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Travelling & Transport",
+    "code": "5090",
+    "account_type": "expense",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.106Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 21,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Printing & Stationery",
+    "code": "5100",
+    "account_type": "expense",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.107Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 22,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Courier & Postage",
+    "code": "5110",
+    "account_type": "expense",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.109Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 23,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Rents",
+    "code": "5120",
+    "account_type": "expense",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.110Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 24,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Property Rates",
+    "code": "5130",
+    "account_type": "expense",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.111Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 25,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Utilities",
+    "code": "5140",
+    "account_type": "expense",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.113Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 26,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Telephones & Internet",
+    "code": "5150",
+    "account_type": "expense",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.115Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 27,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Maintenance & Repairs",
+    "code": "5160",
+    "account_type": "expense",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.116Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 28,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Vehicle Running (Fuel and Lubricants)",
+    "code": "5170",
+    "account_type": "expense",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.118Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 29,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Vehicle Maintenance",
+    "code": "5180",
+    "account_type": "expense",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.120Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 30,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Depreciation & Amortization Expenses",
+    "code": "5190",
+    "account_type": "expense",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.122Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 31,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Levies",
+    "code": "5200",
+    "account_type": "expense",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.124Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 32,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Donations",
+    "code": "5210",
+    "account_type": "expense",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.127Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 33,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Hospitality",
+    "code": "5220",
+    "account_type": "expense",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.129Z"
+  }
+},
+{
+  "model": "finance.account",
+  "pk": 34,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "name": "Welfare Expenses",
+    "code": "5230",
+    "account_type": "expense",
+    "parent": null,
+    "is_active": true,
+    "created_at": "2026-06-06T23:24:23.131Z"
+  }
+},
+{
+  "model": "finance.journalline",
+  "pk": 1,
+  "fields": {
+    "journal_entry": 1,
+    "account": 11,
+    "debit": "3600.00",
+    "credit": "0.00",
+    "memo": "Sound system repair"
+  }
+},
+{
+  "model": "finance.journalline",
+  "pk": 2,
+  "fields": {
+    "journal_entry": 1,
+    "account": 1,
+    "debit": "0.00",
+    "credit": "3600.00",
+    "memo": "Payment: Cash"
+  }
+},
+{
+  "model": "finance.journalline",
+  "pk": 3,
+  "fields": {
+    "journal_entry": 2,
+    "account": 11,
+    "debit": "1299.00",
+    "credit": "0.00",
+    "memo": "Pulpit buying"
+  }
+},
+{
+  "model": "finance.journalline",
+  "pk": 4,
+  "fields": {
+    "journal_entry": 2,
+    "account": 1,
+    "debit": "0.00",
+    "credit": "1299.00",
+    "memo": "Payment: Cash"
+  }
+},
+{
+  "model": "finance.expensecategory",
+  "pk": 1,
+  "fields": {
+    "name": "Contributions paid to District",
+    "color": "zinc",
+    "account": null,
+    "created_at": "2026-06-06T00:49:25.829Z"
+  }
+},
+{
+  "model": "finance.expensecategory",
+  "pk": 2,
+  "fields": {
+    "name": "Eucharist/Communion",
+    "color": "zinc",
+    "account": null,
+    "created_at": "2026-06-06T00:49:25.831Z"
+  }
+},
+{
+  "model": "finance.expensecategory",
+  "pk": 3,
+  "fields": {
+    "name": "Children's Service Expenses",
+    "color": "zinc",
+    "account": null,
+    "created_at": "2026-06-06T00:49:25.833Z"
+  }
+},
+{
+  "model": "finance.expensecategory",
+  "pk": 4,
+  "fields": {
+    "name": "Junior Youth Expenses",
+    "color": "zinc",
+    "account": null,
+    "created_at": "2026-06-06T00:49:25.834Z"
+  }
+},
+{
+  "model": "finance.expensecategory",
+  "pk": 5,
+  "fields": {
+    "name": "Brigade Expenses",
+    "color": "zinc",
+    "account": null,
+    "created_at": "2026-06-06T00:49:25.835Z"
+  }
+},
+{
+  "model": "finance.expensecategory",
+  "pk": 6,
+  "fields": {
+    "name": "Evangelism Expenses",
+    "color": "zinc",
+    "account": null,
+    "created_at": "2026-06-06T00:49:25.836Z"
+  }
+},
+{
+  "model": "finance.expensecategory",
+  "pk": 7,
+  "fields": {
+    "name": "Salaries & Allowances",
+    "color": "zinc",
+    "account": null,
+    "created_at": "2026-06-06T00:49:25.838Z"
+  }
+},
+{
+  "model": "finance.expensecategory",
+  "pk": 8,
+  "fields": {
+    "name": "Other Staff Related Expenses",
+    "color": "zinc",
+    "account": null,
+    "created_at": "2026-06-06T00:49:25.839Z"
+  }
+},
+{
+  "model": "finance.expensecategory",
+  "pk": 9,
+  "fields": {
+    "name": "Travelling & Transport",
+    "color": "zinc",
+    "account": null,
+    "created_at": "2026-06-06T00:49:25.840Z"
+  }
+},
+{
+  "model": "finance.expensecategory",
+  "pk": 10,
+  "fields": {
+    "name": "Printing & Stationery",
+    "color": "zinc",
+    "account": null,
+    "created_at": "2026-06-06T00:49:25.841Z"
+  }
+},
+{
+  "model": "finance.expensecategory",
+  "pk": 11,
+  "fields": {
+    "name": "Courier & Postage",
+    "color": "zinc",
+    "account": null,
+    "created_at": "2026-06-06T00:49:25.842Z"
+  }
+},
+{
+  "model": "finance.expensecategory",
+  "pk": 12,
+  "fields": {
+    "name": "Rents",
+    "color": "zinc",
+    "account": null,
+    "created_at": "2026-06-06T00:49:25.843Z"
+  }
+},
+{
+  "model": "finance.expensecategory",
+  "pk": 13,
+  "fields": {
+    "name": "Property Rates",
+    "color": "zinc",
+    "account": null,
+    "created_at": "2026-06-06T00:49:25.844Z"
+  }
+},
+{
+  "model": "finance.expensecategory",
+  "pk": 14,
+  "fields": {
+    "name": "Utilities",
+    "color": "zinc",
+    "account": null,
+    "created_at": "2026-06-06T00:49:25.845Z"
+  }
+},
+{
+  "model": "finance.expensecategory",
+  "pk": 15,
+  "fields": {
+    "name": "Telephones & Internet",
+    "color": "zinc",
+    "account": null,
+    "created_at": "2026-06-06T00:49:25.846Z"
+  }
+},
+{
+  "model": "finance.expensecategory",
+  "pk": 16,
+  "fields": {
+    "name": "Maintenance & Repairs",
+    "color": "zinc",
+    "account": null,
+    "created_at": "2026-06-06T00:49:25.847Z"
+  }
+},
+{
+  "model": "finance.expensecategory",
+  "pk": 17,
+  "fields": {
+    "name": "Vehicle Running (Fuel and Lubricants)",
+    "color": "zinc",
+    "account": null,
+    "created_at": "2026-06-06T00:49:25.848Z"
+  }
+},
+{
+  "model": "finance.expensecategory",
+  "pk": 18,
+  "fields": {
+    "name": "Vehicle Maintenance",
+    "color": "zinc",
+    "account": null,
+    "created_at": "2026-06-06T00:49:25.849Z"
+  }
+},
+{
+  "model": "finance.expensecategory",
+  "pk": 19,
+  "fields": {
+    "name": "Depreciation & Amortization Expenses",
+    "color": "zinc",
+    "account": null,
+    "created_at": "2026-06-06T00:49:25.850Z"
+  }
+},
+{
+  "model": "finance.expensecategory",
+  "pk": 20,
+  "fields": {
+    "name": "Levies",
+    "color": "zinc",
+    "account": null,
+    "created_at": "2026-06-06T00:49:25.851Z"
+  }
+},
+{
+  "model": "finance.expensecategory",
+  "pk": 21,
+  "fields": {
+    "name": "Donations",
+    "color": "zinc",
+    "account": null,
+    "created_at": "2026-06-06T00:49:25.853Z"
+  }
+},
+{
+  "model": "finance.expensecategory",
+  "pk": 22,
+  "fields": {
+    "name": "Hospitality",
+    "color": "zinc",
+    "account": null,
+    "created_at": "2026-06-06T00:49:25.854Z"
+  }
+},
+{
+  "model": "finance.expensecategory",
+  "pk": 23,
+  "fields": {
+    "name": "Welfare Expenses",
+    "color": "zinc",
+    "account": null,
+    "created_at": "2026-06-06T00:49:25.855Z"
+  }
+},
+{
+  "model": "organizations.church",
+  "pk": "decfbc65-7842-43b5-ad29-981c5ec02606",
+  "fields": {
+    "name": "Mount Olivet Congregation",
+    "email": "danieldowuona21@gmail.com",
+    "phone": "+233593672368",
+    "address": "New Bortianor, Accra",
+    "created_at": "2026-06-06T00:50:24.135Z",
+    "updated_at": "2026-06-06T00:50:24.135Z",
+    "is_active": true
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "add_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "change_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "delete_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "view_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "view_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "view_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "add_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "change_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "delete_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "view_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "add_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "change_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "delete_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "view_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add User",
+    "content_type": [
+      "accounts",
+      "customuser"
+    ],
+    "codename": "add_customuser"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change User",
+    "content_type": [
+      "accounts",
+      "customuser"
+    ],
+    "codename": "change_customuser"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete User",
+    "content_type": [
+      "accounts",
+      "customuser"
+    ],
+    "codename": "delete_customuser"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view User",
+    "content_type": [
+      "accounts",
+      "customuser"
+    ],
+    "codename": "view_customuser"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Member",
+    "content_type": [
+      "members",
+      "member"
+    ],
+    "codename": "add_member"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Member",
+    "content_type": [
+      "members",
+      "member"
+    ],
+    "codename": "change_member"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Member",
+    "content_type": [
+      "members",
+      "member"
+    ],
+    "codename": "delete_member"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Member",
+    "content_type": [
+      "members",
+      "member"
+    ],
+    "codename": "view_member"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Service Attendance",
+    "content_type": [
+      "attendance",
+      "serviceattendance"
+    ],
+    "codename": "add_serviceattendance"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Service Attendance",
+    "content_type": [
+      "attendance",
+      "serviceattendance"
+    ],
+    "codename": "change_serviceattendance"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Service Attendance",
+    "content_type": [
+      "attendance",
+      "serviceattendance"
+    ],
+    "codename": "delete_serviceattendance"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Service Attendance",
+    "content_type": [
+      "attendance",
+      "serviceattendance"
+    ],
+    "codename": "view_serviceattendance"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Account",
+    "content_type": [
+      "finance",
+      "account"
+    ],
+    "codename": "add_account"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Account",
+    "content_type": [
+      "finance",
+      "account"
+    ],
+    "codename": "change_account"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Account",
+    "content_type": [
+      "finance",
+      "account"
+    ],
+    "codename": "delete_account"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Account",
+    "content_type": [
+      "finance",
+      "account"
+    ],
+    "codename": "view_account"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Audit Log",
+    "content_type": [
+      "finance",
+      "auditlog"
+    ],
+    "codename": "add_auditlog"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Audit Log",
+    "content_type": [
+      "finance",
+      "auditlog"
+    ],
+    "codename": "change_auditlog"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Audit Log",
+    "content_type": [
+      "finance",
+      "auditlog"
+    ],
+    "codename": "delete_auditlog"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Audit Log",
+    "content_type": [
+      "finance",
+      "auditlog"
+    ],
+    "codename": "view_auditlog"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Drive Credential",
+    "content_type": [
+      "finance",
+      "drivecredential"
+    ],
+    "codename": "add_drivecredential"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Drive Credential",
+    "content_type": [
+      "finance",
+      "drivecredential"
+    ],
+    "codename": "change_drivecredential"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Drive Credential",
+    "content_type": [
+      "finance",
+      "drivecredential"
+    ],
+    "codename": "delete_drivecredential"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Drive Credential",
+    "content_type": [
+      "finance",
+      "drivecredential"
+    ],
+    "codename": "view_drivecredential"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Drive Settings",
+    "content_type": [
+      "finance",
+      "drivesettings"
+    ],
+    "codename": "add_drivesettings"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Drive Settings",
+    "content_type": [
+      "finance",
+      "drivesettings"
+    ],
+    "codename": "change_drivesettings"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Drive Settings",
+    "content_type": [
+      "finance",
+      "drivesettings"
+    ],
+    "codename": "delete_drivesettings"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Drive Settings",
+    "content_type": [
+      "finance",
+      "drivesettings"
+    ],
+    "codename": "view_drivesettings"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Expense Category",
+    "content_type": [
+      "finance",
+      "expensecategory"
+    ],
+    "codename": "add_expensecategory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Expense Category",
+    "content_type": [
+      "finance",
+      "expensecategory"
+    ],
+    "codename": "change_expensecategory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Expense Category",
+    "content_type": [
+      "finance",
+      "expensecategory"
+    ],
+    "codename": "delete_expensecategory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Expense Category",
+    "content_type": [
+      "finance",
+      "expensecategory"
+    ],
+    "codename": "view_expensecategory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Fund",
+    "content_type": [
+      "finance",
+      "fund"
+    ],
+    "codename": "add_fund"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Fund",
+    "content_type": [
+      "finance",
+      "fund"
+    ],
+    "codename": "change_fund"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Fund",
+    "content_type": [
+      "finance",
+      "fund"
+    ],
+    "codename": "delete_fund"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Fund",
+    "content_type": [
+      "finance",
+      "fund"
+    ],
+    "codename": "view_fund"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Expense Record",
+    "content_type": [
+      "finance",
+      "expenserecord"
+    ],
+    "codename": "add_expenserecord"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Expense Record",
+    "content_type": [
+      "finance",
+      "expenserecord"
+    ],
+    "codename": "change_expenserecord"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Expense Record",
+    "content_type": [
+      "finance",
+      "expenserecord"
+    ],
+    "codename": "delete_expenserecord"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Expense Record",
+    "content_type": [
+      "finance",
+      "expenserecord"
+    ],
+    "codename": "view_expenserecord"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add fund transaction",
+    "content_type": [
+      "finance",
+      "fundtransaction"
+    ],
+    "codename": "add_fundtransaction"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change fund transaction",
+    "content_type": [
+      "finance",
+      "fundtransaction"
+    ],
+    "codename": "change_fundtransaction"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete fund transaction",
+    "content_type": [
+      "finance",
+      "fundtransaction"
+    ],
+    "codename": "delete_fundtransaction"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view fund transaction",
+    "content_type": [
+      "finance",
+      "fundtransaction"
+    ],
+    "codename": "view_fundtransaction"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Journal Entry",
+    "content_type": [
+      "finance",
+      "journalentry"
+    ],
+    "codename": "add_journalentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Journal Entry",
+    "content_type": [
+      "finance",
+      "journalentry"
+    ],
+    "codename": "change_journalentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Journal Entry",
+    "content_type": [
+      "finance",
+      "journalentry"
+    ],
+    "codename": "delete_journalentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Journal Entry",
+    "content_type": [
+      "finance",
+      "journalentry"
+    ],
+    "codename": "view_journalentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Journal Line",
+    "content_type": [
+      "finance",
+      "journalline"
+    ],
+    "codename": "add_journalline"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Journal Line",
+    "content_type": [
+      "finance",
+      "journalline"
+    ],
+    "codename": "change_journalline"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Journal Line",
+    "content_type": [
+      "finance",
+      "journalline"
+    ],
+    "codename": "delete_journalline"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Journal Line",
+    "content_type": [
+      "finance",
+      "journalline"
+    ],
+    "codename": "view_journalline"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Service Offering Record",
+    "content_type": [
+      "finance",
+      "serviceoffering"
+    ],
+    "codename": "add_serviceoffering"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Service Offering Record",
+    "content_type": [
+      "finance",
+      "serviceoffering"
+    ],
+    "codename": "change_serviceoffering"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Service Offering Record",
+    "content_type": [
+      "finance",
+      "serviceoffering"
+    ],
+    "codename": "delete_serviceoffering"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Service Offering Record",
+    "content_type": [
+      "finance",
+      "serviceoffering"
+    ],
+    "codename": "view_serviceoffering"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Event",
+    "content_type": [
+      "events",
+      "event"
+    ],
+    "codename": "add_event"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Event",
+    "content_type": [
+      "events",
+      "event"
+    ],
+    "codename": "change_event"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Event",
+    "content_type": [
+      "events",
+      "event"
+    ],
+    "codename": "delete_event"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Event",
+    "content_type": [
+      "events",
+      "event"
+    ],
+    "codename": "view_event"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Church",
+    "content_type": [
+      "organizations",
+      "church"
+    ],
+    "codename": "add_church"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Church",
+    "content_type": [
+      "organizations",
+      "church"
+    ],
+    "codename": "change_church"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Church",
+    "content_type": [
+      "organizations",
+      "church"
+    ],
+    "codename": "delete_church"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Church",
+    "content_type": [
+      "organizations",
+      "church"
+    ],
+    "codename": "view_church"
+  }
+},
+{
+  "model": "accounts.customuser",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$YzlgP7dUWvkk7MufBZO8rO$rd9mlh+VSYLNdG0ILWMTEOuY51+La111+6pDueiah/U=",
+    "last_login": "2026-06-07T00:30:11.171Z",
+    "is_superuser": false,
+    "username": "daniel",
+    "first_name": "",
+    "last_name": "",
+    "email": "danieldowuona21@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-06-06T00:50:24.136Z",
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "role": "church_admin",
+    "is_church_admin": true,
+    "full_name": "DANIEL Nii Nortei DOWUONA",
+    "phone": null,
+    "profile_picture": "",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "finance.journalentry",
+  "pk": 1,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "description": "Expense — Sound system repair",
+    "transaction_date": "2026-06-05",
+    "created_by": [
+      "daniel"
+    ],
+    "service_offering": null,
+    "expense_record": 1,
+    "posted": true,
+    "created_at": "2026-06-06T23:27:20.644Z",
+    "updated_at": "2026-06-06T23:27:20.644Z"
+  }
+},
+{
+  "model": "finance.journalentry",
+  "pk": 2,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "description": "Expense — Pulpit buying",
+    "transaction_date": "2026-06-19",
+    "created_by": [
+      "daniel"
+    ],
+    "service_offering": null,
+    "expense_record": 2,
+    "posted": true,
+    "created_at": "2026-06-06T23:42:05.600Z",
+    "updated_at": "2026-06-06T23:42:05.600Z"
+  }
+},
+{
+  "model": "finance.expenserecord",
+  "pk": 1,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "title": "Sound system repair",
+    "description": "",
+    "amount": "3600.00",
+    "expense_date": "2026-06-05",
+    "category": 16,
+    "fund": null,
+    "related_service": null,
+    "payment_method": "cash",
+    "receipt_url": "",
+    "status": "approved",
+    "created_by": [
+      "daniel"
+    ],
+    "approved_by": [
+      "daniel"
+    ],
+    "approved_at": "2026-06-06T23:27:20.636Z",
+    "approval_note": "",
+    "created_at": "2026-06-06T00:51:30.945Z",
+    "updated_at": "2026-06-06T23:27:20.637Z"
+  }
+},
+{
+  "model": "finance.expenserecord",
+  "pk": 2,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "title": "Pulpit buying",
+    "description": "",
+    "amount": "1299.00",
+    "expense_date": "2026-06-19",
+    "category": 16,
+    "fund": null,
+    "related_service": null,
+    "payment_method": "cash",
+    "receipt_url": "",
+    "status": "approved",
+    "created_by": [
+      "daniel"
+    ],
+    "approved_by": [
+      "daniel"
+    ],
+    "approved_at": "2026-06-06T23:42:05.590Z",
+    "approval_note": "",
+    "created_at": "2026-06-06T23:41:55.516Z",
+    "updated_at": "2026-06-06T23:42:05.590Z"
+  }
+},
+{
+  "model": "finance.auditlog",
+  "pk": 1,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "user": [
+      "daniel"
+    ],
+    "action": "expense_created",
+    "entity_type": "ExpenseRecord",
+    "entity_id": 1,
+    "description": "Expense \"Sound system repair\" created for GHS 3600.",
+    "old_values": null,
+    "new_values": {
+      "title": "Sound system repair",
+      "amount": "3600",
+      "status": "pending"
+    },
+    "created_at": "2026-06-06T00:51:30.949Z"
+  }
+},
+{
+  "model": "finance.auditlog",
+  "pk": 2,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "user": [
+      "daniel"
+    ],
+    "action": "expense_approved",
+    "entity_type": "ExpenseRecord",
+    "entity_id": 1,
+    "description": "Expense \"Sound system repair\" approved. GHS 3600.00.",
+    "old_values": {
+      "status": "pending"
+    },
+    "new_values": {
+      "status": "approved",
+      "approved_by": "daniel (Church Administrator)"
+    },
+    "created_at": "2026-06-06T23:27:20.653Z"
+  }
+},
+{
+  "model": "finance.auditlog",
+  "pk": 3,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "user": [
+      "daniel"
+    ],
+    "action": "expense_created",
+    "entity_type": "ExpenseRecord",
+    "entity_id": 2,
+    "description": "Expense \"Pulpit buying\" created for GHS 1299.",
+    "old_values": null,
+    "new_values": {
+      "title": "Pulpit buying",
+      "amount": "1299",
+      "status": "pending"
+    },
+    "created_at": "2026-06-06T23:41:55.519Z"
+  }
+},
+{
+  "model": "finance.auditlog",
+  "pk": 4,
+  "fields": {
+    "church": "decfbc65-7842-43b5-ad29-981c5ec02606",
+    "user": [
+      "daniel"
+    ],
+    "action": "expense_approved",
+    "entity_type": "ExpenseRecord",
+    "entity_id": 2,
+    "description": "Expense \"Pulpit buying\" approved. GHS 1299.00.",
+    "old_values": {
+      "status": "pending"
+    },
+    "new_values": {
+      "status": "approved",
+      "approved_by": "daniel (Church Administrator)"
+    },
+    "created_at": "2026-06-06T23:42:05.607Z"
+  }
+}
+]
