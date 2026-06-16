@@ -71,12 +71,30 @@ class UserCreateView(View):
     def post(self, request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user        = form.save(commit=False)
-            user.church = request.user.church    # auto-assign church
+            user = form.save(commit=False)
+
+            # Automatically assign user to the admin's church
+            user.church = request.user.church
+
+            # Prevent creating another church administrator
+            if user.role == CustomUser.Role.CHURCH_ADMIN:
+                messages.error(
+                    request,
+                    'A church already has an administrator. You can only create Pastor, Finance Officer, or Secretary accounts.'
+                )
+                return render(
+                    request,
+                    self.template_name,
+                    {
+                        'form': form,
+                        'title': 'Add User'
+                    }
+                )
+
             user.save()
+
             messages.success(request, 'User created successfully.')
             return redirect('accounts:user_list')
-        return render(request, self.template_name, {'form': form, 'title': 'Add User'})
 
 
 @method_decorator([login_required, admin_required], name='dispatch')

@@ -59,6 +59,15 @@ class CustomUserCreationForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        # Restrict role choices
+        self.fields["role"].choices = [
+            (CustomUser.Role.PASTOR, "Pastor"),
+            (CustomUser.Role.FINANCE_OFFICER, "Finance Officer"),
+            (CustomUser.Role.SECRETARY, "Secretary"),
+        ]
+
+        # Apply styling to all fields
         for field in self.fields.values():
             field.widget.attrs.update({
                 'class': 'w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500',
