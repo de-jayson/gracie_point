@@ -256,17 +256,11 @@ class ServiceOffering(models.Model):
 
 class ExpenseCategory(models.Model):
     """
-    A category for grouping expenses (e.g. Transport, Welfare, Media).
-    Each category maps to a ledger account for automatic posting.
+    Global expense categories — shared across all churches.
+    Not tied to any church. Seeded via data migration.
     """
 
-    church = models.ForeignKey(
-        'organizations.Church',
-        on_delete=models.CASCADE,
-        related_name='expense_categories',
-    )
-
-    name    = models.CharField(max_length=100)
+    name    = models.CharField(max_length=100, unique=True)
     color   = models.CharField(max_length=20, default='zinc', help_text='Tailwind color name for UI badges')
     account = models.ForeignKey(
         Account,
@@ -282,8 +276,7 @@ class ExpenseCategory(models.Model):
         ordering = ['name']
         verbose_name = 'Expense Category'
         verbose_name_plural = 'Expense Categories'
-        # name is unique per church, not globally
-        unique_together = [('church', 'name')]
+
 
     def __str__(self):
         return self.name
@@ -603,3 +596,79 @@ class AuditLog(models.Model):
     def __str__(self):
         who = self.user.get_full_name() if self.user else 'System'
         return f'[{self.created_at:%d %b %Y %H:%M}] {who} — {self.get_action_display()}'
+
+
+# ── 7. Google Drive Integration ───────────────────────────────────────────────
+
+class DriveCredential(models.Model):
+    """
+    Stores the Google OAuth token for a church's Drive connection.
+    One record per church. Survives logout, session clears, and restarts.
+    """
+
+    church = models.OneToOneField(
+        'organizations.Church',
+        on_delete=models.CASCADE,
+        related_name='drive_credential',
+    )
+
+    # OAuth token fields
+    token         = models.TextField(help_text='Current access token')
+    refresh_token = models.TextField(help_text='Refresh token — used to get new access tokens')
+    token_uri     = models.CharField(max_length=255, default='https://oauth2.googleapis.com/token')
+    client_id     = models.CharField(max_length=255)
+    client_secret = models.CharField(max_length=255)
+    scopes        = models.JSONField(default=list)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Drive Credential'
+        verbose_name_plural = 'Drive Credentials'
+
+    def __str__(self):
+        return f'Drive credentials for {self.church.name}'
+
+
+class DriveSettings(models.Model):
+    """
+    Stores the Drive save preferences configured by the church admin.
+    One record per church. Replaces request.session['drive_settings'].
+    """
+
+    FREQUENCY_CHOICES = [
+        ('manual',  'Manual only'),
+        ('weekly',  'Weekly'),
+        ('monthly', 'Monthly'),
+    ]
+
+    church = models.OneToOneField(
+        'organizations.Church',
+        on_delete=models.CASCADE,
+        related_name='drive_settings',
+    )
+
+    folder_name = models.CharField(
+        max_length=255,
+        default='Zova Records',
+        help_text='Name of the Google Drive folder to save files into',
+    )
+    frequency = models.CharField(
+        max_length=20,
+        choices=FREQUENCY_CHOICES,
+        default='monthly',
+    )
+    override = models.BooleanField(
+        default=True,
+        help_text='Overwrite the existing file instead of creating a new one each time',
+    )
+
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Drive Settings'
+        verbose_name_plural = 'Drive Settings'
+
+    def __str__(self):
+        return f'Drive settings for {self.church.name}'

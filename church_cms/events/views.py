@@ -8,6 +8,7 @@ from django.contrib import messages
 from datetime import date
 from .models import Event
 from .forms import EventForm
+from dashboard.cache_utils import bust_events_cache
 
 
 @method_decorator(login_required, name='dispatch')
@@ -21,7 +22,7 @@ class EventListView(View):
         past     = Event.objects.filter(church=request.user.church, date__lt=today).order_by('-date')[:10]
         return render(request, self.template_name, {
             'upcoming': upcoming,
-            'past': past,
+            'past':     past,
         })
 
 
@@ -48,9 +49,10 @@ class EventCreateView(View):
         form = EventForm(request.POST)
         if form.is_valid():
             event            = form.save(commit=False)
-            event.church     = request.user.church   # auto-assign church
+            event.church     = request.user.church
             event.created_by = request.user
             event.save()
+            bust_events_cache(request.user.church)       # ← new event added
             messages.success(request, f'Event "{event.title}" created successfully.')
             return redirect('events:list')
         return render(request, self.template_name, {'form': form, 'title': 'New Event'})
@@ -71,6 +73,7 @@ class EventEditView(View):
         form  = EventForm(request.POST, instance=event)
         if form.is_valid():
             form.save()
+            bust_events_cache(request.user.church)       # ← event date/details may have changed
             messages.success(request, 'Event updated.')
             return redirect('events:list')
         return render(request, self.template_name, {'form': form, 'title': 'Edit Event', 'event': event})
@@ -83,5 +86,6 @@ class EventDeleteView(View):
     def post(self, request, pk):
         event = get_object_or_404(Event, pk=pk, church=request.user.church)
         event.delete()
+        bust_events_cache(request.user.church)           # ← event removed
         messages.success(request, 'Event deleted.')
         return redirect('events:list')
