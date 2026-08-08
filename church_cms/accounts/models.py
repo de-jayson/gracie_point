@@ -12,7 +12,12 @@ class CustomUser(AbstractUser):
     Extended User model with church-specific roles.
     Replaces Django's default User model.
     """
-
+    
+    is_church_admin = models.BooleanField(
+        default=False
+    )
+    
+    
     class Role(models.TextChoices):
         CHURCH_ADMIN = 'church_admin', 'Church Administrator'
         PASTOR = 'pastor', 'Pastor'

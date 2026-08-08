@@ -7,11 +7,11 @@
   <!-- Header -->
   <div class="flex items-center justify-between mb-6">
     <div>
-      <h1 class="text-xl font-semibold text-zinc-100">Members</h1>
-      <p class="text-sm text-zinc-500 mt-0.5">{{ total_count }} member{{ total_count|pluralize }} found</p>
+      <h1 class="text-xl font-semibold text-slate-800">Members</h1>
+      <p class="text-sm text-slate-500 mt-0.5">{{ total_count }} member{{ total_count|pluralize }} found</p>
     </div>
     <a href="{% url 'members:create' %}"
-      class="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-all">
+      class="flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-all">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
       </svg>
@@ -22,26 +22,26 @@
   <!-- Search & Filter -->
   <form method="get" class="flex flex-col sm:flex-row gap-3 mb-6">
     <div class="flex-1 relative">
-      <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
       </svg>
       <input type="text" name="q" value="{{ query }}" placeholder="Search by name, email, or phone..."
-        class="w-full bg-zinc-800 border border-zinc-700 rounded-xl pl-10 pr-4 py-2.5 text-sm text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-emerald-500">
+        class="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:border-brand-400">
     </div>
     <select name="status"
-      class="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500">
+      class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 focus:outline-none focus:border-brand-400">
       <option value="">All Statuses</option>
       <option value="active" {% if status_filter == 'active' %}selected{% endif %}>Active</option>
       <option value="inactive" {% if status_filter == 'inactive' %}selected{% endif %}>Inactive</option>
       <option value="visitor" {% if status_filter == 'visitor' %}selected{% endif %}>Visitor</option>
     </select>
     <button type="submit"
-      class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-all">
+      class="bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-all">
       Filter
     </button>
     {% if query or status_filter %}
     <a href="{% url 'members:list' %}"
-      class="text-zinc-500 hover:text-zinc-300 text-sm px-4 py-2.5 rounded-xl hover:bg-zinc-800 transition-all flex items-center">
+      class="text-slate-500 hover:text-slate-600 text-sm px-4 py-2.5 rounded-xl hover:bg-slate-100 transition-all flex items-center">
       Clear
     </a>
     {% endif %}
@@ -51,7 +51,7 @@
   <div class="glass-card rounded-2xl overflow-hidden">
     <table class="w-full">
       <thead>
-        <tr class="border-b border-zinc-800/60">
+        <tr class="border-b border-slate-200">
           <th>
             <a href="?sort=first_name&dir={% if current_sort == 'first_name' and current_dir == 'asc' %}desc{% else %}asc{% endif %}">
               Name
@@ -60,7 +60,7 @@
               {% endif %}
             </a>
           </th>
-          <th class="text-left text-xs font-medium text-zinc-500 px-6 py-4 hidden sm:table-cell">Contact</th>
+          <th class="text-left text-xs font-medium text-slate-500 px-6 py-4 hidden sm:table-cell">Contact</th>
           <th>
              <a href="?sort=date_joined&dir={% if current_sort == 'date_joined' and current_dir == 'asc' %}desc{% else %}asc{% endif %}">
                Joined
@@ -77,48 +77,48 @@
               {% endif %}
             </a>
           </th>
-          <th class="text-right text-xs font-medium text-zinc-500 px-6 py-4">Actions</th>
+          <th class="text-right text-xs font-medium text-slate-500 px-6 py-4">Actions</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-zinc-800/40">
+      <tbody class="divide-y divide-slate-100">
         {% for member in members %}
-        <tr class="hover:bg-zinc-800/20 transition-colors">
+        <tr class="hover:bg-brand-500/[0.04] transition-colors">
           <td class="px-6 py-4">
             <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-full bg-zinc-700/80 flex items-center justify-center flex-shrink-0">
-                <span class="text-sm font-semibold text-zinc-300">{{ member.first_name|first }}{{ member.last_name|first }}</span>
+              <div class="w-9 h-9 rounded-full bg-brand-50 flex items-center justify-center flex-shrink-0">
+                <span class="text-sm font-semibold text-slate-600">{{ member.first_name|first }}{{ member.last_name|first }}</span>
               </div>
               <div>
-                <a href="{% url 'members:detail' member.pk %}" class="text-sm font-medium text-zinc-200 hover:text-emerald-400 transition-colors">
+                <a href="{% url 'members:detail' member.pk %}" class="text-sm font-medium text-slate-700 hover:text-brand-600 transition-colors">
                   {{ member.full_name }}
                 </a>
-                <p class="text-xs text-zinc-600">{{ member.get_gender_display }}</p>
+                <p class="text-xs text-slate-400">{{ member.get_gender_display }}</p>
               </div>
             </div>
           </td>
           <td class="px-6 py-4 hidden sm:table-cell">
-            <p class="text-sm text-zinc-400">{{ member.phone|default:"—" }}</p>
-            <p class="text-xs text-zinc-600">{{ member.email|default:"" }}</p>
+            <p class="text-sm text-slate-500">{{ member.phone|default:"—" }}</p>
+            <p class="text-xs text-slate-400">{{ member.email|default:"" }}</p>
           </td>
-          <td class="px-6 py-4 hidden md:table-cell text-sm text-zinc-500">{{ member.date_joined }}</td>
+          <td class="px-6 py-4 hidden md:table-cell text-sm text-slate-500">{{ member.date_joined }}</td>
           <td class="px-6 py-4">
             <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium
-              {% if member.status == 'active' %}bg-emerald-500/15 text-emerald-400
-              {% elif member.status == 'visitor' %}bg-blue-500/15 text-blue-400
-              {% else %}bg-zinc-700 text-zinc-500{% endif %}">
+              {% if member.status == 'active' %}bg-emerald-50 text-emerald-600
+              {% elif member.status == 'visitor' %}bg-brand-50 text-brand-600
+              {% else %}bg-slate-100 text-slate-500{% endif %}">
               {{ member.get_status_display }}
             </span>
           </td>
           <td class="px-6 py-4 text-right">
             <div class="flex items-center justify-end gap-1">
               <a href="{% url 'members:detail' member.pk %}"
-                class="text-xs text-zinc-400 hover:text-zinc-200 px-3 py-1.5 rounded-lg hover:bg-zinc-800 transition-all">View</a>
+                class="text-xs text-slate-500 hover:text-slate-700 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-all">View</a>
               <a href="{% url 'members:edit' member.pk %}"
-                class="text-xs text-zinc-400 hover:text-zinc-200 px-3 py-1.5 rounded-lg hover:bg-zinc-800 transition-all">Edit</a>
+                class="text-xs text-slate-500 hover:text-slate-700 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-all">Edit</a>
               <form action="{% url 'members:delete' member.pk %}" method="post"
                 onsubmit="return confirm('Remove {{ member.full_name }} from the system?')">
                 {% csrf_token %}
-                <button type="submit" class="text-xs text-red-500/60 hover:text-red-400 px-3 py-1.5 rounded-lg hover:bg-red-500/10 transition-all">
+                <button type="submit" class="text-xs text-red-500/60 hover:text-red-600 px-3 py-1.5 rounded-lg hover:bg-red-500/10 transition-all">
                   Delete
                 </button>
               </form>
@@ -128,12 +128,12 @@
         {% empty %}
         <tr>
           <td colspan="5" class="px-6 py-16 text-center">
-            <svg class="w-10 h-10 text-zinc-700 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-10 h-10 text-slate-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
             </svg>
-            <p class="text-zinc-600 text-sm">No members found.</p>
-            <a href="{% url 'members:create' %}" class="text-emerald-500 hover:text-emerald-400 text-sm mt-2 inline-block">Add first member →</a>
+            <p class="text-slate-400 text-sm">No members found.</p>
+            <a href="{% url 'members:create' %}" class="text-brand-600 hover:text-brand-700 text-sm mt-2 inline-block">Add first member →</a>
           </td>
         </tr>
         {% endfor %}

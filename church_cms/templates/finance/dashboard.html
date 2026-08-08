@@ -7,8 +7,8 @@
 
   <!-- Page header -->
   <div class="mb-6">
-    <h1 class="text-xl font-semibold text-zinc-100">Finance</h1>
-    <p class="text-sm text-zinc-500 mt-0.5">{{ church.name }} financial command center</p>
+    <h1 class="text-xl font-semibold text-slate-800">Finance</h1>
+    <p class="text-sm text-slate-500 mt-0.5">{{ church.name }} financial command center</p>
   </div>
 
   <!-- Tab nav -->
@@ -17,30 +17,30 @@
   <!-- Summary Cards -->
   <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
     <div class="stat-card rounded-2xl p-5">
-      <p class="text-xs text-zinc-500 uppercase tracking-widest mb-2">Total Income</p>
-      <p class="text-2xl font-bold text-zinc-100">GHS {{ total_income|floatformat:2 }}</p>
-      <p class="text-xs text-zinc-600 mt-1">All service collections</p>
+      <p class="text-xs text-slate-500 uppercase tracking-widest mb-2">Total Income</p>
+      <p class="text-2xl font-bold text-slate-800">GHS {{ total_income|floatformat:2 }}</p>
+      <p class="text-xs text-slate-400 mt-1">All service collections</p>
     </div>
     <div class="stat-card rounded-2xl p-5">
-      <p class="text-xs text-zinc-500 uppercase tracking-widest mb-2">Total Expenses</p>
-      <p class="text-2xl font-bold text-red-400">GHS {{ total_expenses|floatformat:2 }}</p>
-      <p class="text-xs text-zinc-600 mt-1">Approved only</p>
+      <p class="text-xs text-slate-500 uppercase tracking-widest mb-2">Total Expenses</p>
+      <p class="text-2xl font-bold text-red-600">GHS {{ total_expenses|floatformat:2 }}</p>
+      <p class="text-xs text-slate-400 mt-1">Approved only</p>
     </div>
     <div class="stat-card rounded-2xl p-5">
-      <p class="text-xs text-zinc-500 uppercase tracking-widest mb-2">Cash Available</p>
-      <p class="text-2xl font-bold {% if cash_available >= 0 %}text-emerald-400{% else %}text-red-400{% endif %}">
+      <p class="text-xs text-slate-500 uppercase tracking-widest mb-2">Cash Available</p>
+      <p class="text-2xl font-bold {% if cash_available >= 0 %}text-emerald-600{% else %}text-red-600{% endif %}">
         GHS {{ cash_available|floatformat:2 }}
       </p>
-      <p class="text-xs text-zinc-600 mt-1">Income minus expenses</p>
+      <p class="text-xs text-slate-400 mt-1">Income minus expenses</p>
     </div>
     <div class="stat-card rounded-2xl p-5">
-      <p class="text-xs text-zinc-500 uppercase tracking-widest mb-2">Pending Approvals</p>
-      <p class="text-2xl font-bold {% if pending_count > 0 %}text-amber-400{% else %}text-zinc-400{% endif %}">
+      <p class="text-xs text-slate-500 uppercase tracking-widest mb-2">Pending Approvals</p>
+      <p class="text-2xl font-bold {% if pending_count > 0 %}text-amber-600{% else %}text-slate-500{% endif %}">
         {{ pending_count }}
       </p>
-      <p class="text-xs text-zinc-600 mt-1">
+      <p class="text-xs text-slate-400 mt-1">
         {% if pending_count > 0 %}
-        <a href="{% url 'finance:expense_list' %}?status=pending" class="text-amber-500 hover:text-amber-400">Review →</a>
+        <a href="{% url 'finance:expense_list' %}?status=pending" class="text-amber-500 hover:text-amber-600">Review →</a>
         {% else %}
         All clear
         {% endif %}
@@ -52,20 +52,20 @@
 
     <!-- Monthly Income Trend -->
     <div class="glass-card rounded-2xl p-6 lg:col-span-2">
-      <h2 class="text-sm font-semibold text-zinc-400 uppercase tracking-widest mb-5">Monthly Income Trend</h2>
+      <h2 class="text-sm font-semibold text-slate-500 uppercase tracking-widest mb-5">Monthly Income Trend</h2>
       {% if monthly_income %}
         {% with monthly_income as months %}
         <div class="space-y-2.5">
           {% for m in months %}
           <div class="flex items-center gap-3">
-            <span class="text-xs text-zinc-500 w-16 flex-shrink-0">{{ m.month|date:"M Y" }}</span>
-            <div class="flex-1 h-5 bg-zinc-800/60 rounded overflow-hidden">
+            <span class="text-xs text-slate-500 w-16 flex-shrink-0">{{ m.month|date:"M Y" }}</span>
+            <div class="flex-1 h-5 bg-slate-100 rounded overflow-hidden">
               {% if m.total and m.total > 0 %}
-              <div class="h-full bg-emerald-500/70 rounded"
-                style="width: {% widthratio m.total total_income 100 %}%"></div>
+              <div class="h-full rounded transition-all duration-700 ease-out"
+                style="width: {% widthratio m.total total_income 100 %}%; background: linear-gradient(90deg, #2d5a87 0%, #6b9fd4 100%);"></div>
               {% endif %}
             </div>
-            <span class="text-xs font-semibold text-zinc-300 w-28 text-right flex-shrink-0">
+            <span class="text-xs font-semibold text-slate-600 w-28 text-right flex-shrink-0">
               GHS {% if m.total %}{{ m.total|floatformat:0 }}{% else %}0{% endif %}
             </span>
           </div>
@@ -74,8 +74,8 @@
         {% endwith %}
       {% else %}
       <div class="py-8 text-center">
-        <p class="text-sm text-zinc-600">No service records yet.</p>
-        <a href="{% url 'finance:create' %}" class="text-emerald-500 hover:text-emerald-400 text-sm mt-1 inline-block">
+        <p class="text-sm text-slate-400">No service records yet.</p>
+        <a href="{% url 'finance:create' %}" class="text-brand-600 hover:text-brand-700 text-sm mt-1 inline-block">
           Record first service →
         </a>
       </div>
@@ -85,31 +85,32 @@
     <!-- Fund Balances -->
     <div class="glass-card rounded-2xl p-6">
       <div class="flex items-center justify-between mb-5">
-        <h2 class="text-sm font-semibold text-zinc-400 uppercase tracking-widest">Fund Balances</h2>
-        <a href="{% url 'finance:fund_list' %}" class="text-xs text-zinc-500 hover:text-zinc-300">All funds →</a>
+        <h2 class="text-sm font-semibold text-slate-500 uppercase tracking-widest">Fund Balances</h2>
+        <a href="{% url 'finance:fund_list' %}" class="text-xs text-slate-500 hover:text-slate-600">All funds →</a>
       </div>
       {% if funds %}
       <div class="space-y-3">
         {% for fund in funds %}
         <a href="{% url 'finance:fund_detail' fund.pk %}" class="block group">
           <div class="flex items-center justify-between mb-1">
-            <span class="text-xs text-zinc-400 group-hover:text-zinc-200 transition-colors">{{ fund.name }}</span>
-            <span class="text-xs font-semibold {% if fund.balance >= 0 %}text-emerald-400{% else %}text-red-400{% endif %}">
+            <span class="text-xs text-slate-500 group-hover:text-slate-700 transition-colors">{{ fund.name }}</span>
+            <span class="text-xs font-semibold {% if fund.balance >= 0 %}text-emerald-600{% else %}text-red-600{% endif %}">
               GHS {{ fund.balance|floatformat:2 }}
             </span>
           </div>
           {% if fund.total_income > 0 %}
-          <div class="h-1 bg-zinc-800 rounded-full overflow-hidden">
-            <div class="h-full bg-emerald-500/60 rounded-full"
-              style="width: {% widthratio fund.total_expenses fund.total_income 100 %}%"></div>
+          {% widthratio fund.total_expenses fund.total_income 100 as util %}
+          <div class="h-1 bg-white rounded-full overflow-hidden">
+            <div class="h-full rounded-full transition-all duration-700 ease-out {% if util > 90 %}bg-red-500{% elif util > 70 %}bg-amber-500{% else %}bg-brand-400{% endif %}"
+              style="width: {{ util }}%"></div>
           </div>
           {% endif %}
         </a>
         {% endfor %}
       </div>
       {% else %}
-      <p class="text-sm text-zinc-600 py-4">No funds yet.</p>
-      <a href="{% url 'finance:fund_create' %}" class="text-emerald-500 hover:text-emerald-400 text-xs">Create fund →</a>
+      <p class="text-sm text-slate-400 py-4">No funds yet.</p>
+      <a href="{% url 'finance:fund_create' %}" class="text-brand-600 hover:text-brand-700 text-xs">Create fund →</a>
       {% endif %}
     </div>
 
@@ -121,51 +122,51 @@
     <!-- Recent Services -->
     <div class="glass-card rounded-2xl p-6">
       <div class="flex items-center justify-between mb-4">
-        <h2 class="text-sm font-semibold text-zinc-400 uppercase tracking-widest">Recent Services</h2>
-        <a href="{% url 'finance:list' %}" class="text-xs text-zinc-500 hover:text-zinc-300">View all →</a>
+        <h2 class="text-sm font-semibold text-slate-500 uppercase tracking-widest">Recent Services</h2>
+        <a href="{% url 'finance:list' %}" class="text-xs text-slate-500 hover:text-slate-600">View all →</a>
       </div>
       {% if recent_offerings %}
-      <div class="space-y-0 divide-y divide-zinc-800/40">
+      <div class="space-y-0 divide-y divide-slate-100">
         {% for rec in recent_offerings %}
         <div class="flex items-center justify-between py-3">
           <div>
-            <p class="text-sm font-medium text-zinc-200">{{ rec.event_name }}</p>
-            <p class="text-xs text-zinc-600 mt-0.5">{{ rec.date }}</p>
+            <p class="text-sm font-medium text-slate-700">{{ rec.event_name }}</p>
+            <p class="text-xs text-slate-400 mt-0.5">{{ rec.date }}</p>
           </div>
-          <span class="text-sm font-semibold text-emerald-400">GHS {{ rec.total|floatformat:2 }}</span>
+          <span class="text-sm font-semibold text-emerald-600">GHS {{ rec.total|floatformat:2 }}</span>
         </div>
         {% endfor %}
       </div>
       {% else %}
-      <p class="text-sm text-zinc-600 py-4">No service records yet.</p>
+      <p class="text-sm text-slate-400 py-4">No service records yet.</p>
       {% endif %}
     </div>
 
     <!-- Recent Approved Expenses -->
     <div class="glass-card rounded-2xl p-6">
       <div class="flex items-center justify-between mb-4">
-        <h2 class="text-sm font-semibold text-zinc-400 uppercase tracking-widest">Recent Expenses</h2>
-        <a href="{% url 'finance:expense_list' %}" class="text-xs text-zinc-500 hover:text-zinc-300">View all →</a>
+        <h2 class="text-sm font-semibold text-slate-500 uppercase tracking-widest">Recent Expenses</h2>
+        <a href="{% url 'finance:expense_list' %}" class="text-xs text-slate-500 hover:text-slate-600">View all →</a>
       </div>
       {% if recent_expenses %}
-      <div class="space-y-0 divide-y divide-zinc-800/40">
+      <div class="space-y-0 divide-y divide-slate-100">
         {% for exp in recent_expenses %}
         <div class="flex items-center justify-between py-3">
           <div>
-            <p class="text-sm font-medium text-zinc-200">{{ exp.title }}</p>
+            <p class="text-sm font-medium text-slate-700">{{ exp.title }}</p>
             <div class="flex items-center gap-2 mt-0.5">
-              <p class="text-xs text-zinc-600">{{ exp.expense_date }}</p>
+              <p class="text-xs text-slate-400">{{ exp.expense_date }}</p>
               {% if exp.category %}
-              <span class="text-xs text-zinc-600">• {{ exp.category.name }}</span>
+              <span class="text-xs text-slate-400">• {{ exp.category.name }}</span>
               {% endif %}
             </div>
           </div>
-          <span class="text-sm font-semibold text-red-400">GHS {{ exp.amount|floatformat:2 }}</span>
+          <span class="text-sm font-semibold text-red-600">GHS {{ exp.amount|floatformat:2 }}</span>
         </div>
         {% endfor %}
       </div>
       {% else %}
-      <p class="text-sm text-zinc-600 py-4">No approved expenses yet.</p>
+      <p class="text-sm text-slate-400 py-4">No approved expenses yet.</p>
       {% endif %}
     </div>
 
@@ -174,14 +175,14 @@
   <!-- Quick Actions -->
   <div class="mt-4 flex flex-wrap gap-3">
     <a href="{% url 'finance:create' %}"
-      class="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-all">
+      class="flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-all">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
       </svg>
       Record Service
     </a>
     <a href="{% url 'finance:expense_create' %}"
-      class="flex items-center gap-2 border border-zinc-700 text-zinc-300 hover:text-zinc-100 hover:bg-zinc-800 text-sm font-medium px-4 py-2.5 rounded-xl transition-all">
+      class="flex items-center gap-2 border border-slate-200 text-slate-600 hover:text-slate-800 hover:bg-slate-100 text-sm font-medium px-4 py-2.5 rounded-xl transition-all">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
       </svg>
@@ -189,7 +190,7 @@
     </a>
     {% if pending_count > 0 %}
     <a href="{% url 'finance:expense_list' %}?status=pending"
-      class="flex items-center gap-2 border border-amber-700/50 text-amber-400 hover:bg-amber-500/10 text-sm font-medium px-4 py-2.5 rounded-xl transition-all">
+      class="flex items-center gap-2 border border-amber-700/50 text-amber-600 hover:bg-amber-50 text-sm font-medium px-4 py-2.5 rounded-xl transition-all">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
       </svg>

@@ -7,22 +7,22 @@
 
   <!-- Header -->
   <div class="mb-6">
-    <h1 class="text-xl font-semibold text-zinc-100">Financial Report</h1>
-    <p class="text-sm text-zinc-500 mt-0.5">Summary of all contributions recorded</p>
+    <h1 class="text-xl font-semibold text-slate-800">Financial Report</h1>
+    <p class="text-sm text-slate-500 mt-0.5">Summary of all contributions recorded</p>
   </div>
 
   <!-- Total Cards -->
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
     <div class="stat-card rounded-2xl p-6">
-      <p class="text-xs text-zinc-500 uppercase tracking-widest mb-2">Total All Time</p>
-      <p class="text-4xl font-bold text-zinc-100">
+      <p class="text-xs text-slate-500 uppercase tracking-widest mb-2">Total All Time</p>
+      <p class="text-4xl font-bold text-slate-800">
         GHS {{ grand_total|floatformat:2 }}
       </p>
     </div>
 
     <div class="stat-card rounded-2xl p-6">
-      <p class="text-xs text-zinc-500 uppercase tracking-widest mb-2">This Month</p>
-      <p class="text-4xl font-bold text-emerald-400">
+      <p class="text-xs text-slate-500 uppercase tracking-widest mb-2">This Month</p>
+      <p class="text-4xl font-bold text-emerald-600">
         GHS {{ this_month_total|floatformat:2 }}
       </p>
     </div>
@@ -32,7 +32,7 @@
 
     <!-- Breakdown by Type -->
     <div class="glass-card rounded-2xl p-6">
-      <h2 class="text-sm font-semibold text-zinc-200 mb-5">Breakdown by Type</h2>
+      <h2 class="text-sm font-semibold text-slate-700 mb-5">Breakdown by Type</h2>
 
       <div class="space-y-4">
         {% for item in by_type %}
@@ -42,17 +42,17 @@
 
             <div>
               <div class="flex items-center justify-between mb-1.5">
-                <span class="text-sm text-zinc-300">{{ item.label }}</span>
-                <span class="text-sm font-semibold text-zinc-200">
+                <span class="text-sm text-slate-600">{{ item.label }}</span>
+                <span class="text-sm font-semibold text-slate-700">
                   GHS {{ item.total|floatformat:2 }}
                 </span>
               </div>
 
-              <div class="h-2 bg-zinc-800 rounded-full overflow-hidden">
-                <div class="h-full bg-emerald-500" style="--progress: {{ percent }}%; width: var(--progress);"></div>
+              <div class="h-2 bg-white rounded-full overflow-hidden">
+                <div class="h-full bg-brand-500 rounded-full transition-all duration-700 ease-out" style="--progress: {{ percent }}%; width: var(--progress);"></div>
               </div>
 
-              <p class="text-xs text-zinc-600 mt-1">
+              <p class="text-xs text-slate-400 mt-1">
                 {{ percent }}% of total
               </p>
             </div>
@@ -62,17 +62,17 @@
 
             <div>
               <div class="flex items-center justify-between mb-1.5">
-                <span class="text-sm text-zinc-300">{{ item.label }}</span>
-                <span class="text-sm font-semibold text-zinc-200">
+                <span class="text-sm text-slate-600">{{ item.label }}</span>
+                <span class="text-sm font-semibold text-slate-700">
                   GHS {{ item.total|floatformat:2 }}
                 </span>
               </div>
 
-              <div class="h-2 bg-zinc-800 rounded-full overflow-hidden">
-                <div class="h-full bg-emerald-500" style="--progress: {{ percent }}%; width: var(--progress);"></div>
+              <div class="h-2 bg-white rounded-full overflow-hidden">
+                <div class="h-full bg-brand-500 rounded-full transition-all duration-700 ease-out" style="--progress: {{ percent }}%; width: var(--progress);"></div>
               </div>
 
-              <p class="text-xs text-zinc-600 mt-1">
+              <p class="text-xs text-slate-400 mt-1">
                 {{ percent }}% of total
               </p>
             </div>
@@ -81,14 +81,14 @@
           {% endif %}
 
         {% empty %}
-        <p class="text-sm text-zinc-600 py-4">No contributions recorded.</p>
+        <p class="text-sm text-slate-400 py-4">No contributions recorded.</p>
         {% endfor %}
       </div>
     </div>
 
     <!-- Monthly Trend -->
     <div class="glass-card rounded-2xl p-6">
-      <h2 class="text-sm font-semibold text-zinc-200 mb-5">Monthly Trend (Last 12 Months)</h2>
+      <h2 class="text-sm font-semibold text-slate-700 mb-5">Monthly Trend (Last 12 Months)</h2>
 
       {% if monthly %}
 
@@ -101,15 +101,15 @@
               {% widthratio m.total max_val 100 as bar_width %}
 
               <div class="flex items-center gap-3">
-                <span class="text-xs text-zinc-500 w-16 flex-shrink-0">
+                <span class="text-xs text-slate-500 w-16 flex-shrink-0">
                   {{ m.month|date:"M Y" }}
                 </span>
 
-                <div class="flex-1 h-6 bg-zinc-800 rounded overflow-hidden">
-                  <div style="--progress: {{ bar_width }}%; width: var(--progress);"></div>
+                <div class="flex-1 h-6 bg-white rounded overflow-hidden">
+                  <div class="h-full rounded transition-all duration-700 ease-out" style="--progress: {{ bar_width }}%; width: var(--progress); background: linear-gradient(90deg, #185fa5 0%, #6db4ec 100%);"></div>
                 </div>
 
-                <span class="text-xs font-semibold text-zinc-300 w-24 text-right flex-shrink-0">
+                <span class="text-xs font-semibold text-slate-600 w-24 text-right flex-shrink-0">
                   GHS {{ m.total|floatformat:0 }}
                 </span>
               </div>
@@ -125,15 +125,15 @@
               {% widthratio m.total max_val 100 as bar_width %}
 
               <div class="flex items-center gap-3">
-                <span class="text-xs text-zinc-500 w-16 flex-shrink-0">
+                <span class="text-xs text-slate-500 w-16 flex-shrink-0">
                   {{ m.month|date:"M Y" }}
                 </span>
 
-                <div class="flex-1 h-6 bg-zinc-800 rounded overflow-hidden">
-                  <div style="--progress: {{ bar_width }}%; width: var(--progress);"></div>
+                <div class="flex-1 h-6 bg-white rounded overflow-hidden">
+                  <div class="h-full rounded transition-all duration-700 ease-out" style="--progress: {{ bar_width }}%; width: var(--progress); background: linear-gradient(90deg, #185fa5 0%, #6db4ec 100%);"></div>
                 </div>
 
-                <span class="text-xs font-semibold text-zinc-300 w-24 text-right flex-shrink-0">
+                <span class="text-xs font-semibold text-slate-600 w-24 text-right flex-shrink-0">
                   GHS {{ m.total|floatformat:0 }}
                 </span>
               </div>
@@ -144,7 +144,7 @@
         {% endif %}
 
       {% else %}
-        <p class="text-sm text-zinc-600 py-4">No data for the last 12 months.</p>
+        <p class="text-sm text-slate-400 py-4">No data for the last 12 months.</p>
       {% endif %}
     </div>
 
@@ -153,12 +153,12 @@
   <!-- Actions -->
   <div class="mt-6 flex gap-3">
     <a href="{% url 'finance:list' %}"
-       class="text-sm text-zinc-400 hover:text-zinc-200 px-4 py-2.5 rounded-xl border border-zinc-700 hover:bg-zinc-800 transition-all">
+       class="text-sm text-slate-500 hover:text-slate-700 px-4 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-100 transition-all">
       View All Contributions
     </a>
 
     <a href="{% url 'finance:create' %}"
-       class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-all">
+       class="bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-all">
       Record Contribution
     </a>
   </div>

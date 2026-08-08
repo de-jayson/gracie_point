@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
   {% load static %}
   <meta charset="UTF-8" />
@@ -9,23 +9,25 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
           colors: {
             brand: {
-              50:'#f0fdf4',100:'#dcfce7',200:'#bbf7d0',
-              300:'#86efac',400:'#4ade80',500:'#22c55e',
-              600:'#16a34a',700:'#15803d',800:'#166534',900:'#14532d',
+              50:  '#eef4fb',
+              100: '#dce9f7',
+              200: '#b8d4ef',
+              300: '#8bb8e3',
+              400: '#6b9fd4',
+              500: '#4a7fb8',
+              600: '#3d6a9e',
+              700: '#2d5a87',
+              800: '#234a70',
+              900: '#1a3a58',
             },
-            surface: {
-              900:'#0e1015',800:'#161b22',700:'#1e2530',
-              600:'#252d3a',500:'#2d3748',
-            }
           },
           fontFamily: {
-            display:['"DM Serif Display"','Georgia','serif'],
-            body:['"Inter"','system-ui','sans-serif'],
+            display: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            body:    ['"Inter"', 'system-ui', 'sans-serif'],
           },
         }
       }
@@ -33,7 +35,8 @@
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/theme.css' %}">
 
   <style>
     *, *::before, *::after { box-sizing: border-box; }
@@ -44,7 +47,15 @@
       --sb-w-c:  4.5rem;
       --sb-dur:  260ms;
       --sb-ease: cubic-bezier(0.4, 0, 0.2, 1);
+      --brand-glow: rgba(74, 127, 184, 0.2);
+      --brand-line: linear-gradient(90deg, #2d5a87 0%, #4a7fb8 50%, #6b9fd4 100%);
     }
+
+    @keyframes fade-in-up {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    main > * { animation: fade-in-up 320ms cubic-bezier(0.4,0,0.2,1) both; }
 
     /* ── Sidebar ── */
     #sidebar {
@@ -56,9 +67,17 @@
       overflow: visible;
       display: flex;
       flex-direction: column;
-      background: #161b22;
-      border-right: 1px solid rgba(255,255,255,0.06);
+      background: #ffffff;
+      border-right: 1px solid #dde4ef;
+      box-shadow: 2px 0 16px rgba(45, 90, 135, 0.06);
       transition: width var(--sb-dur) var(--sb-ease);
+    }
+    #sidebar::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--brand-line);
     }
 
     #sidebar nav {
@@ -67,24 +86,15 @@
       flex: 1;
     }
 
-    /* ── Main offset ── */
     #main-content {
       margin-left: var(--sb-w);
       transition: margin-left var(--sb-dur) var(--sb-ease);
     }
 
-    /* ── Collapsed ── */
-    #sidebar.collapsed {
-      width: var(--sb-w-c);
-    }
-    #sidebar.collapsed ~ #main-content {
-      margin-left: var(--sb-w-c);
-    }
+    #sidebar.collapsed { width: var(--sb-w-c); }
+    #sidebar.collapsed ~ #main-content { margin-left: var(--sb-w-c); }
 
-    /* ── Labels ── */
-    .sb-label,
-    .sb-group-label,
-    .sb-logo-text {
+    .sb-label, .sb-group-label, .sb-logo-text {
       display: inline-block;
       overflow: hidden;
       white-space: nowrap;
@@ -105,38 +115,28 @@
       pointer-events: none;
     }
 
-    /* ── Group label wrapper ── */
     .sb-group-wrap {
       overflow: hidden;
       max-height: 28px;
       opacity: 1;
-      transition:
-        max-height var(--sb-dur) var(--sb-ease),
-        opacity    var(--sb-dur) var(--sb-ease);
+      transition: max-height var(--sb-dur) var(--sb-ease), opacity var(--sb-dur) var(--sb-ease);
     }
-    #sidebar.collapsed .sb-group-wrap {
-      max-height: 0;
-      opacity: 0;
-    }
+    #sidebar.collapsed .sb-group-wrap { max-height: 0; opacity: 0; }
 
-    /* ── Nav items ── */
     .sidebar-item {
       display: flex;
       align-items: center;
       gap: 0.75rem;
       padding: 0.625rem 0.75rem;
-      border-radius: 0.5rem;
-      color: #a1a1aa;
+      border-radius: 0.625rem;
+      color: #64748b;
       text-decoration: none;
       position: relative;
-      transition:
-        padding    var(--sb-dur) var(--sb-ease),
-        background 150ms ease,
-        color      150ms ease;
+      transition: padding var(--sb-dur) var(--sb-ease), background 150ms ease, color 150ms ease;
     }
     .sidebar-item:hover {
-      color: #f4f4f5;
-      background: rgba(255,255,255,0.06);
+      color: #2d5a87;
+      background: #eef4fb;
     }
     #sidebar.collapsed .sidebar-item {
       justify-content: center;
@@ -144,20 +144,18 @@
       padding-right: 0;
     }
 
-    /* ── Active ── */
     .sidebar-item.active {
-      background: rgba(34,197,94,0.1);
-      border-left: 3px solid #22c55e;
-      color: #4ade80;
+      background: linear-gradient(90deg, rgba(74,127,184,0.12) 0%, rgba(74,127,184,0.04) 100%);
+      border-left: 3px solid #4a7fb8;
+      color: #2d5a87;
+      font-weight: 500;
     }
-    .sidebar-item.active svg { color: #4ade80; }
+    .sidebar-item.active svg { color: #4a7fb8; }
     #sidebar.collapsed .sidebar-item.active {
       border-left: none;
-      background: rgba(34,197,94,0.15);
-      border-radius: 0.5rem;
+      background: rgba(74,127,184,0.12);
     }
 
-    /* ── Logo & user row centering ── */
     #sidebar.collapsed #sb-logo-row,
     #sidebar.collapsed #sb-user-row {
       justify-content: center;
@@ -165,12 +163,11 @@
       padding-right: 0;
     }
 
-    /* ── Tooltip (position:fixed, placed by JS) ── */
     .sb-tooltip {
       position: fixed;
-      background: #1e2530;
-      border: 1px solid rgba(255,255,255,0.12);
-      color: #e4e4e7;
+      background: #ffffff;
+      border: 1px solid #dde4ef;
+      color: #1e293b;
       font-size: 12px;
       font-weight: 500;
       padding: 5px 10px;
@@ -181,7 +178,7 @@
       transform: translateY(-50%) translateX(6px);
       transition: opacity 150ms ease, transform 150ms ease;
       z-index: 9999;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+      box-shadow: 0 4px 16px rgba(45, 90, 135, 0.12);
     }
     .sb-tooltip::before {
       content: '';
@@ -189,7 +186,7 @@
       right: 100%; top: 50%;
       transform: translateY(-50%);
       border: 5px solid transparent;
-      border-right-color: rgba(255,255,255,0.12);
+      border-right-color: #dde4ef;
     }
     .sb-tooltip::after {
       content: '';
@@ -197,62 +194,48 @@
       right: calc(100% - 1px); top: 50%;
       transform: translateY(-50%);
       border: 5px solid transparent;
-      border-right-color: #1e2530;
+      border-right-color: #ffffff;
     }
     #sidebar:not(.collapsed) .sb-tooltip { display: none; }
 
-    /* ── Misc ── */
     .accent-dot {
       width: 8px; height: 8px;
       border-radius: 50%;
-      background: #22c55e;
+      background: #5ba4a4;
       display: inline-block;
-      box-shadow: 0 0 8px #22c55e;
+      box-shadow: 0 0 6px rgba(91, 164, 164, 0.5);
+      animation: pulse-dot 2.4s ease-in-out infinite;
     }
-    .glass-card {
-      background: rgba(30,37,48,0.8);
-      border: 1px solid rgba(255,255,255,0.06);
-      backdrop-filter: blur(10px);
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
     }
-    .stat-card {
-      background: linear-gradient(135deg, rgba(30,37,48,0.9) 0%, rgba(22,27,34,0.9) 100%);
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-    .msg-success { background:rgba(34,197,94,0.15);  border:1px solid rgba(34,197,94,0.3);  color:#4ade80; }
-    .msg-error   { background:rgba(239,68,68,0.15);  border:1px solid rgba(239,68,68,0.3);  color:#f87171; }
-    .msg-info    { background:rgba(59,130,246,0.15); border:1px solid rgba(59,130,246,0.3); color:#93c5fd; }
-    .msg-warning { background:rgba(234,179,8,0.15);  border:1px solid rgba(234,179,8,0.3);  color:#fde047; }
-
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #0e1015; }
-    ::-webkit-scrollbar-thumb { background: #2d3748; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #4a5568; }
   </style>
 
   {% block extra_head %}{% endblock %}
 </head>
 
-<body class="bg-[#0e1015] text-zinc-200 min-h-screen flex">
+<body class="page-bg text-slate-800 min-h-screen flex">
 
   <!-- ═══════════════ SIDEBAR ═══════════════ -->
   <aside id="sidebar">
 
     <!-- Logo -->
     <div id="sb-logo-row"
-      class="flex items-center gap-3 px-5 py-5 border-b border-zinc-800/60 flex-shrink-0 transition-all duration-[260ms]">
-      <div class="w-9 h-9 flex items-center justify-center flex-shrink-0">
-          <img
-              src="{% static 'images/zova_logo.png' %}"
-              alt="Zova Logo"
-              class="h-9 w-auto"
-          >
+      class="flex items-center gap-3 px-5 py-5 border-b border-slate-200 flex-shrink-0 transition-all duration-[260ms]">
+      <div class="w-10 h-10 flex items-center justify-center flex-shrink-0 rounded-xl bg-brand-50">
+        <img
+          src="{% static 'images/zova_logo.png' %}"
+          alt="Zova Logo"
+          class="h-8 w-auto"
+        >
       </div>
       <div class="sb-logo-text leading-tight">
-        <p class="text-base font-bold tracking-tight text-white">
-            Zova
+        <p class="text-base font-bold tracking-tight text-brand-800" style="font-family:'Plus Jakarta Sans',sans-serif;">
+          Zova
         </p>
-        <p class="text-xs text-zinc-500">
-            Church Management
+        <p class="text-xs text-slate-400">
+          Church Management
         </p>
       </div>
     </div>
@@ -260,10 +243,9 @@
     <!-- Nav -->
     <nav class="py-4">
 
-      <!-- Overview -->
       <div class="px-3 mb-1">
         <div class="sb-group-wrap">
-          <p class="sb-group-label text-[10px] font-semibold uppercase tracking-widest text-zinc-600 px-3 mb-2">Overview</p>
+          <p class="sb-group-label text-[10px] font-semibold uppercase tracking-widest text-slate-400 px-3 mb-2">Overview</p>
         </div>
         <a href="{% url 'dashboard:index' %}"
           class="sidebar-item mb-0.5 {% if request.resolver_match.app_name == 'dashboard' %}active{% endif %}">
@@ -276,10 +258,9 @@
         </a>
       </div>
 
-      <!-- People -->
       <div class="px-3 mb-1 mt-3">
         <div class="sb-group-wrap">
-          <p class="sb-group-label text-[10px] font-semibold uppercase tracking-widest text-zinc-600 px-3 mb-2">People</p>
+          <p class="sb-group-label text-[10px] font-semibold uppercase tracking-widest text-slate-400 px-3 mb-2">People</p>
         </div>
         <a href="{% url 'members:list' %}"
           class="sidebar-item mb-0.5 {% if request.resolver_match.app_name == 'members' %}active{% endif %}">
@@ -301,10 +282,9 @@
         </a>
       </div>
 
-      <!-- Ministry -->
       <div class="px-3 mb-1 mt-3">
         <div class="sb-group-wrap">
-          <p class="sb-group-label text-[10px] font-semibold uppercase tracking-widest text-zinc-600 px-3 mb-2">Ministry</p>
+          <p class="sb-group-label text-[10px] font-semibold uppercase tracking-widest text-slate-400 px-3 mb-2">Ministry</p>
         </div>
         <a href="{% url 'events:list' %}"
           class="sidebar-item mb-0.5 {% if request.resolver_match.app_name == 'events' %}active{% endif %}">
@@ -317,10 +297,9 @@
         </a>
       </div>
 
-      <!-- Finance -->
       <div class="px-3 mb-1 mt-3">
         <div class="sb-group-wrap">
-          <p class="sb-group-label text-[10px] font-semibold uppercase tracking-widest text-zinc-600 px-3 mb-2">Finance</p>
+          <p class="sb-group-label text-[10px] font-semibold uppercase tracking-widest text-slate-400 px-3 mb-2">Finance</p>
         </div>
         <a href="{% url 'finance:list' %}"
           class="sidebar-item mb-0.5 {% if request.resolver_match.app_name == 'finance' and 'records' not in request.path %}active{% endif %}">
@@ -342,11 +321,10 @@
         </a>
       </div>
 
-      <!-- Admin -->
       {% if user.is_admin_user or user.is_superuser %}
       <div class="px-3 mb-1 mt-3">
         <div class="sb-group-wrap">
-          <p class="sb-group-label text-[10px] font-semibold uppercase tracking-widest text-zinc-600 px-3 mb-2">Admin</p>
+          <p class="sb-group-label text-[10px] font-semibold uppercase tracking-widest text-slate-400 px-3 mb-2">Admin</p>
         </div>
         <a href="{% url 'accounts:user_list' %}"
           class="sidebar-item mb-0.5 {% if request.resolver_match.app_name == 'accounts' and 'login' not in request.path %}active{% endif %}">
@@ -364,16 +342,16 @@
     </nav>
 
     <!-- User Footer -->
-    <div class="border-t border-zinc-800/60 p-4 flex-shrink-0">
+    <div class="border-t border-slate-200 p-4 flex-shrink-0 bg-brand-50/40">
       <div id="sb-user-row" class="flex items-center gap-3 transition-all duration-[260ms]">
-        <div class="w-8 h-8 rounded-full bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center flex-shrink-0">
-          <span class="text-xs font-semibold text-emerald-400">
+        <div class="w-8 h-8 rounded-full bg-brand-100 border border-brand-200 flex items-center justify-center flex-shrink-0">
+          <span class="text-xs font-semibold text-brand-700">
             {{ user.username|first|upper }}
           </span>
         </div>
         <div class="sb-logo-text min-w-0">
-          <p class="text-xs font-medium text-zinc-300 truncate">{{ user.get_full_name|default:user.username }}</p>
-          <p class="text-[10px] text-zinc-600 capitalize">{{ user.get_role_display }}</p>
+          <p class="text-xs font-medium text-slate-700 truncate">{{ user.get_full_name|default:user.username }}</p>
+          <p class="text-[10px] text-slate-400 capitalize">{{ user.get_role_display }}</p>
         </div>
       </div>
     </div>
@@ -383,27 +361,27 @@
   <div class="flex-1 flex flex-col" id="main-content">
 
     <!-- Topbar -->
-    <header class="h-14 bg-[#161b22]/80 border-b border-zinc-800/60 backdrop-blur-sm flex items-center justify-between px-6 sticky top-0 z-30">
+    <header class="h-14 bg-white/80 border-b border-slate-200 backdrop-blur-sm flex items-center justify-between px-6 sticky top-0 z-30">
       <div class="flex items-center gap-4">
         <button onclick="toggleSidebar()"
-          class="text-zinc-500 hover:text-zinc-300 p-1.5 rounded-lg hover:bg-zinc-800/60 transition-all active:scale-95">
+          class="text-slate-400 hover:text-brand-600 p-1.5 rounded-lg hover:bg-brand-50 transition-all active:scale-95">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
           </svg>
         </button>
-        <div class="text-sm text-zinc-500">
+        <div class="text-sm text-slate-500 font-medium">
           {% block breadcrumb %}Home{% endblock %}
         </div>
       </div>
       <div class="flex items-center gap-3">
-        <div class="flex items-center gap-2 text-xs text-zinc-600">
+        <div class="flex items-center gap-2 text-xs text-slate-400">
           <span class="accent-dot"></span>
           <span>Live</span>
         </div>
         <form action="{% url 'accounts:logout' %}" method="post">
           {% csrf_token %}
           <button type="submit"
-            class="flex items-center gap-2 text-xs text-zinc-500 hover:text-zinc-300 px-3 py-1.5 rounded-lg hover:bg-zinc-800/60 transition-all active:scale-95">
+            class="flex items-center gap-2 text-xs text-slate-500 hover:text-brand-700 px-3 py-1.5 rounded-lg hover:bg-brand-50 transition-all active:scale-95">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
@@ -418,7 +396,7 @@
     {% if messages %}
     <div class="px-6 pt-4 space-y-2">
       {% for message in messages %}
-      <div class="msg-{{ message.tags }} flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition-opacity duration-500" role="alert">
+      <div class="msg-{{ message.tags }} flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-opacity duration-500" role="alert">
         <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           {% if message.tags == 'success' %}
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
@@ -445,8 +423,8 @@
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-zinc-800/40 px-6 py-3">
-      <p class="text-xs text-zinc-700">Zova Church Management System &copy; {% now "Y" %}</p>
+    <footer class="border-t border-slate-200 px-6 py-3 bg-white/50">
+      <p class="text-xs text-slate-400">Zova Church Management System &copy; {% now "Y" %}</p>
     </footer>
   </div>
 
@@ -455,37 +433,25 @@
     const mainEl    = document.getElementById('main-content');
     const STORE_KEY = 'gpSidebar';
 
-    /* ── 1. Apply saved state — no flash, no inline style baggage ── */
     (function () {
-      /* Kill transitions for just this synchronous block */
       sidebar.style.transition = 'none';
       mainEl.style.transition  = 'none';
-
       if (localStorage.getItem(STORE_KEY) === 'collapsed') {
         sidebar.classList.add('collapsed');
       }
-
-      /* Force a reflow so the browser registers the new class
-         with transitions still off, then re-enable synchronously.
-         By the time JS finishes this call stack, transitions are live
-         and no inline width/marginLeft values are polluting state. */
       void sidebar.offsetWidth;
-
       sidebar.style.transition = '';
       mainEl.style.transition  = '';
     })();
 
-    /* ── 2. Toggle — clean, no inline style clearing needed ── */
     function toggleSidebar() {
       const isNowCollapsed = sidebar.classList.toggle('collapsed');
       localStorage.setItem(STORE_KEY, isNowCollapsed ? 'collapsed' : 'expanded');
     }
 
-    /* ── 3. Tooltips ── */
     document.querySelectorAll('.sidebar-item').forEach(item => {
       const tip = item.querySelector('.sb-tooltip');
       if (!tip) return;
-
       item.addEventListener('mouseenter', () => {
         if (!sidebar.classList.contains('collapsed')) return;
         const rect    = item.getBoundingClientRect();
@@ -495,14 +461,12 @@
         tip.style.transform = 'translateY(-50%) translateX(0)';
         tip.style.opacity   = '1';
       });
-
       item.addEventListener('mouseleave', () => {
         tip.style.opacity   = '0';
         tip.style.transform = 'translateY(-50%) translateX(6px)';
       });
     });
 
-    /* ── 4. Auto-dismiss flash messages after 5s ── */
     setTimeout(() => {
       document.querySelectorAll('[role="alert"]').forEach(el => {
         el.style.opacity = '0';

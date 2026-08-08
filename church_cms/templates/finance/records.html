@@ -8,11 +8,11 @@
   <!-- Header -->
   <div class="flex items-center justify-between mb-6">
     <div>
-      <h1 class="text-xl font-semibold text-zinc-100">Financial Records</h1>
-      <p class="text-sm text-zinc-500 mt-0.5">Export, filter and back up your {{ church.name }}'s financial history</p>
+      <h1 class="text-xl font-semibold text-slate-800">Financial Records</h1>
+      <p class="text-sm text-slate-500 mt-0.5">Export, filter and back up your {{ church.name }}'s financial history</p>
     </div>
     <a href="{% url 'finance:list' %}"
-      class="text-sm text-zinc-400 hover:text-zinc-200 border border-zinc-700 px-4 py-2.5 rounded-xl hover:bg-zinc-800 transition-all">
+      class="text-sm text-slate-500 hover:text-slate-700 border border-slate-200 px-4 py-2.5 rounded-xl hover:bg-slate-100 transition-all">
       Back to Finances
     </a>
   </div>
@@ -20,48 +20,48 @@
   <!-- Summary Cards -->
   <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
     <div class="stat-card rounded-2xl p-5">
-      <p class="text-xs text-zinc-500 uppercase tracking-widest mb-1">Records</p>
-      <p class="text-3xl font-bold text-zinc-100">{{ records|length }}</p>
+      <p class="text-xs text-slate-500 uppercase tracking-widest mb-1">Records</p>
+      <p class="text-3xl font-bold text-slate-800">{{ records|length }}</p>
     </div>
     <div class="stat-card rounded-2xl p-5">
-      <p class="text-xs text-zinc-500 uppercase tracking-widest mb-1">Total (filtered)</p>
-      <p class="text-2xl font-bold text-emerald-400">GHS {{ grand_total|floatformat:2 }}</p>
+      <p class="text-xs text-slate-500 uppercase tracking-widest mb-1">Total (filtered)</p>
+      <p class="text-2xl font-bold text-emerald-600">GHS {{ grand_total|floatformat:2 }}</p>
     </div>
     <div class="stat-card rounded-2xl p-5 sm:col-span-1 col-span-2">
-      <p class="text-xs text-zinc-500 uppercase tracking-widest mb-1">Drive Sync</p>
+      <p class="text-xs text-slate-500 uppercase tracking-widest mb-1">Drive Sync</p>
       <div class="flex items-center gap-2 mt-1">
-        <span id="sync-status-dot" class="w-2 h-2 rounded-full bg-zinc-600"></span>
-        <span id="sync-status-text" class="text-sm text-zinc-500">Checking...</span>
+        <span id="sync-status-dot" class="w-2 h-2 rounded-full bg-slate-300"></span>
+        <span id="sync-status-text" class="text-sm text-brand-400">Checking...</span>
       </div>
     </div>
   </div>
 
   <!-- Filter + Download -->
   <div class="glass-card rounded-2xl p-5 mb-4">
-    <h2 class="text-sm font-semibold text-zinc-300 mb-4">Filter & Download PDF</h2>
+    <h2 class="text-sm font-semibold text-slate-600 mb-4">Filter & Download PDF</h2>
     <form method="get" class="flex flex-wrap gap-3 items-end">
       <div>
-        <label class="block text-xs text-zinc-500 mb-1">From date</label>
+        <label class="block text-xs text-slate-500 mb-1">From date</label>
         <input type="date" name="date_from" value="{{ date_from }}"
-          class="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500">
+          class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 focus:outline-none focus:border-brand-400">
       </div>
       <div>
-        <label class="block text-xs text-zinc-500 mb-1">To date</label>
+        <label class="block text-xs text-slate-500 mb-1">To date</label>
         <input type="date" name="date_to" value="{{ date_to }}"
-          class="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500">
+          class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 focus:outline-none focus:border-brand-400">
       </div>
       <button type="submit"
-        class="bg-zinc-700 hover:bg-zinc-600 text-zinc-200 text-sm px-4 py-2.5 rounded-xl transition-all">
+        class="bg-brand-600 hover:bg-brand-700 text-white text-sm px-4 py-2.5 rounded-xl transition-all">
         Apply Filter
       </button>
       {% if date_from or date_to %}
       <a href="{% url 'finance:records' %}"
-        class="text-sm text-zinc-500 hover:text-zinc-300 px-3 py-2.5 rounded-xl hover:bg-zinc-800 transition-all">
+        class="text-sm text-slate-500 hover:text-slate-600 px-3 py-2.5 rounded-xl hover:bg-slate-100 transition-all">
         Clear
       </a>
       {% endif %}
       <a href="{% url 'finance:download_pdf' %}?date_from={{ date_from }}&date_to={{ date_to }}"
-        class="ml-auto flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-all">
+        class="ml-auto flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-all">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
@@ -73,42 +73,47 @@
 
   <!-- Records Table -->
   <div class="glass-card rounded-2xl overflow-hidden mb-6">
-    <div class="px-5 py-4 border-b border-zinc-800/60">
-      <h2 class="text-sm font-semibold text-zinc-300">
+    <div class="px-5 py-4 border-b border-slate-200">
+      <h2 class="text-sm font-semibold text-slate-600">
         {{ records|length }} record{{ records|length|pluralize }} shown
       </h2>
     </div>
     <div class="overflow-x-auto">
       <table class="w-full text-sm">
         <thead>
-          <tr class="border-b border-zinc-800/40">
-            <th class="text-left text-xs font-medium text-zinc-500 px-5 py-3">Service</th>
-            <th class="text-left text-xs font-medium text-zinc-500 px-4 py-3">Date</th>
-            <th class="text-right text-xs font-medium text-zinc-500 px-4 py-3 hidden sm:table-cell">1st Offering</th>
-            <th class="text-right text-xs font-medium text-zinc-500 px-4 py-3 hidden md:table-cell">Tithe</th>
-            <th class="text-right text-xs font-medium text-zinc-500 px-5 py-3">Total</th>
+          <tr class="border-b border-slate-100">
+            <th class="text-left text-xs font-medium text-slate-500 px-5 py-3">Service</th>
+            <th class="text-left text-xs font-medium text-slate-500 px-4 py-3">Date</th>
+            <th class="text-right text-xs font-medium text-slate-500 px-4 py-3 hidden sm:table-cell">1st Offering</th>
+            <th class="text-right text-xs font-medium text-slate-500 px-4 py-3 hidden md:table-cell">Tithe</th>
+            <th class="text-right text-xs font-medium text-slate-500 px-5 py-3">Total</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-zinc-800/30">
+        <tbody class="divide-y divide-slate-100">
           {% for rec in records %}
-          <tr class="hover:bg-zinc-800/15 transition-colors">
-            <td class="px-5 py-3 text-zinc-300 font-medium">{{ rec.event_name }}</td>
-            <td class="px-4 py-3 text-zinc-500">{{ rec.date }}</td>
-            <td class="px-4 py-3 text-right text-zinc-400 hidden sm:table-cell">GHS {{ rec.first_offering|floatformat:2 }}</td>
-            <td class="px-4 py-3 text-right text-zinc-400 hidden md:table-cell">GHS {{ rec.tithe|floatformat:2 }}</td>
-            <td class="px-5 py-3 text-right font-bold text-zinc-100">GHS {{ rec.total|floatformat:2 }}</td>
+          <tr class="hover:bg-brand-500/[0.04] transition-colors">
+            <td class="px-5 py-3 text-slate-600 font-medium">{{ rec.event_name }}</td>
+            <td class="px-4 py-3 text-slate-500">{{ rec.date }}</td>
+            <td class="px-4 py-3 text-right text-slate-500 hidden sm:table-cell">GHS {{ rec.first_offering|floatformat:2 }}</td>
+            <td class="px-4 py-3 text-right text-slate-500 hidden md:table-cell">GHS {{ rec.tithe|floatformat:2 }}</td>
+            <td class="px-5 py-3 text-right font-bold text-slate-800">GHS {{ rec.total|floatformat:2 }}</td>
           </tr>
           {% empty %}
           <tr>
-            <td colspan="5" class="px-5 py-10 text-center text-zinc-600">No records match the filter.</td>
+            <td colspan="5" class="px-5 py-10 text-center">
+              <svg class="w-8 h-8 text-slate-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+              <p class="text-slate-400 text-sm">No records match the filter.</p>
+            </td>
           </tr>
           {% endfor %}
         </tbody>
         {% if records %}
         <tfoot>
-          <tr class="bg-emerald-500/5 border-t border-emerald-500/20">
-            <td colspan="4" class="px-5 py-3 text-sm font-bold text-zinc-300">Grand Total</td>
-            <td class="px-5 py-3 text-right text-sm font-bold text-emerald-400">GHS {{ grand_total|floatformat:2 }}</td>
+          <tr class="bg-emerald-50 border-t border-emerald-200">
+            <td colspan="4" class="px-5 py-3 text-sm font-bold text-slate-600">Grand Total</td>
+            <td class="px-5 py-3 text-right text-sm font-bold text-emerald-600">GHS {{ grand_total|floatformat:2 }}</td>
           </tr>
         </tfoot>
         {% endif %}
@@ -121,7 +126,7 @@
     <div class="flex items-start gap-4 mb-5">
       <div class="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center"
         style="background: linear-gradient(135deg,#4285f4,#34a853,#fbbc04,#ea4335); padding:2px;">
-        <div class="w-full h-full bg-[#1e2530] rounded-[9px] flex items-center justify-center">
+        <div class="w-full h-full bg-slate-100 rounded-[9px] flex items-center justify-center">
           <svg class="w-5 h-5" viewBox="0 0 87.3 78" xmlns="http://www.w3.org/2000/svg">
             <path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8h-27.5c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/>
             <path d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-25.4 44a9.06 9.06 0 0 0 -1.2 4.5h27.5z" fill="#00ac47"/>
@@ -133,8 +138,8 @@
         </div>
       </div>
       <div>
-        <h2 class="text-sm font-semibold text-zinc-200">Google Drive Backup</h2>
-        <p class="text-xs text-zinc-500 mt-0.5">
+        <h2 class="text-sm font-semibold text-slate-700">Google Drive Backup</h2>
+        <p class="text-xs text-slate-500 mt-0.5">
           Automatically save a PDF of your financial records to Google Drive on a schedule you choose.
           Connect your Google account to get started.
         </p>
@@ -143,29 +148,29 @@
 
     <!-- Not connected banner -->
     <div id="drive-not-connected"
-      class="rounded-xl bg-zinc-800/60 border border-zinc-700/50 p-4 mb-4 flex items-center justify-between">
+      class="rounded-xl bg-slate-100 border border-slate-200/50 p-4 mb-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <span class="w-2 h-2 rounded-full bg-zinc-600"></span>
-        <span class="text-sm text-zinc-400">Not connected to Google Drive</span>
+        <span class="w-2 h-2 rounded-full bg-slate-300"></span>
+        <span class="text-sm text-slate-500">Not connected to Google Drive</span>
       </div>
       <a href="{% url 'finance:google_connect' %}"
-        class="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium px-4 py-2 rounded-lg transition-all">
+        class="flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-medium px-4 py-2 rounded-lg transition-all">
         Connect Google Drive
       </a>
     </div>
 
     <!-- Connected banner -->
     <div id="drive-connected"
-      class="hidden rounded-xl bg-emerald-500/10 border border-emerald-500/25 p-4 mb-4 flex items-center justify-between">
+      class="hidden rounded-xl bg-emerald-50 border border-emerald-200 p-4 mb-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <span class="w-2 h-2 rounded-full bg-emerald-400" style="box-shadow:0 0 6px #22c55e;"></span>
         <div>
-          <span class="text-sm text-emerald-300 font-medium">Connected to Google Drive</span>
-          <p class="text-xs text-zinc-500" id="drive-folder-display">Folder: {{ church.name }}...</p>
+          <span class="text-sm text-emerald-700 font-medium">Connected to Google Drive</span>
+          <p class="text-xs text-slate-500" id="drive-folder-display">Folder: {{ church.name }}...</p>
         </div>
       </div>
       <a href="{% url 'finance:google_disconnect' %}"
-        class="text-xs text-zinc-500 hover:text-red-400 px-3 py-1.5 rounded-lg hover:bg-red-500/10 transition-all">
+        class="text-xs text-slate-500 hover:text-red-600 px-3 py-1.5 rounded-lg hover:bg-red-500/10 transition-all">
         Disconnect
       </a>
     </div>
@@ -174,9 +179,9 @@
     <div id="drive-settings-panel" class="hidden space-y-4">
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label class="block text-xs font-medium text-zinc-400 mb-1.5">Save Frequency</label>
+          <label class="block text-xs font-medium text-slate-500 mb-1.5">Save Frequency</label>
           <select id="drive-frequency"
-            class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500">
+            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 focus:outline-none focus:border-brand-400">
             <option value="weekly">Weekly</option>
             <option value="monthly" selected>Monthly</option>
             <option value="biannual">Every 6 Months</option>
@@ -184,56 +189,56 @@
           </select>
         </div>
         <div>
-          <label class="block text-xs font-medium text-zinc-400 mb-1.5">Drive Folder Name</label>
+          <label class="block text-xs font-medium text-slate-500 mb-1.5">Drive Folder Name</label>
           <input type="text" id="drive-folder" value="{{ church.name }} Records"
-            class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500">
+            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 focus:outline-none focus:border-brand-400">
         </div>
       </div>
 
       <!-- Save behaviour -->
       <div>
-        <label class="block text-xs font-medium text-zinc-400 mb-2">When saving, I want to:</label>
+        <label class="block text-xs font-medium text-slate-500 mb-2">When saving, I want to:</label>
         <div class="flex flex-col gap-2">
           <label class="flex items-start gap-3 cursor-pointer group">
-            <input type="radio" name="save-mode" value="override" checked class="mt-0.5 accent-emerald-500">
+            <input type="radio" name="save-mode" value="override" checked class="mt-0.5 accent-brand-500">
             <div>
-              <p class="text-sm text-zinc-300 group-hover:text-zinc-100">Override the existing file</p>
-              <p class="text-xs text-zinc-600">Always keep one copy — replaces the previous save each time</p>
+              <p class="text-sm text-slate-600 group-hover:text-slate-800">Override the existing file</p>
+              <p class="text-xs text-slate-400">Always keep one copy — replaces the previous save each time</p>
             </div>
           </label>
           <label class="flex items-start gap-3 cursor-pointer group">
-            <input type="radio" name="save-mode" value="new" class="mt-0.5 accent-emerald-500">
+            <input type="radio" name="save-mode" value="new" class="mt-0.5 accent-brand-500">
             <div>
-              <p class="text-sm text-zinc-300 group-hover:text-zinc-100">Save as a new file each time</p>
-              <p class="text-xs text-zinc-600">Keeps a full history — e.g. {{ church.name }}_2025-05.pdf</p>
+              <p class="text-sm text-slate-600 group-hover:text-slate-800">Save as a new file each time</p>
+              <p class="text-xs text-slate-400">Keeps a full history — e.g. {{ church.name }}_2025-05.pdf</p>
             </div>
           </label>
         </div>
       </div>
 
-      <div class="pt-3 border-t border-zinc-800/60 flex flex-wrap items-center gap-3">
+      <div class="pt-3 border-t border-slate-200 flex flex-wrap items-center gap-3">
         <button onclick="saveDriveSettings()"
-          class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-all">
+          class="bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-all">
           Save Settings
         </button>
         <button onclick="triggerDriveSave()"
-          class="flex items-center gap-2 border border-zinc-600 hover:border-zinc-400 text-zinc-300 hover:text-zinc-100 text-sm px-5 py-2.5 rounded-xl transition-all">
+          class="flex items-center gap-2 border border-slate-300 hover:border-brand-300 text-slate-600 hover:text-slate-800 text-sm px-5 py-2.5 rounded-xl transition-all">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
           </svg>
           Save to Drive Now
         </button>
-        <span id="drive-save-msg" class="text-xs text-zinc-500 hidden"></span>
+        <span id="drive-save-msg" class="text-xs text-slate-500 hidden"></span>
       </div>
 
-      <p class="text-xs text-zinc-600" id="next-save-label"></p>
+      <p class="text-xs text-slate-400" id="next-save-label"></p>
     </div>
 
     <!-- Info note -->
-    <div class="mt-4 rounded-lg bg-zinc-800/40 border border-zinc-700/40 px-4 py-3">
-      <p class="text-xs text-zinc-500">
-        <strong class="text-zinc-400">Note:</strong>
+    <div class="mt-4 rounded-lg bg-slate-50 border border-slate-200/40 px-4 py-3">
+      <p class="text-xs text-slate-500">
+        <strong class="text-slate-500">Note:</strong>
         Zova only requests permission to create files in the folder you specify.
         It cannot read or modify any other Drive content.
       </p>
@@ -266,7 +271,7 @@ function applyState() {
     dot.className = 'w-2 h-2 rounded-full bg-emerald-400';
     dot.style.boxShadow = '0 0 6px #22c55e';
     text.textContent = 'Active \u00b7 ' + driveState.frequency;
-    text.className = 'text-sm text-emerald-400';
+    text.className = 'text-sm text-emerald-600';
     document.getElementById('drive-folder-display').textContent = 'Folder: ' + driveState.folder_name;
     document.getElementById('drive-frequency').value = driveState.frequency;
     document.getElementById('drive-folder').value = driveState.folder_name;
@@ -274,10 +279,10 @@ function applyState() {
     if (radio) radio.checked = true;
     updateNextSaveLabel();
   } else {
-    dot.className = 'w-2 h-2 rounded-full bg-zinc-600';
+    dot.className = 'w-2 h-2 rounded-full bg-slate-300';
     dot.style.boxShadow = '';
     text.textContent = 'Not configured';
-    text.className = 'text-sm text-zinc-500';
+    text.className = 'text-sm text-slate-500';
   }
 }
 
@@ -310,7 +315,7 @@ function triggerDriveSave() {
     : 'Save to Drive now as a NEW file? Continue?';
   if (!confirm(msg)) return;
 
-  flashMsg('Uploading to Drive\u2026', 'blue');
+  flashMsg('Uploading to Drive\u2026', 'brand');
 
   const params = new URLSearchParams({
     date_from: '{{ date_from }}',

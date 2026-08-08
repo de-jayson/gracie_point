@@ -15,10 +15,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY')
 DEBUG       = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "localhost",
-]
+ALLOWED_HOSTS = config(
+    "ALLOWED_HOSTS",
+    default="localhost",
+    cast=Csv()
+)
+
 # ── CSRF ──────────────────────────────────────────────────────────────────────
 
 CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='', cast=Csv())
@@ -148,7 +150,11 @@ MESSAGE_TAGS = {
 # ── Security (only active when DEBUG=False) ───────────────────────────────────
 
 if not DEBUG:
-    SECURE_SSL_REDIRECT              = True
+    SECURE_SSL_REDIRECT = config(
+    "SECURE_SSL_REDIRECT",
+    default=False,
+    cast=bool
+    )
     SECURE_HSTS_SECONDS              = 31536000  # 1 year
     SECURE_HSTS_INCLUDE_SUBDOMAINS   = True
     SECURE_HSTS_PRELOAD              = True
