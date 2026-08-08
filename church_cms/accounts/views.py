@@ -12,6 +12,7 @@ from django.views import View
 from .forms import LoginForm, CustomUserCreationForm, CustomUserChangeForm
 from .models import CustomUser
 from .decorators import admin_required
+from django.views.generic import CreateView
 
 
 class LoginView(View):
@@ -60,16 +61,21 @@ class UserListView(View):
 
 
 @method_decorator([login_required, admin_required], name='dispatch')
-class UserCreateView(View):
+class UserCreateView(CreateView
+                     ):
     """Creates a new user and auto-assigns them to the admin's church. Admin only."""
     template_name = 'accounts/user_form.html'
+    model = CustomUser
+    fields = ['username', 'email', 'role']
 
     def get(self, request):
         form = CustomUserCreationForm()
+        
         return render(request, self.template_name, {'form': form, 'title': 'Add User'})
 
     def post(self, request):
         form = CustomUserCreationForm(request.POST)
+
         if form.is_valid():
             user = form.save(commit=False)
 
@@ -82,20 +88,20 @@ class UserCreateView(View):
                     request,
                     'A church already has an administrator. You can only create Pastor, Finance Officer, or Secretary accounts.'
                 )
-                return render(
-                    request,
-                    self.template_name,
-                    {
-                        'form': form,
-                        'title': 'Add User'
-                    }
-                )
+                return render(request, self.template_name, {
+                    'form': form,
+                    'title': 'Add User'
+                })
 
             user.save()
 
             messages.success(request, 'User created successfully.')
             return redirect('accounts:user_list')
 
+        return render(request, self.template_name, {
+            'form': form,
+            'title': 'Add User'
+        })
 
 @method_decorator([login_required, admin_required], name='dispatch')
 class UserEditView(View):

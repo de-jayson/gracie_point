@@ -6,21 +6,21 @@
 <div class="max-w-7xl mx-auto">
 
   <div class="mb-6">
-    <h1 class="text-xl font-semibold text-zinc-100">Finance</h1>
-    <p class="text-sm text-zinc-500 mt-0.5">{{ church.name }} financial command center</p>
+    <h1 class="text-xl font-semibold text-slate-800">Finance</h1>
+    <p class="text-sm text-slate-500 mt-0.5">{{ church.name }} financial command center</p>
   </div>
 
   {% include 'finance/partials/finance_nav.html' %}
 
   <div class="max-w-2xl">
     <div class="mb-6">
-      <a href="{% url 'finance:fund_list' %}" class="text-sm text-zinc-500 hover:text-zinc-300 flex items-center gap-2 mb-3 w-fit">
+      <a href="{% url 'finance:fund_list' %}" class="text-sm text-slate-500 hover:text-slate-600 flex items-center gap-2 mb-3 w-fit">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
         </svg> Back to Funds
       </a>
-      <h2 class="text-lg font-semibold text-zinc-100">{{ title }}</h2>
-      <p class="text-sm text-zinc-500 mt-0.5">Configure the fund, set the opening balance, and define governance rules</p>
+      <h2 class="text-lg font-semibold text-slate-800">{{ title }}</h2>
+      <p class="text-sm text-slate-500 mt-0.5">Configure the fund, set the opening balance, and define governance rules</p>
     </div>
 
     <form method="post" novalidate>
@@ -28,23 +28,23 @@
 
       <!-- Fund Configuration -->
       <div class="glass-card rounded-2xl p-6 mb-4">
-        <h3 class="text-sm font-semibold text-zinc-400 uppercase tracking-widest mb-4">Fund Configuration</h3>
+        <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-widest mb-4">Fund Configuration</h3>
         <div class="space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-medium text-zinc-400 mb-1.5">Fund Name *</label>
+              <label class="block text-xs font-medium text-slate-500 mb-1.5">Fund Name *</label>
               {{ form.name }}
-              {% if form.name.errors %}<p class="text-red-400 text-xs mt-1">{{ form.name.errors|join:", " }}</p>{% endif %}
+              {% if form.name.errors %}<p class="text-red-600 text-xs mt-1">{{ form.name.errors|join:", " }}</p>{% endif %}
             </div>
             <div>
-              <label class="block text-xs font-medium text-zinc-400 mb-1.5">Fund Code *</label>
+              <label class="block text-xs font-medium text-slate-500 mb-1.5">Fund Code *</label>
               {{ form.code }}
-              <p class="text-xs text-zinc-600 mt-1">Used in reports and accounting references</p>
-              {% if form.code.errors %}<p class="text-red-400 text-xs mt-1">{{ form.code.errors|join:", " }}</p>{% endif %}
+              <p class="text-xs text-slate-400 mt-1">Used in reports and accounting references</p>
+              {% if form.code.errors %}<p class="text-red-600 text-xs mt-1">{{ form.code.errors|join:", " }}</p>{% endif %}
             </div>
           </div>
           <div>
-            <label class="block text-xs font-medium text-zinc-400 mb-1.5">Description</label>
+            <label class="block text-xs font-medium text-slate-500 mb-1.5">Description</label>
             {{ form.description }}
           </div>
         </div>
@@ -52,59 +52,59 @@
 
       <!-- Financial Setup -->
       <div class="glass-card rounded-2xl p-6 mb-4">
-        <h3 class="text-sm font-semibold text-zinc-400 uppercase tracking-widest mb-1">Financial Setup</h3>
-        <p class="text-xs text-zinc-600 mb-4">Set the starting balance. This seeds the fund immediately on creation.</p>
+        <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-widest mb-1">Financial Setup</h3>
+        <p class="text-xs text-slate-400 mb-4">Set the starting balance. This seeds the fund immediately on creation.</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-medium text-zinc-400 mb-1.5">Opening Balance (GHS)</label>
+            <label class="block text-xs font-medium text-slate-500 mb-1.5">Opening Balance (GHS)</label>
             {{ form.opening_balance }}
-            {% if form.opening_balance.errors %}<p class="text-red-400 text-xs mt-1">{{ form.opening_balance.errors|join:", " }}</p>{% endif %}
+            {% if form.opening_balance.errors %}<p class="text-red-600 text-xs mt-1">{{ form.opening_balance.errors|join:", " }}</p>{% endif %}
           </div>
           <div>
-            <label class="block text-xs font-medium text-zinc-400 mb-1.5">Initial Deposit Source</label>
+            <label class="block text-xs font-medium text-slate-500 mb-1.5">Initial Deposit Source</label>
             {{ form.funding_source }}
-            <p class="text-xs text-zinc-600 mt-1">Where did the opening balance come from?</p>
+            <p class="text-xs text-slate-400 mt-1">Where did the opening balance come from?</p>
           </div>
         </div>
 
         <!-- Live balance preview -->
-        <div class="mt-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 px-5 py-3 flex items-center justify-between">
+        <div class="mt-4 rounded-xl bg-emerald-50 border border-emerald-200 px-5 py-3 flex items-center justify-between">
           <div>
-            <p class="text-xs text-zinc-500 uppercase tracking-widest">Opening Balance</p>
-            <p class="text-xs text-zinc-600 mt-0.5">Transactions will be added on top of this</p>
+            <p class="text-xs text-slate-500 uppercase tracking-widest">Opening Balance</p>
+            <p class="text-xs text-slate-400 mt-0.5">Transactions will be added on top of this</p>
           </div>
-          <p class="text-2xl font-bold text-emerald-400">GHS <span id="preview-balance">0.00</span></p>
+          <p class="text-2xl font-bold text-emerald-600">GHS <span id="preview-balance">0.00</span></p>
         </div>
       </div>
 
       <!-- Governance -->
       <div class="glass-card rounded-2xl p-6 mb-4">
-        <h3 class="text-sm font-semibold text-zinc-400 uppercase tracking-widest mb-4">Governance</h3>
+        <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-widest mb-4">Governance</h3>
         <div class="space-y-4">
 
-          <div class="flex items-start gap-3 p-3 rounded-xl bg-zinc-800/40 border border-zinc-700/40">
+          <div class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/40">
             {{ form.is_restricted }}
             <div>
-              <label class="text-sm text-zinc-200 font-medium">Restricted Fund</label>
-              <p class="text-xs text-zinc-500 mt-0.5">Money can only be used for this fund's designated purpose. Donations to this fund cannot pay other expenses.</p>
+              <label class="text-sm text-slate-700 font-medium">Restricted Fund</label>
+              <p class="text-xs text-slate-500 mt-0.5">Money can only be used for this fund's designated purpose. Donations to this fund cannot pay other expenses.</p>
             </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-medium text-zinc-400 mb-1.5">Approval Threshold (GHS)</label>
+              <label class="block text-xs font-medium text-slate-500 mb-1.5">Approval Threshold (GHS)</label>
               {{ form.approval_threshold }}
-              <p class="text-xs text-zinc-600 mt-1">Expenses above this require senior approval. Leave blank to disable.</p>
+              <p class="text-xs text-slate-400 mt-1">Expenses above this require senior approval. Leave blank to disable.</p>
             </div>
             <div>
-              <label class="block text-xs font-medium text-zinc-400 mb-1.5">Assigned Ministry</label>
+              <label class="block text-xs font-medium text-slate-500 mb-1.5">Assigned Ministry</label>
               {{ form.assigned_ministry }}
-              <p class="text-xs text-zinc-600 mt-1">e.g. Youth Ministry, Media Team</p>
+              <p class="text-xs text-slate-400 mt-1">e.g. Youth Ministry, Media Team</p>
             </div>
           </div>
 
           <div>
-            <label class="block text-xs font-medium text-zinc-400 mb-1.5">Status</label>
+            <label class="block text-xs font-medium text-slate-500 mb-1.5">Status</label>
             {{ form.status }}
           </div>
 
@@ -113,11 +113,11 @@
 
       <div class="flex gap-3">
         <button type="submit"
-          class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium px-6 py-2.5 rounded-xl transition-all">
+          class="bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium px-6 py-2.5 rounded-xl transition-all">
           Create Fund
         </button>
         <a href="{% url 'finance:fund_list' %}"
-          class="text-sm text-zinc-500 hover:text-zinc-300 px-4 py-2.5 rounded-xl hover:bg-zinc-800 transition-all">
+          class="text-sm text-slate-500 hover:text-slate-600 px-4 py-2.5 rounded-xl hover:bg-slate-100 transition-all">
           Cancel
         </a>
       </div>

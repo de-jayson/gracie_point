@@ -1,57 +1,73 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
   {% load static %}
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Create Church Workspace — Zova CMS</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50:'#eef4fb',100:'#dce9f7',200:'#b8d4ef',300:'#8bb8e3',
+              400:'#6b9fd4',500:'#4a7fb8',600:'#3d6a9e',700:'#2d5a87',
+              800:'#234a70',900:'#1a3a58',
+            },
+          },
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/theme.css' %}">
   <style>
     body { font-family: 'Inter', sans-serif; }
-    .grid-bg {
-      background-image: linear-gradient(rgba(34,197,94,0.04) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(34,197,94,0.04) 1px, transparent 1px);
-      background-size: 40px 40px;
-    }
     input:focus, textarea:focus { outline: none; }
     .field-input {
       width: 100%;
-      background: #1e2533;
-      border: 1px solid #2d3748;
-      border-radius: 0.5rem;
+      background: #ffffff;
+      border: 1px solid #dde4ef;
+      border-radius: 0.625rem;
       padding: 0.75rem 1rem;
-      color: #e2e8f0;
+      color: #1e293b;
       font-size: 0.875rem;
-      transition: border-color 0.15s;
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
-    .field-input:focus { border-color: #10b981; box-shadow: 0 0 0 1px #10b981; }
-    .field-input::placeholder { color: #4a5568; }
-    .field-error { color: #f87171; font-size: 0.75rem; margin-top: 0.25rem; display: block; }
+    .field-input:focus {
+      border-color: #4a7fb8;
+      box-shadow: 0 0 0 3px rgba(74, 127, 184, 0.15);
+    }
+    .field-input::placeholder { color: #94a3b8; }
+    .field-error { color: #b91c1c; font-size: 0.75rem; margin-top: 0.25rem; display: block; }
   </style>
 </head>
-<body class="bg-[#0e1015] text-zinc-200 min-h-screen grid-bg flex items-center justify-center p-4 py-12">
+<body class="auth-page auth-grid-bg text-slate-800 min-h-screen flex items-center justify-center p-4 py-12">
 
   <div class="w-full max-w-xl">
 
     <!-- Logo -->
     <div class="text-center mb-8">
       <div class="flex justify-center mb-4">
-        <img src="{% static 'images/zova_logo.png' %}" alt="Zova Logo" class="w-auto h-16 object-contain">
+        <div class="w-16 h-16 rounded-2xl bg-brand-50 border border-brand-100 flex items-center justify-center">
+          <img src="{% static 'images/zova_logo.png' %}" alt="Zova Logo" class="w-auto h-12 object-contain">
+        </div>
       </div>
-      <h1 class="text-2xl font-semibold text-zinc-100" style="font-family:'DM Serif Display',serif;">Zova</h1>
-      <p class="text-zinc-600 text-sm mt-1">Church Management System</p>
+      <h1 class="text-2xl font-bold text-brand-800" style="font-family:'Plus Jakarta Sans',sans-serif;">Zova</h1>
+      <p class="text-slate-400 text-sm mt-1">Church Management System</p>
     </div>
 
     <!-- Card -->
-    <div class="bg-[#161b22] border border-zinc-800/60 rounded-2xl p-8 shadow-2xl">
+    <div class="auth-card p-8">
 
-      <h2 class="text-lg font-semibold text-zinc-100 mb-1">Create Your Church Workspace</h2>
-      <p class="text-zinc-500 text-sm mb-6">Set up your private Zova workspace in minutes.</p>
+      <h2 class="text-lg font-semibold text-slate-800 mb-1">Create Your Church Workspace</h2>
+      <p class="text-slate-500 text-sm mb-6">Set up your private Zova workspace in minutes.</p>
 
       {% if messages %}
         {% for message in messages %}
-          <div class="bg-red-500/10 border border-red-500/30 text-red-400 text-sm px-4 py-3 rounded-lg mb-4">
+          <div class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-xl mb-4">
             {{ message }}
           </div>
         {% endfor %}
@@ -61,18 +77,18 @@
         {% csrf_token %}
 
         <!-- Church Information -->
-        <p class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-4">Church Information</p>
+        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">Church Information</p>
         <div class="space-y-4 mb-6">
 
           <div>
-            <label class="block text-xs font-medium text-zinc-400 mb-1.5">Church Name</label>
+            <label class="block text-xs font-medium text-slate-600 mb-1.5">Church Name</label>
             <input type="text" name="church_name" value="{{ form.church_name.value|default:'' }}"
               class="field-input" placeholder="e.g. Grace Point Chapel">
             {% if form.church_name.errors %}<span class="field-error">{{ form.church_name.errors|join:", " }}</span>{% endif %}
           </div>
 
           <div>
-            <label class="block text-xs font-medium text-zinc-400 mb-1.5">Church Email</label>
+            <label class="block text-xs font-medium text-slate-600 mb-1.5">Church Email</label>
             <input type="email" name="church_email" value="{{ form.church_email.value|default:'' }}"
               class="field-input" placeholder="church@example.org">
             {% if form.church_email.errors %}<span class="field-error">{{ form.church_email.errors|join:", " }}</span>{% endif %}
@@ -80,12 +96,12 @@
 
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-medium text-zinc-400 mb-1.5">Phone <span class="text-zinc-600">(optional)</span></label>
+              <label class="block text-xs font-medium text-slate-600 mb-1.5">Phone <span class="text-slate-400">(optional)</span></label>
               <input type="text" name="church_phone" value="{{ form.church_phone.value|default:'' }}"
-                class="field-input" placeholder="+1 (555) 000-0000">
+                class="field-input" placeholder="(012) 345-6789">
             </div>
             <div>
-              <label class="block text-xs font-medium text-zinc-400 mb-1.5">Address <span class="text-zinc-600">(optional)</span></label>
+              <label class="block text-xs font-medium text-slate-600 mb-1.5">Address <span class="text-slate-400">(optional)</span></label>
               <input type="text" name="church_address" value="{{ form.church_address.value|default:'' }}"
                 class="field-input" placeholder="Church address">
             </div>
@@ -93,30 +109,29 @@
 
         </div>
 
-        <!-- Divider -->
-        <div class="border-t border-zinc-800/60 mb-6"></div>
+        <div class="border-t border-slate-200 mb-6"></div>
 
         <!-- Administrator Information -->
-        <p class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-4">Administrator Information</p>
+        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">Administrator Information</p>
         <div class="space-y-4 mb-6">
 
           <div>
-            <label class="block text-xs font-medium text-zinc-400 mb-1.5">Full Name</label>
+            <label class="block text-xs font-medium text-slate-600 mb-1.5">Full Name</label>
             <input type="text" name="admin_full_name" value="{{ form.admin_full_name.value|default:'' }}"
-              class="field-input" placeholder="Pastor Daniel">
+              class="field-input" placeholder="">
             {% if form.admin_full_name.errors %}<span class="field-error">{{ form.admin_full_name.errors|join:", " }}</span>{% endif %}
           </div>
 
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-medium text-zinc-400 mb-1.5">Username</label>
+              <label class="block text-xs font-medium text-slate-600 mb-1.5">Username</label>
               <input type="text" name="admin_username" value="{{ form.admin_username.value|default:'' }}"
-                class="field-input" placeholder="e.g. pastor.daniel">
+                class="field-input" placeholder="e.g. pastor.mark">
               {% if form.admin_username.errors %}<span class="field-error">{{ form.admin_username.errors|join:", " }}</span>{% endif %}
-              <span class="text-zinc-600 text-xs mt-1 block">Used to log in</span>
+              <span class="text-slate-400 text-xs mt-1 block">Used to log in</span>
             </div>
             <div>
-              <label class="block text-xs font-medium text-zinc-400 mb-1.5">Email</label>
+              <label class="block text-xs font-medium text-slate-600 mb-1.5">Email</label>
               <input type="email" name="admin_email" value="{{ form.admin_email.value|default:'' }}"
                 class="field-input" placeholder="pastor@example.org">
               {% if form.admin_email.errors %}<span class="field-error">{{ form.admin_email.errors|join:", " }}</span>{% endif %}
@@ -125,12 +140,12 @@
 
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-medium text-zinc-400 mb-1.5">Password</label>
+              <label class="block text-xs font-medium text-slate-600 mb-1.5">Password</label>
               <input type="password" name="admin_password" class="field-input" placeholder="Password">
               {% if form.admin_password.errors %}<span class="field-error">{{ form.admin_password.errors|join:", " }}</span>{% endif %}
             </div>
             <div>
-              <label class="block text-xs font-medium text-zinc-400 mb-1.5">Confirm Password</label>
+              <label class="block text-xs font-medium text-slate-600 mb-1.5">Confirm Password</label>
               <input type="password" name="confirm_password" class="field-input" placeholder="Confirm Password">
               {% if form.confirm_password.errors %}<span class="field-error">{{ form.confirm_password.errors|join:", " }}</span>{% endif %}
             </div>
@@ -139,22 +154,22 @@
         </div>
 
         {% if form.non_field_errors %}
-          <div class="bg-red-500/10 border border-red-500/30 text-red-400 text-sm px-4 py-3 rounded-lg mb-4">
+          <div class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-xl mb-4">
             {{ form.non_field_errors|join:", " }}
           </div>
         {% endif %}
 
         <button type="submit"
-          class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-3 rounded-xl transition-all duration-200 text-sm shadow-lg shadow-emerald-900/30">
+          class="w-full bg-brand-600 hover:bg-brand-700 text-white font-medium py-3 rounded-xl transition-all duration-200 text-sm shadow-md shadow-brand-200">
           Create Church Workspace
         </button>
 
       </form>
     </div>
 
-    <p class="text-center text-xs text-zinc-600 mt-6">
+    <p class="text-center text-xs text-slate-500 mt-6">
       Already have an account?
-      <a href="{% url 'accounts:login' %}" class="text-emerald-600 hover:text-emerald-400 transition-colors font-medium">Sign in</a>
+      <a href="{% url 'accounts:login' %}" class="text-brand-600 hover:text-brand-500 transition-colors font-medium">Sign in</a>
     </p>
 
   </div>

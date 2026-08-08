@@ -5,20 +5,20 @@
 {% block content %}
 <div class="max-w-3xl mx-auto">
   <div class="flex items-center justify-between mb-6">
-    <a href="{% url 'events:list' %}" class="text-sm text-zinc-500 hover:text-zinc-300 flex items-center gap-2">
+    <a href="{% url 'events:list' %}" class="text-sm text-slate-500 hover:text-slate-600 flex items-center gap-2">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
       </svg> Back to Events
     </a>
     <div class="flex gap-2">
       <a href="{% url 'events:edit' event.pk %}"
-        class="text-sm text-zinc-300 hover:text-zinc-100 px-4 py-2 rounded-xl border border-zinc-700 hover:bg-zinc-800 transition-all">
+        class="text-sm text-slate-600 hover:text-slate-800 px-4 py-2 rounded-xl border border-slate-200 hover:bg-slate-100 transition-all">
         Edit
       </a>
       <form action="{% url 'events:delete' event.pk %}" method="post" onsubmit="return confirm('Delete this event?')">
         {% csrf_token %}
         <button type="submit"
-          class="text-sm text-red-500 hover:text-red-400 px-4 py-2 rounded-xl border border-red-800/50 hover:bg-red-500/10 transition-all">
+          class="text-sm text-red-500 hover:text-red-600 px-4 py-2 rounded-xl border border-red-800/50 hover:bg-red-500/10 transition-all">
           Delete
         </button>
       </form>
@@ -27,21 +27,21 @@
 
   <div class="glass-card rounded-2xl overflow-hidden">
     <!-- Header Banner -->
-    <div class="bg-gradient-to-r from-purple-900/40 to-blue-900/30 border-b border-zinc-800/60 p-8">
+    <div class="bg-gradient-to-r from-brand-900/50 via-brand-800/30 to-transparent border-b border-slate-200 p-8">
       <div class="flex items-start gap-5">
-        <div class="w-16 h-16 rounded-2xl bg-purple-600/20 border border-purple-500/30 flex flex-col items-center justify-center flex-shrink-0">
-          <span class="text-xl font-bold text-purple-400 leading-none">{{ event.date|date:"d" }}</span>
-          <span class="text-xs text-purple-500/70 uppercase">{{ event.date|date:"M Y" }}</span>
+        <div class="w-16 h-16 rounded-2xl bg-brand-600/20 border border-brand-400/30 flex flex-col items-center justify-center flex-shrink-0">
+          <span class="text-xl font-bold text-brand-600 leading-none">{{ event.date|date:"d" }}</span>
+          <span class="text-xs text-brand-400/70 uppercase">{{ event.date|date:"M Y" }}</span>
         </div>
         <div>
-          <span class="inline-block text-xs px-2.5 py-1 rounded-full bg-purple-500/15 text-purple-400 mb-2">
+          <span class="inline-block text-xs px-2.5 py-1 rounded-full bg-brand-50 text-brand-600 mb-2">
             {{ event.get_event_type_display }}
           </span>
-          <h1 class="text-2xl font-bold text-zinc-100">{{ event.title }}</h1>
+          <h1 class="text-2xl font-bold text-slate-800">{{ event.title }}</h1>
           {% if event.is_past %}
-          <span class="text-xs text-zinc-600 mt-1 inline-block">Past event</span>
+          <span class="text-xs text-slate-400 mt-1 inline-block">Past event</span>
           {% else %}
-          <span class="text-xs text-emerald-500 mt-1 inline-block flex items-center gap-1">
+          <span class="text-xs text-emerald-600 mt-1 inline-block flex items-center gap-1">
             <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full inline-block"></span>
             Upcoming
           </span>
@@ -54,29 +54,29 @@
     <div class="p-6 space-y-4">
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center flex-shrink-0">
-            <svg class="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="w-8 h-8 rounded-lg bg-white flex items-center justify-center flex-shrink-0">
+            <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
             </svg>
           </div>
           <div>
-            <p class="text-xs text-zinc-600">Date</p>
-            <p class="text-sm text-zinc-300">{{ event.date }}</p>
+            <p class="text-xs text-slate-400">Date</p>
+            <p class="text-sm text-slate-600">{{ event.date }}</p>
           </div>
         </div>
 
         {% if event.start_time %}
         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center flex-shrink-0">
-            <svg class="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="w-8 h-8 rounded-lg bg-white flex items-center justify-center flex-shrink-0">
+            <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
           </div>
           <div>
-            <p class="text-xs text-zinc-600">Time</p>
-            <p class="text-sm text-zinc-300">
+            <p class="text-xs text-slate-400">Time</p>
+            <p class="text-sm text-slate-600">
               {{ event.start_time }}{% if event.end_time %} – {{ event.end_time }}{% endif %}
             </p>
           </div>
@@ -85,39 +85,39 @@
 
         {% if event.location %}
         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center flex-shrink-0">
-            <svg class="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="w-8 h-8 rounded-lg bg-white flex items-center justify-center flex-shrink-0">
+            <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
             </svg>
           </div>
           <div>
-            <p class="text-xs text-zinc-600">Location</p>
-            <p class="text-sm text-zinc-300">{{ event.location }}</p>
+            <p class="text-xs text-slate-400">Location</p>
+            <p class="text-sm text-slate-600">{{ event.location }}</p>
           </div>
         </div>
         {% endif %}
 
         {% if event.created_by %}
         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center flex-shrink-0">
-            <svg class="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="w-8 h-8 rounded-lg bg-white flex items-center justify-center flex-shrink-0">
+            <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
             </svg>
           </div>
           <div>
-            <p class="text-xs text-zinc-600">Created by</p>
-            <p class="text-sm text-zinc-300">{{ event.created_by.get_full_name|default:event.created_by.username }}</p>
+            <p class="text-xs text-slate-400">Created by</p>
+            <p class="text-sm text-slate-600">{{ event.created_by.get_full_name|default:event.created_by.username }}</p>
           </div>
         </div>
         {% endif %}
       </div>
 
       {% if event.description %}
-      <div class="pt-4 border-t border-zinc-800/60">
-        <p class="text-xs text-zinc-600 mb-2">Description</p>
-        <p class="text-sm text-zinc-400 leading-relaxed">{{ event.description }}</p>
+      <div class="pt-4 border-t border-slate-200">
+        <p class="text-xs text-slate-400 mb-2">Description</p>
+        <p class="text-sm text-slate-500 leading-relaxed">{{ event.description }}</p>
       </div>
       {% endif %}
     </div>
