@@ -3,14 +3,20 @@
 {% block breadcrumb %}Dashboard{% endblock %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto space-y-6">
+<div class="max-w-7xl mx-auto space-y-5">
 
-  <!-- Greeting -->
-  <div class="glass-card rounded-2xl p-6 bg-gradient-to-r from-brand-50 via-white to-teal-50/60 border-brand-100">
-    <h1 class="text-2xl font-bold text-brand-800" style="font-family:'Plus Jakarta Sans',sans-serif;">
-      Good {{ greeting }}, {{ request.user.get_full_name|default:request.user.username }} 👋
-    </h1>
-    <p class="text-sm text-slate-500 mt-1">Here's what's happening at <span class="font-medium text-brand-700">{{ church.name }}</span> today.</p>
+  <!-- Page header -->
+  <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+    <div>
+      <p class="text-[11px] font-mono uppercase tracking-widest text-slate-400 mb-1">Good {{ greeting }}</p>
+      <h1 class="text-2xl font-bold text-slate-800 font-display tracking-tight text-balance">
+        {{ request.user.get_full_name|default:request.user.username }}
+      </h1>
+      <p class="text-sm text-slate-500 mt-1">Overview for <span class="font-semibold text-slate-700">{{ church.name }}</span></p>
+    </div>
+    <span class="text-[11px] font-mono uppercase tracking-wide text-slate-400 border border-[color:var(--border)] rounded-md px-2.5 py-1 bg-white/60 w-fit">
+      {% now "D, M j Y" %}
+    </span>
   </div>
 
   <!-- Stats Grid -->
@@ -18,65 +24,72 @@
 
     <!-- Total Members -->
     <div class="stat-card rounded-2xl p-5">
-      <div class="flex items-start justify-between mb-4">
-        <div class="w-10 h-10 rounded-xl bg-brand-50 border border-brand-200 flex items-center justify-center">
-          <svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="flex items-center justify-between mb-5">
+        <span class="text-[11px] font-mono uppercase tracking-widest text-slate-400">Active Members</span>
+        <div class="w-9 h-9 rounded-lg bg-brand-50 border border-brand-100 flex items-center justify-center">
+          <svg class="w-[18px] h-[18px] text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
           </svg>
         </div>
-        {% if new_members_this_month > 0 %}
-        <span class="text-xs text-brand-600 bg-brand-50 px-2 py-0.5 rounded-full">+{{ new_members_this_month }} this month</span>
-        {% endif %}
       </div>
       <p class="text-3xl font-bold text-slate-800">{{ total_members }}</p>
-      <p class="text-sm text-slate-500 mt-1">Active Members</p>
+      {% if new_members_this_month > 0 %}
+      <p class="text-xs text-slate-500 mt-2 flex items-center gap-1.5">
+        <span class="text-[color:var(--ok)] font-mono font-semibold">+{{ new_members_this_month }}</span> this month
+      </p>
+      {% else %}
+      <p class="text-xs text-slate-400 mt-2">No change this month</p>
+      {% endif %}
     </div>
 
     <!-- Latest Attendance -->
     <div class="stat-card rounded-2xl p-5">
-      <div class="flex items-start justify-between mb-4">
-        <div class="w-10 h-10 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-center">
-          <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="flex items-center justify-between mb-5">
+        <span class="text-[11px] font-mono uppercase tracking-widest text-slate-400">Latest Attendance</span>
+        <div class="w-9 h-9 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center">
+          <svg class="w-[18px] h-[18px] text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
           </svg>
         </div>
       </div>
       <p class="text-3xl font-bold text-slate-800">{{ latest_attendance }}</p>
-      <p class="text-sm text-slate-500 mt-1">
+      <p class="text-xs text-slate-400 mt-2 truncate">
         {% if latest_service %}
-        {{ latest_service.get_service_type_display }} &mdash; {{ latest_service.date }}
+        {{ latest_service.get_service_type_display }} &middot; {{ latest_service.date }}
         {% else %}No services yet{% endif %}
       </p>
     </div>
 
     <!-- Monthly Contributions -->
     <div class="stat-card rounded-2xl p-5">
-      <div class="flex items-start justify-between mb-4">
-        <div class="w-10 h-10 rounded-xl bg-violet-50 border border-violet-200 flex items-center justify-center">
-          <svg class="w-5 h-5 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="flex items-center justify-between mb-5">
+        <span class="text-[11px] font-mono uppercase tracking-widest text-slate-400">This Month</span>
+        <div class="w-9 h-9 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center">
+          <svg class="w-[18px] h-[18px] text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
         </div>
       </div>
-      <p class="text-3xl font-bold text-slate-800">GHS {{ this_month_contributions|floatformat:0 }}</p>
-      <p class="text-sm text-slate-500 mt-1">This Month's Contributions</p>
+      <p class="text-3xl font-bold text-slate-800"><span class="text-base font-semibold text-slate-400 align-middle mr-1">GHS</span>{{ this_month_contributions|floatformat:0 }}</p>
+      <p class="text-xs text-slate-400 mt-2">Contributions received</p>
     </div>
 
     <!-- Upcoming Events -->
     <div class="stat-card rounded-2xl p-5">
-      <div class="flex items-start justify-between mb-4">
-        <div class="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center">
-          <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="flex items-center justify-between mb-5">
+        <span class="text-[11px] font-mono uppercase tracking-widest text-slate-400">Upcoming Events</span>
+        <div class="w-9 h-9 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center">
+          <svg class="w-[18px] h-[18px] text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
           </svg>
         </div>
       </div>
       <p class="text-3xl font-bold text-slate-800">{{ upcoming_events.count }}</p>
-      <p class="text-sm text-slate-500 mt-1">Upcoming Events</p>
+      <p class="text-xs text-slate-400 mt-2">Scheduled ahead</p>
     </div>
   </div>
 

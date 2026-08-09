@@ -1,132 +1,165 @@
-/* ── Zova CMS — Light Blue & White Theme ── */
+/* ══════════════════════════════════════════════════════════════
+   Zova CMS — "Precision Workstation" design system
+   A dense, hairline-driven premium desktop admin interface.
+   Cool layered neutrals · single deep-indigo accent ·
+   monospaced tabular numerals as the signature.
+   ══════════════════════════════════════════════════════════════ */
 
 :root {
-  --bg-page:      #f0f4fa;
-  --bg-sidebar:   #ffffff;
-  --bg-card:      #ffffff;
-  --bg-muted:     #eef3f9;
-  --border:       #dde4ef;
-  --border-light: #e8eef6;
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
-  --text-muted:   #94a3b8;
-  --brand:        #4a7fb8;
-  --brand-dark:   #2d5a87;
-  --brand-light:  #6b9fd4;
-  --brand-soft:   #e8f1fa;
-  --accent-teal:  #5ba4a4;
-  --accent-coral: #e07a5f;
-  --accent-amber: #d4a853;
-  --accent-violet:#8b7cb8;
-  --shadow-sm:    0 1px 3px rgba(45, 90, 135, 0.06);
-  --shadow-md:    0 4px 16px rgba(45, 90, 135, 0.08);
-  --shadow-lg:    0 8px 32px rgba(45, 90, 135, 0.10);
+  /* ── Layered neutral surfaces ── */
+  --bg-page:        #e8ebf0;   /* canvas sits below white surfaces */
+  --bg-sidebar:     #ffffff;
+  --bg-card:        #ffffff;
+  --bg-muted:       #f2f4f7;   /* inset / header fills */
+  --bg-inset:       #eef1f5;
+
+  /* ── Hairlines ── */
+  --border:         #dde1e8;
+  --border-strong:  #cdd3dd;
+  --border-light:   #e9ecf1;
+
+  /* ── Ink ── */
+  --text-primary:   #1b2028;
+  --text-secondary: #565f6e;
+  --text-muted:     #8a93a3;
+
+  /* ── Brand: deep indigo ── */
+  --brand:          #4b48ad;
+  --brand-strong:   #3c3a8c;
+  --brand-bright:   #6260c4;
+  --brand-soft:     #eeeffb;
+  --brand-softer:   #f5f5fd;
+  --brand-ring:     rgba(98, 96, 196, 0.28);
+
+  /* ── Semantic (kept distinct from the indigo brand) ── */
+  --ok:      #167a54;  --ok-bg:      #e5f5ed;  --ok-bd:      #b8e5cf;
+  --danger:  #c0392b;  --danger-bg:  #fceeed;  --danger-bd:  #f3cdc9;
+  --warn:    #a86412;  --warn-bg:    #fbf1e2;  --warn-bd:    #f0dcbb;
+
+  /* ── Elevation (crisp, low-spread) ── */
+  --shadow-sm: 0 1px 2px rgba(24, 32, 48, 0.05), 0 1px 1px rgba(24, 32, 48, 0.04);
+  --shadow-md: 0 2px 6px rgba(24, 32, 48, 0.07), 0 1px 2px rgba(24, 32, 48, 0.05);
+  --shadow-lg: 0 12px 32px rgba(24, 32, 48, 0.12), 0 2px 6px rgba(24, 32, 48, 0.06);
+
+  --radius: 12px;
+
+  --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
 }
 
-/* ── Page background with subtle gradient blobs ── */
+/* ── Base ── */
 body {
   background: var(--bg-page);
   color: var(--text-primary);
+  font-feature-settings: "cv05" 1, "ss01" 1;
 }
 
+/* Flat, considered canvas — no decorative gradient blobs. */
 .page-bg {
   background:
-    radial-gradient(ellipse 80% 60% at 10% -10%, rgba(74, 127, 184, 0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 90% 100%, rgba(91, 164, 164, 0.08) 0%, transparent 55%),
-    radial-gradient(ellipse 40% 40% at 70% 20%, rgba(139, 124, 184, 0.06) 0%, transparent 50%),
+    linear-gradient(180deg, rgba(75, 72, 173, 0.035) 0%, transparent 220px),
     var(--bg-page);
 }
 
-/* ── Cards ── */
+/* Tabular, monospaced numerals — the signature of the interface.
+   Applied to any figure that should read as data. */
+.num,
+.stat-card .text-3xl,
+.stat-card .text-2xl,
+.stat-value {
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum" 1;
+  letter-spacing: -0.02em;
+}
+
+/* ══════════════ Surfaces / cards ══════════════ */
 .glass-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
+  border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
-  transition: box-shadow 200ms ease, border-color 200ms ease, transform 200ms ease;
+  transition: box-shadow 180ms ease, border-color 180ms ease;
 }
 .glass-card:hover {
   box-shadow: var(--shadow-md);
-  border-color: rgba(74, 127, 184, 0.25);
+  border-color: var(--border-strong);
 }
 
 .stat-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
+  border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
   position: relative;
   overflow: hidden;
-  transition: box-shadow 200ms ease, border-color 200ms ease, transform 200ms ease;
+  transition: box-shadow 180ms ease, border-color 180ms ease;
 }
+/* A single quiet accent rail that reveals on hover — no glow, no rainbow. */
 .stat-card::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--brand-dark), var(--brand-light));
-  opacity: 0;
-  transition: opacity 200ms ease;
+  top: 10px; bottom: 10px; left: 0;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--brand);
+  transform: scaleY(0);
+  transform-origin: center;
+  transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .stat-card:hover {
   box-shadow: var(--shadow-md);
-  border-color: rgba(74, 127, 184, 0.3);
-  transform: translateY(-1px);
+  border-color: var(--border-strong);
 }
-.stat-card:hover::before { opacity: 1; }
-.stat-card::after {
-  content: '';
-  position: absolute;
-  top: -40%; right: -20%;
-  width: 60%; height: 140%;
-  background: radial-gradient(circle, rgba(74, 127, 184, 0.06) 0%, transparent 70%);
-  pointer-events: none;
-}
+.stat-card:hover::before { transform: scaleY(1); }
 
-/* ── Buttons ── */
+/* ══════════════ Buttons ══════════════ */
 .btn-primary {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
+  background: var(--brand);
   color: #fff;
-  font-size: 0.875rem;
-  font-weight: 500;
-  padding: 0.625rem 1.25rem;
-  border-radius: 0.75rem;
-  border: none;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  padding: 0.5625rem 1rem;
+  border-radius: 9px;
+  border: 1px solid var(--brand-strong);
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(45, 90, 135, 0.25);
-  transition: all 200ms ease;
+  box-shadow: var(--shadow-sm);
+  transition: background 150ms ease, box-shadow 150ms ease;
   text-decoration: none;
 }
 .btn-primary:hover {
-  background: linear-gradient(135deg, var(--brand-light) 0%, var(--brand) 100%);
-  box-shadow: 0 4px 14px rgba(45, 90, 135, 0.3);
-  transform: translateY(-1px);
+  background: var(--brand-strong);
+  box-shadow: var(--shadow-md);
   color: #fff;
 }
+.btn-primary:active { transform: translateY(0.5px); }
 
 .btn-secondary {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: var(--bg-muted);
+  background: var(--bg-card);
   color: var(--text-secondary);
-  font-size: 0.875rem;
-  font-weight: 500;
-  padding: 0.625rem 1.25rem;
-  border-radius: 0.75rem;
-  border: 1px solid var(--border);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 0.5625rem 1rem;
+  border-radius: 9px;
+  border: 1px solid var(--border-strong);
   cursor: pointer;
-  transition: all 200ms ease;
+  transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
   text-decoration: none;
 }
 .btn-secondary:hover {
-  background: var(--brand-soft);
-  color: var(--brand-dark);
-  border-color: rgba(74, 127, 184, 0.3);
+  background: var(--bg-muted);
+  color: var(--text-primary);
+  border-color: var(--text-muted);
 }
 
-/* ── Form inputs (overrides backend widget classes) ── */
+/* ══════════════ Form controls (override backend widget classes) ══════════════ */
 main input[type="text"],
 main input[type="email"],
 main input[type="password"],
@@ -138,18 +171,20 @@ main input[type="tel"],
 main select,
 main textarea,
 .field-input {
-  background: #ffffff !important;
-  border: 1px solid var(--border) !important;
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-strong) !important;
   color: var(--text-primary) !important;
-  border-radius: 0.625rem !important;
-  transition: border-color 150ms ease, box-shadow 150ms ease !important;
+  border-radius: 8px !important;
+  font-size: 0.875rem !important;
+  padding: 0.5625rem 0.75rem !important;
+  transition: border-color 140ms ease, box-shadow 140ms ease !important;
 }
 main input:focus,
 main select:focus,
 main textarea:focus,
 .field-input:focus {
   border-color: var(--brand) !important;
-  box-shadow: 0 0 0 3px rgba(74, 127, 184, 0.15) !important;
+  box-shadow: 0 0 0 3px var(--brand-ring) !important;
   outline: none !important;
 }
 main input::placeholder,
@@ -158,97 +193,120 @@ main textarea::placeholder,
   color: var(--text-muted) !important;
 }
 
-/* ── Tables ── */
+/* ══════════════ Tables ══════════════ */
 .glass-card table thead tr {
   background: var(--bg-muted);
   border-bottom: 1px solid var(--border);
 }
 .glass-card table thead th {
-  color: var(--text-secondary);
-  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-size: 0.6875rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding: 0.875rem 1.5rem;
+  letter-spacing: 0.06em;
+  font-family: var(--font-mono);
+  padding: 0.75rem 1.5rem;
 }
+.glass-card table thead th a {
+  color: inherit;
+  text-decoration: none;
+}
+.glass-card table thead th a:hover { color: var(--brand); }
 .glass-card table tbody tr {
   border-bottom: 1px solid var(--border-light);
-  transition: background 150ms ease;
+  transition: background 120ms ease;
 }
+.glass-card table tbody tr:last-child { border-bottom: none; }
 .glass-card table tbody tr:hover {
-  background: rgba(74, 127, 184, 0.04);
+  background: var(--brand-softer);
 }
 .glass-card table tbody td {
-  padding: 0.875rem 1.5rem;
+  padding: 0.8125rem 1.5rem;
 }
 
-/* ── Messages ── */
-.msg-success { background: #ecfdf5; border: 1px solid #a7f3d0; color: #047857; }
-.msg-error   { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; }
-.msg-info    { background: var(--brand-soft); border: 1px solid #bfdbfe; color: var(--brand-dark); }
-.msg-warning { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+/* ══════════════ Flash messages ══════════════ */
+.msg-success { background: var(--ok-bg);     border: 1px solid var(--ok-bd);     color: var(--ok); }
+.msg-error   { background: var(--danger-bg); border: 1px solid var(--danger-bd); color: var(--danger); }
+.msg-info    { background: var(--brand-soft);border: 1px solid #d5d6f4;          color: var(--brand-strong); }
+.msg-warning { background: var(--warn-bg);   border: 1px solid var(--warn-bd);   color: var(--warn); }
+[role="alert"] { border-radius: 9px; }
 
-/* ── Badges ── */
-.badge-active   { background: #ecfdf5; color: #047857; }
-.badge-visitor  { background: var(--brand-soft); color: var(--brand-dark); }
-.badge-inactive { background: #f1f5f9; color: #64748b; }
-.badge-pending  { background: #fffbeb; color: #92400e; }
-.badge-info     { background: #ede9fe; color: #6d28d9; }
+/* ══════════════ Badges ══════════════ */
+.badge-active,
+.badge-visitor,
+.badge-inactive,
+.badge-pending,
+.badge-info {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.badge-active   { background: var(--ok-bg);     color: var(--ok); }
+.badge-visitor  { background: var(--brand-soft); color: var(--brand-strong); }
+.badge-inactive { background: var(--bg-inset);  color: var(--text-secondary); }
+.badge-pending  { background: var(--warn-bg);   color: var(--warn); }
+.badge-info     { background: var(--brand-soft); color: var(--brand-strong); }
 
-/* ── Finance nav tabs ── */
+/* ══════════════ Finance nav — segmented control ══════════════ */
 .finance-nav {
-  background: var(--bg-muted);
+  background: var(--bg-inset);
   border: 1px solid var(--border);
-  border-radius: 1rem;
-  padding: 0.375rem;
+  border-radius: 10px;
+  padding: 0.25rem;
 }
 .finance-nav a.active-tab {
-  background: #ffffff;
-  color: var(--brand-dark);
-  border: 1px solid rgba(74, 127, 184, 0.2);
+  background: var(--bg-card);
+  color: var(--brand-strong);
+  border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
 }
 
-/* ── Scrollbar ── */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--bg-muted); }
-::-webkit-scrollbar-thumb { background: #c5d4e8; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--brand); }
+/* ══════════════ Scrollbar ══════════════ */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: #c3cad6;
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover { background: #a7b1c2; background-clip: content-box; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
 
-/* ── Auth pages ── */
+/* ══════════════ Auth pages ══════════════ */
 .auth-page {
-  background:
-    radial-gradient(ellipse 70% 60% at 20% 0%, rgba(74, 127, 184, 0.15) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 50% at 80% 100%, rgba(91, 164, 164, 0.10) 0%, transparent 55%),
-    var(--bg-page);
+  background: var(--bg-page);
   min-height: 100vh;
 }
+/* Blueprint grid — precise, technical, not a gradient wash. */
+.auth-grid-bg {
+  background-image:
+    linear-gradient(var(--border-light) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-light) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: center;
+}
 .auth-card {
-  background: #ffffff;
+  background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: 1.25rem;
+  border-radius: 14px;
   box-shadow: var(--shadow-lg);
 }
 .auth-card input[type="text"],
 .auth-card input[type="password"],
 .auth-card input[type="email"] {
   width: 100%;
-  background: #ffffff !important;
-  border: 1px solid var(--border) !important;
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-strong) !important;
   color: var(--text-primary) !important;
-  border-radius: 0.625rem !important;
-  padding: 0.75rem 1rem !important;
+  border-radius: 8px !important;
+  padding: 0.625rem 0.875rem !important;
   font-size: 0.875rem !important;
-  transition: border-color 150ms ease, box-shadow 150ms ease !important;
+  transition: border-color 140ms ease, box-shadow 140ms ease !important;
 }
 .auth-card input:focus {
   border-color: var(--brand) !important;
-  box-shadow: 0 0 0 3px rgba(74, 127, 184, 0.15) !important;
+  box-shadow: 0 0 0 3px var(--brand-ring) !important;
   outline: none !important;
-}
-.auth-grid-bg {
-  background-image:
-    linear-gradient(rgba(74, 127, 184, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(74, 127, 184, 0.04) 1px, transparent 1px);
-  background-size: 40px 40px;
 }
