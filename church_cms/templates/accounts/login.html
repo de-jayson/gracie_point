@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="bg-[#e8ebf0]">
 <head>
   {% load static %}
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login — Zova CMS</title>
+  <meta name="theme-color" content="#e8ebf0" />
+  <title>Sign in — Zova CMS</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -12,45 +13,46 @@
         extend: {
           colors: {
             brand: {
-              50:'#eef4fb',100:'#dce9f7',200:'#b8d4ef',300:'#8bb8e3',
-              400:'#6b9fd4',500:'#4a7fb8',600:'#3d6a9e',700:'#2d5a87',
-              800:'#234a70',900:'#1a3a58',
+              50:'#f5f5fd',100:'#eeeffb',200:'#d5d6f4',300:'#b3b4ea',
+              400:'#8a89db',500:'#6260c4',600:'#4b48ad',700:'#3c3a8c',
+              800:'#323073',900:'#2a285e',
             },
           },
         }
       }
     }
   </script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/theme.css' %}">
   <style>
     body { font-family: 'Inter', sans-serif; }
     input:focus { outline: none; }
-    .msg-error { color: #b91c1c; font-size: 0.8rem; margin-top: 0.25rem; }
+    .msg-error { color: #c0392b; font-size: 0.8rem; margin-top: 0.25rem; }
   </style>
 </head>
 <body class="auth-page auth-grid-bg text-slate-800 min-h-screen flex items-center justify-center p-4">
 
-  <div class="w-full max-w-md">
-    <!-- Logo -->
-    <div class="text-center mb-8">
-      <div class="flex justify-center mb-4">
-        <div class="w-20 h-20 rounded-2xl bg-brand-50 border border-brand-100 flex items-center justify-center">
-          <img src="{% static 'images/zova_logo.png' %}" alt="Zova Logo" class="w-auto h-14 object-contain">
-        </div>
+  <div class="w-full max-w-[400px]">
+    <!-- Brand -->
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-11 h-11 rounded-xl bg-white border border-brand-100 flex items-center justify-center shadow-sm">
+        <img src="{% static 'images/zova_logo.png' %}" alt="Zova logo" class="w-auto h-7 object-contain">
       </div>
-      <h1 class="text-2xl font-bold text-brand-800" style="font-family:'Plus Jakarta Sans',sans-serif;">Zova</h1>
-      <p class="text-slate-400 text-sm mt-1">Church Management System</p>
+      <div class="leading-tight">
+        <h1 class="text-lg font-bold text-slate-800 font-display tracking-tight">Zova</h1>
+        <p class="text-[10px] font-mono uppercase tracking-widest text-slate-400">Church Management System</p>
+      </div>
     </div>
 
     <!-- Card -->
-    <div class="auth-card p-8">
-      <h2 class="text-lg font-semibold text-slate-800 mb-1">Welcome back</h2>
-      <p class="text-slate-500 text-sm mb-6">Sign in to your account to continue</p>
+    <div class="auth-card p-7">
+      <h2 class="text-[17px] font-bold text-slate-800 font-display tracking-tight">Sign in</h2>
+      <p class="text-slate-500 text-[13px] mt-1 mb-6">Access your church workspace.</p>
 
       {% if messages %}
         {% for message in messages %}
-        <div class="{% if 'created' in message.message or 'success' in message.tags %}bg-emerald-50 border border-emerald-200 text-emerald-700{% else %}bg-red-50 border border-red-200 text-red-700{% endif %} text-sm px-4 py-3 rounded-xl mb-4">
+        <div class="{% if 'created' in message.message or 'success' in message.tags %}msg-success{% else %}msg-error{% endif %} text-sm px-4 py-3 rounded-lg mb-4 border">
           {{ message }}
         </div>
         {% endfor %}
@@ -61,7 +63,7 @@
         <div class="space-y-4">
 
           <div>
-            <label class="block text-xs font-medium text-slate-600 mb-1.5">Username</label>
+            <label class="block text-[11px] font-mono font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Username</label>
             {{ form.username }}
             {% if form.username.errors %}
               <p class="msg-error">{{ form.username.errors|join:", " }}</p>
@@ -69,7 +71,7 @@
           </div>
 
           <div>
-            <label class="block text-xs font-medium text-slate-600 mb-1.5">Password</label>
+            <label class="block text-[11px] font-mono font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Password</label>
             {{ form.password }}
             {% if form.password.errors %}
               <p class="msg-error">{{ form.password.errors|join:", " }}</p>
@@ -77,7 +79,7 @@
           </div>
 
           {% if form.non_field_errors %}
-            <div class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-xl">
+            <div class="msg-error border border-[color:var(--danger-bd)] bg-[color:var(--danger-bg)] text-sm px-4 py-3 rounded-lg">
               {{ form.non_field_errors|join:", " }}
             </div>
           {% endif %}
@@ -85,21 +87,21 @@
         </div>
 
         <button type="submit"
-          class="w-full mt-6 bg-brand-600 hover:bg-brand-700 text-white font-medium py-3 rounded-xl transition-all duration-200 text-sm shadow-md shadow-brand-200">
-          Sign In
+          class="btn-primary w-full justify-center mt-6 py-3 text-sm">
+          Sign in
         </button>
       </form>
     </div>
 
-    <p class="text-center text-xs text-slate-400 mt-6">
-      Zova CMS &mdash; Secure Access
-    </p>
-    <p class="text-center text-xs text-slate-500 mt-3">
-      New church?
-      <a href="{% url 'organizations:register' %}" class="text-brand-600 hover:text-brand-500 transition-colors font-medium">
-        Create a workspace
-      </a>
-    </p>
+    <div class="flex items-center justify-between mt-6 text-xs">
+      <p class="font-mono uppercase tracking-wide text-slate-400">Secure access</p>
+      <p class="text-slate-500">
+        New church?
+        <a href="{% url 'organizations:register' %}" class="text-brand-600 hover:text-brand-700 font-semibold">
+          Create a workspace
+        </a>
+      </p>
+    </div>
   </div>
 </body>
 </html>
